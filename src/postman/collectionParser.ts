@@ -89,4 +89,4 @@ function parseCollection(collection: PostmanCollection): EndpointDefinition[] {
 }
 
 
-export { readPostmanCollection, parseCollection, PostmanCollection, CollectionItem, RequestItem };
+export { readPostmanCollection, parseCollection, PostmanCollection, CollectionItem, RequestItem, EndpointDefinition };
