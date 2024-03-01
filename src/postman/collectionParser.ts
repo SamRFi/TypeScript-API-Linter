@@ -63,23 +63,25 @@ function parseCollection(collection: PostmanCollection): EndpointDefinition[] {
         if (!items) {
             return;
         }
-
+    
         items.forEach(item => {
             // If the item has nested items, it's a folder/group
             if (item.item) {
-                extractEndpoints(item.item, basePath.concat(item.name));
+                // Only pass basePath if you want to include the folder's name in the path
+                extractEndpoints(item.item);
             } else if (item.request) {
                 // This is an actual request, so let's extract its details
                 const { method, url } = item.request;
-                const fullPath = basePath.concat(url.path).join('/').replace(/{{.*?}}\//g, ''); // Removes variables like `{{host}}/`
+                const fullPath = url.path.join('/'); // Directly use the path from the request
                 endpoints.push({
                     method,
-                    path: fullPath,
+                    path: fullPath.replace(/^\//, ''), // Ensure no leading slash
                     name: item.name
                 });
             }
         });
     }
+    
 
     extractEndpoints(collection.item);
 

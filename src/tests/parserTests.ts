@@ -18,13 +18,13 @@ describe('parseCollection', () => {
     
     // Define your expected endpoints based on the mock data
     const expectedEndpoints = [
-      {
-        method: 'POST',
-        path: 'auth/signin',
-        name: 'Sign In',
-      },
-      // Add more expected endpoints as needed
-    ];
+        {
+          method: 'POST',
+          path: 'auth/signin', // Adjusted to match the expected output
+          name: 'Sign In',
+        },
+        // Add more expected endpoints as needed
+      ];      
 
     // Use Jest's expect function to assert the parsed endpoints against the expected ones
     expect(endpoints).toEqual(expectedEndpoints);
