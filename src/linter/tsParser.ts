@@ -36,7 +36,9 @@ function findEndpointsInFile(fileContent: string, fileName: string): TSEndpoint[
       });
 
       if (url) {
-        endpoints.push({ method, path: url });
+        const urlObj = new URL(url, "https://baseurl.com"); // Use a dummy base URL for parsing
+        const path = urlObj.pathname; // Extract path, ignoring the domain
+        endpoints.push({ method, path });
       }
     }
     ts.forEachChild(node, visit);

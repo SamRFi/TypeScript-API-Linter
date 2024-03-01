@@ -7,7 +7,7 @@ import path from 'path';
 describe('Linter Functionality', () => {
   it('should detect mismatched endpoints between TS files and Postman collection', () => {
     // Adjust the path to the directory containing your mock TypeScript file
-    const tsFilesPath = path.join(__dirname); // Assuming mockRequests.ts is in the tests directory
+    const tsFilesPath = path.join(__dirname, 'mockRequests'); // Assuming mockRequests.ts is in the tests directory
 
     // Use tsParser to parse TypeScript files in the directory and get endpoints
     const tsEndpoints: TSEndpoint[] = tsParser(tsFilesPath);
