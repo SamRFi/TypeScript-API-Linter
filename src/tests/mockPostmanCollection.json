@@ -1,0 +1,29 @@
+{
+    "info": {
+      "_postman_id": "test-id",
+      "name": "test-collection",
+      "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+    },
+    "item": [
+      {
+        "name": "authentication",
+        "item": [
+          {
+            "name": "Sign In",
+            "request": {
+              "method": "POST",
+              "url": {
+                "raw": "{{host}}/auth/signin",
+                "host": ["{{host}}"],
+                "path": ["auth", "signin"]
+              }
+            },
+            "response": []
+          }
+
+        ]
+      }
+
+    ]
+  }
+  
