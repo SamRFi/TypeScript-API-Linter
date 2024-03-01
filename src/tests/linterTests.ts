@@ -1,16 +1,16 @@
 // tests/linterTests.ts
 import { lintEndpointRules } from '../linter/lintRules';
 import { parseCollection, readPostmanCollection } from '../postman/collectionParser';
-import { tsParser } from '../linter/tsParser'; // Ensure tsParser is implemented to read TS files
+import { tsParser, TSEndpoint } from '../linter/tsParser';
 import path from 'path';
 
 describe('Linter Functionality', () => {
-  it('should detect mismatched endpoints between TS files and Postman collection', async () => {
-    // Path to the mock TypeScript file
-    const tsFilePath = path.join(__dirname, 'mockRequests.ts');
+  it('should detect mismatched endpoints between TS files and Postman collection', () => {
+    // Adjust the path to the directory containing your mock TypeScript file
+    const tsFilesPath = path.join(__dirname); // Assuming mockRequests.ts is in the tests directory
 
-    // Use tsParser to parse the mock TypeScript file and get endpoints
-    const tsEndpoints = tsParser(tsFilePath); // Adjust tsParser as needed to support file path input
+    // Use tsParser to parse TypeScript files in the directory and get endpoints
+    const tsEndpoints: TSEndpoint[] = tsParser(tsFilesPath);
 
     // Path to the Postman collection JSON file
     const collectionFilePath = path.join(__dirname, 'mockPostmanCollection.json');
