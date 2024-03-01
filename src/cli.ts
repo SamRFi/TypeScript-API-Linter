@@ -66,13 +66,12 @@ const options: ts.CompilerOptions = {
 
 let filesToLint: string[] = [];
 if (fs.statSync(projectPath).isDirectory()) {
-  const tsFiles = fs.readdirSync(projectPath).filter(file => file.endsWith('.tsx') && !file.includes('node_modules') && !file.includes('vite.config'));
+  const tsFiles = fs.readdirSync(projectPath);
   filesToLint = tsFiles.map(file => path.join(projectPath, file));
 } else {
   filesToLint.push(projectPath);
 }
 
-console.log(`Files to lint: ${filesToLint.join(', ')}`);
 
 const program = parseProjectFiles(filesToLint, options);
 lintProject(program);
