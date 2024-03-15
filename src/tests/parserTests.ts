@@ -6,7 +6,7 @@ import { parseCollection, PostmanCollection, EndpointDefinition } from '../postm
 describe('parseCollection', () => {
   it('correctly parses endpoints from a Postman collection file', () => {
     // Path to your mock JSON file
-    const filePath = path.join(__dirname, 'mockPostmanCollection.json');
+    const filePath = path.join(__dirname, '../mockFiles/mockPostmanCollection.json');
 
     // Read and parse the JSON file
     const fileContents = fs.readFileSync(filePath, 'utf-8');

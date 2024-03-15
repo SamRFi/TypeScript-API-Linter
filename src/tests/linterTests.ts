@@ -8,8 +8,8 @@ import path from 'path';
 describe('Linter Functionality', () => {
   it('should detect mismatched endpoints and types between TS files and Postman collection', () => {
     // Adjust the path to the directory containing your mock TypeScript file
-    const tsFilesPath = path.join(__dirname, 'succeedingMockRequests'); // Assuming mockRequests.ts is in the tests directory
-    const typesPath = path.join(__dirname, 'succeedingMockTypes'); // Assuming the types directory is in the tests directory
+    const tsFilesPath = path.join(__dirname, '../mockFiles/succeedingMockRequests'); // Assuming mockRequests.ts is in the tests directory
+    const typesPath = path.join(__dirname, '../mockFiles/succeedingMockTypes'); // Assuming the types directory is in the tests directory
 
     // Use tsParser to parse TypeScript files in the directory and get endpoints
     const tsEndpoints: TSEndpoint[] = tsParser(tsFilesPath);
@@ -18,7 +18,7 @@ describe('Linter Functionality', () => {
     const typeDefinitions: TypeDefinition[] = parseTypes(typesPath);
 
     // Path to the Postman collection JSON file
-    const collectionFilePath = path.join(__dirname, 'mockPostmanCollection.json');
+    const collectionFilePath = path.join(__dirname, '../mockFiles/mockPostmanCollection.json');
     const postmanCollection = readPostmanCollection(collectionFilePath);
     const postmanEndpoints = parseCollection(postmanCollection);
 
@@ -33,8 +33,8 @@ describe('Linter Functionality', () => {
 describe('Linter Functionality - Failure Cases', () => {
   it('should correctly identify mismatched endpoints and types between TS files and Postman collection', () => {
     // Path to the directory containing the intentionally failing mock TypeScript files
-    const tsFilesPath = path.join(__dirname, 'failingMockRequests');
-    const typesPath = path.join(__dirname, 'failingMockTypes'); // Assuming the failing types directory is in the tests directory
+    const tsFilesPath = path.join(__dirname, '../mockFiles/failingMockRequests');
+    const typesPath = path.join(__dirname, '../mockFiles/failingMockTypes'); // Assuming the failing types directory is in the tests directory
 
     // Use tsParser to parse TypeScript files in the directory and get endpoints
     const tsEndpoints: TSEndpoint[] = tsParser(tsFilesPath);
@@ -43,7 +43,7 @@ describe('Linter Functionality - Failure Cases', () => {
     const typeDefinitions: TypeDefinition[] = parseTypes(typesPath);
 
     // Path to the Postman collection JSON file
-    const collectionFilePath = path.join(__dirname, 'mockPostmanCollection.json');
+    const collectionFilePath = path.join(__dirname, '../mockFiles/mockPostmanCollection.json');
     const postmanCollection = readPostmanCollection(collectionFilePath);
     const postmanEndpoints = parseCollection(postmanCollection);
 
