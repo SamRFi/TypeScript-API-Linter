@@ -1,13 +1,8 @@
 import { SignInRequestBody } from "../failingMockTypes/mockTypes";
 
-//mock test assertion so suite doesn't fail
-test('mock test', () => {
-  expect(1).toBe(1);
-});
-
 async function fetchData() {
   const requestBody: SignInRequestBody = {
-    emails: 123,
+    emails: 'testemail',
     password: 'password123',
     stay_logged_in: true,
   };

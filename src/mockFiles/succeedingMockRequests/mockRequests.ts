@@ -1,10 +1,5 @@
 import { SignInRequestBody } from "../succeedingMockTypes/mockTypes";
 
-//mock test assertion so suite doesn't fail
-test('mock test', () => {
-  expect(1).toBe(1);
-});
-
 async function fetchData() {
   const requestBody: SignInRequestBody = {
     email: 'user@example.com',
