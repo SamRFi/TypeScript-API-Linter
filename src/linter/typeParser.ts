@@ -4,9 +4,10 @@ import * as fs from 'fs';
 import * as path from 'path';
 
 interface TypeDefinition {
-  name: string;
-  properties: { [key: string]: string };
-}
+    name: string;
+    properties: { [key: string]: string };
+    usages: string[];
+  }
 
 function findTypesInFile(fileContent: string, fileName: string): TypeDefinition[] {
     const types: TypeDefinition[] = [];
@@ -34,6 +35,7 @@ function findTypesInFile(fileContent: string, fileName: string): TypeDefinition[
         types.push({
           name: typeName,
           properties: typeProperties,
+          usages: [],
         });
       } else if (ts.isTypeAliasDeclaration(node)) {
         const typeName = node.name.getText(sourceFile);
@@ -52,7 +54,19 @@ function findTypesInFile(fileContent: string, fileName: string): TypeDefinition[
         types.push({
           name: typeName,
           properties: typeProperties,
+          usages: [],
         });
+      } else if (ts.isVariableDeclaration(node)) {
+        const variableName = node.name.getText(sourceFile);
+        const variableType = node.type ? node.type.getText(sourceFile) : 'any';
+  
+        // Check if the variable type matches any of the extracted type names
+        const matchingType = types.find(type => type.name === variableType);
+  
+        if (matchingType) {
+          // If a matching type is found, add the variable declaration as a usage of that type
+          matchingType.usages.push(variableName);
+        }
       }
   
       ts.forEachChild(node, visit);

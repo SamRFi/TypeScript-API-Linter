@@ -20,7 +20,7 @@ describe('parseCollection', () => {
       {
         method: 'POST',
         path: 'auth/signin',
-        name: 'SignIn',
+        name: 'Sign In',
         requestBody: {
           email: 'user@example.com',
           password: 'password123',

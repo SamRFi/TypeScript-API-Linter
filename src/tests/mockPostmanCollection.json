@@ -10,7 +10,7 @@
       "name": "authentication",
       "item": [
         {
-          "name": "SignIn",
+          "name": "Sign In",
           "request": {
             "method": "POST",
             "header": [],

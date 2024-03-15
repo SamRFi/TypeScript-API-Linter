@@ -7,6 +7,7 @@ test('mock test', () => {
 export interface SignInRequestBody {
   emails: number;
   password: string;
+  stay_logged_in: boolean;
 }
   
   export interface SignInResponseBody {

@@ -5,6 +5,7 @@ import { TypeDefinition } from './typeParser';
 interface TSEndpoint {
   method: string;
   path: string;
+  requestBodyType?: string | null;
 }
 
 function lintEndpointRules(endpointDefinitions: EndpointDefinition[], tsEndpoints: TSEndpoint[], typeDefinitions: TypeDefinition[]): string[] {
@@ -23,24 +24,51 @@ function lintEndpointRules(endpointDefinitions: EndpointDefinition[], tsEndpoint
     } else {
       // Check if the request body properties match the corresponding TypeScript type
       if (def.requestBody) {
-        const matchingType = typeDefinitions.find(type => type.name === `${def.name}RequestBody`);
-
-        if (!matchingType) {
-          errors.push(`No matching type definition found for endpoint: ${def.name}`);
-        } else {
-          const missingProperties = Object.keys(def.requestBody).filter(
-            prop => !matchingType.properties.hasOwnProperty(prop)
-          );
-
-          if (missingProperties.length > 0) {
-            errors.push(
-              `Missing properties in type definition for endpoint ${def.name}: ${missingProperties.join(', ')}`
+        if (matchingTSEndpoint && matchingTSEndpoint.requestBodyType) {
+          const matchingType = typeDefinitions.find(type => type.name === matchingTSEndpoint.requestBodyType);
+      
+          if (!matchingType) {
+            errors.push(`No matching type definition found for endpoint: ${def.name}`);
+          } else {
+            const requestBodyProperties = Object.keys(def.requestBody);
+            const typeProperties = Object.keys(matchingType.properties);
+      
+            const missingProperties = requestBodyProperties.filter(
+              prop => !typeProperties.includes(prop)
             );
+      
+            const extraProperties = typeProperties.filter(
+              prop => !requestBodyProperties.includes(prop)
+            );
+      
+            if (missingProperties.length > 0) {
+              errors.push(
+                `Missing properties in request body for endpoint ${def.name}: ${missingProperties.join(', ')}`
+              );
+            }
+      
+            if (extraProperties.length > 0) {
+              errors.push(
+                `Extra properties in request body for endpoint ${def.name}: ${extraProperties.join(', ')}`
+              );
+            }
+      
+            requestBodyProperties.forEach(prop => {
+              const requestBodyPropertyType = typeof def.requestBody[prop];
+              const typePropertyType = matchingType.properties[prop];
+      
+              if (requestBodyPropertyType !== typePropertyType) {
+                errors.push(
+                  `Type mismatch for property '${prop}' in request body for endpoint ${def.name}. ` +
+                  `Expected type: ${typePropertyType}, Actual type: ${requestBodyPropertyType}`
+                );
+              }
+            });
           }
         }
       }
-    }
-  });
+  }
+});
 
   // Optionally, check for TypeScript endpoints not defined in the Postman collection
   tsEndpoints.forEach((e) => {

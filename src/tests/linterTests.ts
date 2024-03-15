@@ -13,21 +13,17 @@ describe('Linter Functionality', () => {
 
     // Use tsParser to parse TypeScript files in the directory and get endpoints
     const tsEndpoints: TSEndpoint[] = tsParser(tsFilesPath);
-    console.log('TypeScript Endpoints:', tsEndpoints);
 
     // Use parseTypes to parse TypeScript type definitions
     const typeDefinitions: TypeDefinition[] = parseTypes(typesPath);
-    console.log('Type Definitions:', typeDefinitions);
 
     // Path to the Postman collection JSON file
     const collectionFilePath = path.join(__dirname, 'mockPostmanCollection.json');
     const postmanCollection = readPostmanCollection(collectionFilePath);
     const postmanEndpoints = parseCollection(postmanCollection);
-    console.log('Postman Endpoints:', postmanEndpoints);
 
     // Run the linting rule checker
     const errors = lintEndpointRules(postmanEndpoints, tsEndpoints, typeDefinitions);
-    console.log('Linting Errors:', errors);
 
     // Assert there are no errors (or adjust assertion based on expected outcome)
     expect(errors).toEqual([]);
@@ -42,21 +38,17 @@ describe('Linter Functionality - Failure Cases', () => {
 
     // Use tsParser to parse TypeScript files in the directory and get endpoints
     const tsEndpoints: TSEndpoint[] = tsParser(tsFilesPath);
-    console.log('TypeScript Endpoints (Failing):', tsEndpoints);
 
     // Use parseTypes to parse TypeScript type definitions
     const typeDefinitions: TypeDefinition[] = parseTypes(typesPath);
-    console.log('Type Definitions (Failing):', typeDefinitions);
 
     // Path to the Postman collection JSON file
     const collectionFilePath = path.join(__dirname, 'mockPostmanCollection.json');
     const postmanCollection = readPostmanCollection(collectionFilePath);
     const postmanEndpoints = parseCollection(postmanCollection);
-    console.log('Postman Endpoints (Failing):', postmanEndpoints);
 
     // Run the linting rule checker
     const errors = lintEndpointRules(postmanEndpoints, tsEndpoints, typeDefinitions);
-    console.log('Linting Errors (Failing):', errors);
 
     // Assert that errors are present
     expect(errors.length).toBeGreaterThan(0);

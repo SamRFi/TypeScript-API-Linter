@@ -6,6 +6,7 @@ import path from 'path';
 interface TSEndpoint {
   method: string;
   path: string;
+  requestBodyType?: string | null;
 }
 
 function findEndpointsInFile(fileContent: string, fileName: string): TSEndpoint[] {
@@ -18,10 +19,49 @@ function findEndpointsInFile(fileContent: string, fileName: string): TSEndpoint[
     /*setParentNodes */ true
   );
 
+  function findVariableDeclaration(node: ts.Node, variableName: string): ts.VariableDeclaration | undefined {
+    let variableDeclaration: ts.VariableDeclaration | undefined;
+
+    function visit(node: ts.Node) {
+      if (ts.isVariableDeclaration(node) && ts.isIdentifier(node.name) && node.name.text === variableName) {
+        variableDeclaration = node;
+        return;
+      }
+      ts.forEachChild(node, visit);
+    }
+
+    ts.forEachChild(node, visit);
+    return variableDeclaration;
+  }
+
   function visit(node: ts.Node) {
     if (ts.isCallExpression(node) && node.expression.getText(sourceFile).includes('fetch')) {
       let method = 'GET'; // Default method for fetch is GET
       let url = '';
+
+      let requestBodyType: string | null = null;
+
+      node.arguments.forEach(arg => {
+        if (ts.isObjectLiteralExpression(arg)) {
+          arg.properties.forEach(prop => {
+            if (ts.isPropertyAssignment(prop) && prop.name.getText(sourceFile) === 'body') {
+              const initializer = prop.initializer;
+              if (ts.isCallExpression(initializer) && initializer.expression.getText(sourceFile) === 'JSON.stringify') {
+                const argument = initializer.arguments[0];
+                if (ts.isIdentifier(argument)) {
+                  const variableName = argument.getText(sourceFile);
+                  const variableDeclaration = findVariableDeclaration(sourceFile, variableName);
+
+                  if (variableDeclaration && variableDeclaration.type) {
+                    requestBodyType = variableDeclaration.type.getText(sourceFile);
+                    console.log(`Found request body type: ${requestBodyType}`);
+                  }
+                }
+              }
+            }
+          });
+        }
+      });
 
       node.arguments.forEach(arg => {
         if (ts.isStringLiteral(arg)) {
@@ -38,7 +78,7 @@ function findEndpointsInFile(fileContent: string, fileName: string): TSEndpoint[
       if (url) {
         const urlObj = new URL(url, "https://baseurl.com"); // Use a dummy base URL for parsing
         const path = urlObj.pathname; // Extract path, ignoring the domain
-        endpoints.push({ method, path });
+        endpoints.push({ method, path, requestBodyType });
       }
     }
     ts.forEachChild(node, visit);
