@@ -1,30 +1,33 @@
-// Assuming you're using Jest for testing
-
+// tests/parserTests.ts
 import fs from 'fs';
 import path from 'path';
-import { parseCollection, PostmanCollection } from '../postman/collectionParser';
+import { parseCollection, PostmanCollection, EndpointDefinition } from '../postman/collectionParser';
 
 describe('parseCollection', () => {
   it('correctly parses endpoints from a Postman collection file', () => {
     // Path to your mock JSON file
     const filePath = path.join(__dirname, 'mockPostmanCollection.json');
-    
+
     // Read and parse the JSON file
     const fileContents = fs.readFileSync(filePath, 'utf-8');
     const postmanCollection: PostmanCollection = JSON.parse(fileContents);
-    
+
     // Call your parseCollection function with the parsed data
-    const endpoints = parseCollection(postmanCollection);
-    
+    const endpoints: EndpointDefinition[] = parseCollection(postmanCollection);
+
     // Define your expected endpoints based on the mock data
-    const expectedEndpoints = [
-        {
-          method: 'POST',
-          path: 'auth/signin', // Adjusted to match the expected output
-          name: 'Sign In',
-        },
-        // Add more expected endpoints as needed
-      ];      
+    const expectedEndpoints: EndpointDefinition[] = [
+      {
+        method: 'POST',
+        path: 'auth/signin',
+        name: 'SignIn',
+        requestBody: {
+          email: 'user@example.com',
+          password: 'password123',
+          stay_logged_in: true
+        }
+      }
+    ];
 
     // Use Jest's expect function to assert the parsed endpoints against the expected ones
     expect(endpoints).toEqual(expectedEndpoints);

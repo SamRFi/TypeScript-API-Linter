@@ -1,46 +1,84 @@
-// src/postman/typeParser.ts
-import { PostmanCollection, CollectionItem, RequestItem } from '../postman/collectionParser';
+// src/linter/typeParser.ts
+import * as ts from 'typescript';
+import * as fs from 'fs';
+import * as path from 'path';
 
 interface TypeDefinition {
-  endpoint: string;
-  method: string;
-  requestBody: any;
+  name: string;
+  properties: { [key: string]: string };
 }
 
-function parseTypes(collection: PostmanCollection): TypeDefinition[] {
-  const types: TypeDefinition[] = [];
-
-  function extractTypes(items: CollectionItem[] | undefined): void {
-    if (!items) {
-      return;
-    }
-
-    items.forEach(item => {
-      if (item.item) {
-        extractTypes(item.item);
-      } else if (item.request) {
-        const { method, url, body } = item.request;
-        const endpoint = url.path.join('/').replace(/^\//, '');
-
-        let requestBody;
-        if (body && body.mode === 'raw' && body.raw) {
-          try {
-            requestBody = JSON.parse(body.raw);
-          } catch (error) {
-            console.warn(`Failed to parse request body for endpoint: ${item.name}`);
+function findTypesInFile(fileContent: string, fileName: string): TypeDefinition[] {
+    const types: TypeDefinition[] = [];
+  
+    const sourceFile = ts.createSourceFile(
+      fileName,
+      fileContent,
+      ts.ScriptTarget.ES2015,
+      /*setParentNodes */ true
+    );
+  
+    function visit(node: ts.Node) {
+      if (ts.isInterfaceDeclaration(node)) {
+        const typeName = node.name.getText(sourceFile);
+        const typeProperties: { [key: string]: string } = {};
+  
+        node.members.forEach(member => {
+          if (ts.isPropertySignature(member)) {
+            const propertyName = member.name.getText(sourceFile);
+            const propertyType = member.type ? member.type.getText(sourceFile) : 'any';
+            typeProperties[propertyName] = propertyType;
           }
-        }
-
-        types.push({
-          endpoint,
-          method,
-          requestBody
         });
+  
+        types.push({
+          name: typeName,
+          properties: typeProperties,
+        });
+      } else if (ts.isTypeAliasDeclaration(node)) {
+        const typeName = node.name.getText(sourceFile);
+        const typeProperties: { [key: string]: string } = {};
+  
+        if (ts.isTypeLiteralNode(node.type)) {
+          node.type.members.forEach(member => {
+            if (ts.isPropertySignature(member)) {
+              const propertyName = member.name.getText(sourceFile);
+              const propertyType = member.type ? member.type.getText(sourceFile) : 'any';
+              typeProperties[propertyName] = propertyType;
+            }
+          });
+        }
+  
+        types.push({
+          name: typeName,
+          properties: typeProperties,
+        });
+      }
+  
+      ts.forEachChild(node, visit);
+    }
+  
+    visit(sourceFile);
+  
+    return types;
+  }
+
+function parseTypes(directoryPath: string): TypeDefinition[] {
+  let types: TypeDefinition[] = [];
+
+  function readFilesFromDirectory(directory: string) {
+    fs.readdirSync(directory, { withFileTypes: true }).forEach(dirent => {
+      const resolvedPath = path.resolve(directory, dirent.name);
+      if (dirent.isDirectory()) {
+        readFilesFromDirectory(resolvedPath);
+      } else if (dirent.isFile() && dirent.name.endsWith('.ts')) {
+        const fileContent = fs.readFileSync(resolvedPath, 'utf8');
+        types = types.concat(findTypesInFile(fileContent, dirent.name));
       }
     });
   }
 
-  extractTypes(collection.item);
+  readFilesFromDirectory(directoryPath);
 
   return types;
 }

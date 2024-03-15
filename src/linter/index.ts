@@ -1,14 +1,17 @@
 // src/linter/index.ts
-
 import { endpointDefinitions } from '../postman';
 import { lintEndpointRules } from './lintRules';
-import { tsParser } from './tsParser'; // Assuming tsParser is a function you've defined to parse TS files and get endpoints
+import { tsParser } from './tsParser';
+import { parseTypes } from './typeParser';
 
-async function lintProject() {
-    // Example function to get endpoints from TS files
-    const tsEndpoints = await tsParser('path/to/ts/files'); // Define your logic to get TS endpoints
+async function lintProject(tsFilesDirectory: string, typesDirectory: string) {
+    // Get endpoints from TS files
+    const tsEndpoints = await tsParser(tsFilesDirectory);
 
-    const errors = lintEndpointRules(endpointDefinitions, tsEndpoints);
+    // Parse TypeScript type definitions
+    const typeDefinitions = parseTypes(typesDirectory);
+
+    const errors = lintEndpointRules(endpointDefinitions, tsEndpoints, typeDefinitions);
 
     if (errors.length > 0) {
         console.log('Linting errors found:');
@@ -18,4 +21,4 @@ async function lintProject() {
     }
 }
 
-lintProject();
+export { lintProject };

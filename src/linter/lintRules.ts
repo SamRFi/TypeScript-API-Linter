@@ -1,12 +1,13 @@
 // src/linter/lintRules.ts
 import { EndpointDefinition } from '../postman/collectionParser';
+import { TypeDefinition } from './typeParser';
 
 interface TSEndpoint {
   method: string;
   path: string;
 }
 
-function lintEndpointRules(endpointDefinitions: EndpointDefinition[], tsEndpoints: TSEndpoint[]): string[] {
+function lintEndpointRules(endpointDefinitions: EndpointDefinition[], tsEndpoints: TSEndpoint[], typeDefinitions: TypeDefinition[]): string[] {
   const errors: string[] = [];
 
   // Normalize paths for comparison, if necessary
@@ -15,8 +16,29 @@ function lintEndpointRules(endpointDefinitions: EndpointDefinition[], tsEndpoint
   // Check each endpoint definition against the TypeScript endpoints
   endpointDefinitions.forEach((def) => {
     const normalizedDefPath = normalizePath(def.path);
-    if (!tsEndpoints.some(e => e.method === def.method && normalizePath(e.path) === normalizedDefPath)) {
+    const matchingTSEndpoint = tsEndpoints.find(e => e.method === def.method && normalizePath(e.path) === normalizedDefPath);
+
+    if (!matchingTSEndpoint) {
       errors.push(`Endpoint defined in Postman collection not found in code: ${def.method} ${normalizedDefPath}`);
+    } else {
+      // Check if the request body properties match the corresponding TypeScript type
+      if (def.requestBody) {
+        const matchingType = typeDefinitions.find(type => type.name === `${def.name}RequestBody`);
+
+        if (!matchingType) {
+          errors.push(`No matching type definition found for endpoint: ${def.name}`);
+        } else {
+          const missingProperties = Object.keys(def.requestBody).filter(
+            prop => !matchingType.properties.hasOwnProperty(prop)
+          );
+
+          if (missingProperties.length > 0) {
+            errors.push(
+              `Missing properties in type definition for endpoint ${def.name}: ${missingProperties.join(', ')}`
+            );
+          }
+        }
+      }
     }
   });
 
