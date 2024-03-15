@@ -19,53 +19,53 @@ function lintEndpointRules(endpointDefinitions: EndpointDefinition[], tsEndpoint
     if (!matchingTSEndpoint) {
       errors.push(`Endpoint defined in Postman collection not found in code: ${def.method} ${normalizedDefPath}`);
     } else {
-      // Check if the request body properties match the corresponding TypeScript type
+      // Check if the request body properties match the expected properties from the mock JSON
       if (def.requestBody) {
-        if (matchingTSEndpoint && matchingTSEndpoint.requestBodyType) {
-          const matchingType = typeDefinitions.find(type => type.name === matchingTSEndpoint.requestBodyType);
-      
-          if (!matchingType) {
-            errors.push(`No matching type definition found for endpoint: ${def.name}`);
-          } else {
-            const requestBodyProperties = Object.keys(def.requestBody);
-            const typeProperties = Object.keys(matchingType.properties);
-      
-            const missingProperties = requestBodyProperties.filter(
-              prop => !typeProperties.includes(prop)
+        const expectedProperties = Object.keys(def.requestBody);
+        const matchingType = typeDefinitions.find(type => type.name === matchingTSEndpoint.requestBodyType);
+
+        if (!matchingType) {
+          errors.push(`No matching type definition found for endpoint: ${def.name}`);
+        } else {
+          const actualProperties = Object.keys(matchingType.properties);
+
+          const missingProperties = expectedProperties.filter(
+            prop => !actualProperties.includes(prop)
+          );
+
+          const extraProperties = actualProperties.filter(
+            prop => !expectedProperties.includes(prop)
+          );
+
+          if (missingProperties.length > 0) {
+            errors.push(
+              `Missing properties in request body for endpoint ${def.name}: ${missingProperties.join(', ')}. ` +
+              `Expected properties: ${expectedProperties.join(', ')}`
             );
-      
-            const extraProperties = typeProperties.filter(
-              prop => !requestBodyProperties.includes(prop)
-            );
-      
-            if (missingProperties.length > 0) {
-              errors.push(
-                `Missing properties in request body for endpoint ${def.name}: ${missingProperties.join(', ')}`
-              );
-            }
-      
-            if (extraProperties.length > 0) {
-              errors.push(
-                `Extra properties in request body for endpoint ${def.name}: ${extraProperties.join(', ')}`
-              );
-            }
-      
-            requestBodyProperties.forEach(prop => {
-              const requestBodyPropertyType = typeof def.requestBody[prop];
-              const typePropertyType = matchingType.properties[prop];
-      
-              if (requestBodyPropertyType !== typePropertyType) {
-                errors.push(
-                  `Type mismatch for property '${prop}' in request body for endpoint ${def.name}. ` +
-                  `Expected type: ${typePropertyType}, Actual type: ${requestBodyPropertyType}`
-                );
-              }
-            });
           }
+
+          if (extraProperties.length > 0) {
+            errors.push(
+              `Extra properties in request body for endpoint ${def.name}: ${extraProperties.join(', ')}. ` +
+              `Expected properties: ${expectedProperties.join(', ')}`
+            );
+          }
+
+          expectedProperties.forEach(prop => {
+            const expectedType = typeof def.requestBody[prop];
+            const actualType = matchingType.properties[prop];
+
+            if (actualType !== expectedType) {
+              errors.push(
+                `Type mismatch for property '${prop}' in request body for endpoint ${def.name}. ` +
+                `Expected type: ${expectedType}, Actual type: ${actualType}`
+              );
+            }
+          });
         }
       }
-  }
-});
+    }
+  });
 
   // Optionally, check for TypeScript endpoints not defined in the Postman collection
   tsEndpoints.forEach((e) => {

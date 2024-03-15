@@ -49,7 +49,7 @@ describe('Linter Functionality - Failure Cases', () => {
 
     // Run the linting rule checker
     const errors = lintEndpointRules(postmanEndpoints, tsEndpoints, typeDefinitions);
-
+    console.log(errors);
     // Assert that errors are present
     expect(errors.length).toBeGreaterThan(0);
     // Optionally, you can check for specific error messages if you want to ensure specific types of mismatches are detected

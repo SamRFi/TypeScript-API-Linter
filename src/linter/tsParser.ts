@@ -50,7 +50,6 @@ function findEndpointsInFile(fileContent: string, fileName: string): TSEndpoint[
 
                   if (variableDeclaration && variableDeclaration.type) {
                     requestBodyType = variableDeclaration.type.getText(sourceFile);
-                    console.log(`Found request body type: ${requestBodyType}`);
                   }
                 }
               }
