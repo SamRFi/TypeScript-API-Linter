@@ -7,3 +7,7 @@ npm install
 ```
 npm run lint -- C:\Users\samra\Documents\Sam\Howest\Sync\Modules\Internship\repos\croissant-frontend\src\api
 ```
+## Run the tests
+```
+npm test
+```

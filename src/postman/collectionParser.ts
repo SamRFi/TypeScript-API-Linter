@@ -40,53 +40,56 @@ interface RequestItem {
     response: any[];
 }
 
+interface EndpointDefinition {
+    method: string;
+    path: string;
+    name: string;
+    requestBody?: any;
+}
+
 function readPostmanCollection(filePath: string): PostmanCollection {
     const rawData = fs.readFileSync(filePath, 'utf8');
     const collection: PostmanCollection = JSON.parse(rawData);
     return collection;
 }
 
-// src/postman/collectionParser.ts
-
-// Assuming PostmanCollection, CollectionItem, and RequestItem interfaces are already defined above
-
-interface EndpointDefinition {
-    method: string;
-    path: string;
-    name: string;
-}
-
 function parseCollection(collection: PostmanCollection): EndpointDefinition[] {
     let endpoints: EndpointDefinition[] = [];
 
-    function extractEndpoints(items: CollectionItem[] | undefined, basePath: string[] = []): void {
+    function extractEndpoints(items: CollectionItem[] | undefined): void {
         if (!items) {
             return;
         }
-    
+
         items.forEach(item => {
-            // If the item has nested items, it's a folder/group
             if (item.item) {
-                // Only pass basePath if you want to include the folder's name in the path
                 extractEndpoints(item.item);
             } else if (item.request) {
-                // This is an actual request, so let's extract its details
-                const { method, url } = item.request;
-                const fullPath = url.path.join('/'); // Directly use the path from the request
+                const { method, url, body } = item.request;
+                const fullPath = url.path.join('/');
+                
+                let requestBody;
+                if (body && body.mode === 'raw' && body.raw) {
+                    try {
+                        requestBody = JSON.parse(body.raw);
+                    } catch (error) {
+                        console.warn(`Failed to parse request body for endpoint: ${item.name}`);
+                    }
+                }
+
                 endpoints.push({
                     method,
-                    path: fullPath.replace(/^\//, ''), // Ensure no leading slash
-                    name: item.name
+                    path: fullPath.replace(/^\//, ''),
+                    name: item.name,
+                    requestBody
                 });
             }
         });
     }
-    
 
     extractEndpoints(collection.item);
 
     return endpoints;
 }
-
 
 export { readPostmanCollection, parseCollection, PostmanCollection, CollectionItem, RequestItem, EndpointDefinition };
