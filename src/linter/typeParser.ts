@@ -2,12 +2,9 @@
 import * as ts from 'typescript';
 import * as fs from 'fs';
 import * as path from 'path';
+import { TypeDefinition } from '../types/TypeDefinition';
 
-interface TypeDefinition {
-    name: string;
-    properties: { [key: string]: string };
-    usages: string[];
-  }
+
 
 function findTypesInFile(fileContent: string, fileName: string): TypeDefinition[] {
     const types: TypeDefinition[] = [];

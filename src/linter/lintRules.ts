@@ -1,12 +1,9 @@
 // src/linter/lintRules.ts
 import { EndpointDefinition } from '../postman/collectionParser';
+import { TSEndpoint } from '../types/TSEndpoint';
 import { TypeDefinition } from './typeParser';
 
-interface TSEndpoint {
-  method: string;
-  path: string;
-  requestBodyType?: string | null;
-}
+
 
 function lintEndpointRules(endpointDefinitions: EndpointDefinition[], tsEndpoints: TSEndpoint[], typeDefinitions: TypeDefinition[]): string[] {
   const errors: string[] = [];

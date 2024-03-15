@@ -2,12 +2,8 @@
 import ts from 'typescript';
 import fs from 'fs';
 import path from 'path';
+import { TSEndpoint } from '../types/TSEndpoint';
 
-interface TSEndpoint {
-  method: string;
-  path: string;
-  requestBodyType?: string | null;
-}
 
 function findEndpointsInFile(fileContent: string, fileName: string): TSEndpoint[] {
   let endpoints: TSEndpoint[] = [];
