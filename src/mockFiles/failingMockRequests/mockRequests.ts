@@ -2,7 +2,7 @@ import { SignInRequestBody } from "../failingMockTypes/mockTypes";
 
 async function fetchData() {
   const requestBody: SignInRequestBody = {
-    emails: 'testemail',
+    username: 'testemail',
     password: 'password123',
     stay_logged_in: true,
   };

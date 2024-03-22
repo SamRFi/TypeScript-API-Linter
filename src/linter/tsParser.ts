@@ -32,7 +32,7 @@ function findEndpointsInFile(fileContent: string, fileName: string): TSEndpoint[
 
   function visit(node: ts.Node) {
     if (ts.isCallExpression(node) && node.expression.getText(sourceFile).includes('fetch')) {
-      let method = 'GET'; // Default method for fetch is GET
+      let method = 'GET'; 
       let url = '';
 
       let requestBodyType: string | null = null;

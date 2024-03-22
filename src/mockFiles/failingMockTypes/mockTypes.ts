@@ -1,7 +1,7 @@
 // src/tests/mockTypes/signInTypes.ts
 
 export interface SignInRequestBody {
-  emails: string;
+  username: string;
   password: string;
   stay_logged_in: boolean;
 }
