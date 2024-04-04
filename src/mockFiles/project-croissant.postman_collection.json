@@ -1,0 +1,3107 @@
+{
+	"info": {
+		"_postman_id": "094baad6-1dff-4e70-af06-b9e0ce19a804",
+		"name": "project-croissant",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "20112357"
+	},
+	"item": [
+		{
+			"name": "authentication",
+			"item": [
+				{
+					"name": "Sign In",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\": \"user5@example.com\",\r\n    \"password\": \"Securepassword123!\",\r\n    \"stay_logged_in\": true\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{croissant-server}}/auth/signin",
+							"host": [
+								"{{croissant-server}}"
+							],
+							"path": [
+								"auth",
+								"signin"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "200",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"email\": \"user5@example.com\",\r\n    \"password\": \"Securepassword123!\",\r\n    \"stay_logged_in\": true\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{croissant-server}}/auth/signin",
+									"host": [
+										"{{croissant-server}}"
+									],
+									"path": [
+										"auth",
+										"signin"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "plain",
+							"header": [
+								{
+									"key": "Access-Control-Allow-Credentials",
+									"value": "true"
+								},
+								{
+									"key": "Access-Control-Allow-Headers",
+									"value": "Accept, Content-Type, Content-Length, Accept-Encoding, X-CSRF-Token, Authorization"
+								},
+								{
+									"key": "Access-Control-Allow-Methods",
+									"value": "POST, GET, OPTIONS, PUT, DELETE"
+								},
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": "http://localhost:5173"
+								},
+								{
+									"key": "Set-Cookie",
+									"value": "access_token=eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJjcm9pc3NhbnQtc2VydmVyIiwic3ViIjoiYTVhYzM3ZjgtYWU3ZC00NGVjLTkwM2EtOGFkMjg0YjVmNmE5IiwiYXVkIjoiZGV2X3Rlc3RfY3JvaXNzYW50IiwiZXhwIjoiMjAyNC0wMy0wMVQxMToxODowNy40NTU1MzMxWiIsIm5iZiI6IjIwMjQtMDMtMDFUMTA6MTg6MDcuNDU1NTMzMVoiLCJpYXQiOiIyMDI0LTAzLTAxVDEwOjE4OjA3LjQ1NTUzMzFaIiwianRpIjoiYzhjZWYyNWQtNTZjMS00ODgzLThlMDgtYTFmMzk0ZDc1MWQ1In0.Xe6n0iWUn-Achq3sWstsURPzaMY3j-oY1a8EAcjwdefuRktwyEbwJLwlBsn8tm4ruEr4XLooOj4md0lQsaCmbd7sBnMh4AJul2JViONLceENSpFOY4uXD9YCoN-G90YAmS0sJeJBrHDnTLGjBm4eT8lpcaZMARD5iZIHwAmOM_jrmGag06YeoPtwT2eH-6jzInINN3FsvUYdn1qWFWVjlBMAQDOd7FZ5Oejmqqn3Lb2cLYnP8-lmiVj0LNXUdtYhQsKrZYuI5V848FDktorfCfnO_ltjaDBZSRIkzKjHscCId8KrKY5D5jtfZlKu_104Y2chzpvYqR3HNLPr4rdbeFhIevA1lVBjZ9gZxF_yEomsN5QJP_46ebWE4hesSf1XDOa4smjF6HQymfEMzkekpnK8cPaWxPJLk5JX2OFQLRZ166v19ozcSMMTqy7F4tdg-RhAxCQyZ2NAH71N_J5zaehpGkDZxvtFGSFVZLCNqxdxhI_lIfqTi-g9SMj16IxY6E7LoEH4c5_yIg_Ljfy59K-FfJZPX5XLsRWMj0kT3jPiUgiJ0U8Z-rf6xy3usHbHdDdQ8cBHdfKMaHcXOeM9v44-w7PuRp5bnbYgRiHvHOJfMv0YFSV01ibXSG3s-GFwf9NG1vroYg_M_oepL2th_cRDjZ76IBWebXT8EkZY-7I; Path=/; Expires=Fri, 01 Mar 2024 11:18:07 GMT; HttpOnly; Secure"
+								},
+								{
+									"key": "Set-Cookie",
+									"value": "refresh_token=eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJjcm9pc3NhbnQtc2VydmVyIiwic3ViIjoiYTVhYzM3ZjgtYWU3ZC00NGVjLTkwM2EtOGFkMjg0YjVmNmE5IiwiYXVkIjoiZGV2X3Rlc3RfY3JvaXNzYW50IiwiZXhwIjoiMjAyNC0wMy0wOFQxMDoxODowNy40NjExNTM5WiIsIm5iZiI6IjIwMjQtMDMtMDFUMTA6MTg6MDcuNDYxMTUzOVoiLCJpYXQiOiIyMDI0LTAzLTAxVDEwOjE4OjA3LjQ2MTE1MzlaIiwianRpIjoiOWFmZjg4N2EtZTg3MC00N2QwLThkZWEtNjI0NDQ4YTA3NTU3In0.QfHh4vbXUmmfuuzvRTZCXjjzW5jvFprxUcJsVbvj51988pyG0e6_PL6ZsWc4ygvWrj1NS_82ad2mkAOXYo8AM_vVzibYzE10JF5tc8BahcVpU_r2BEEH7WqKYcBG-CcehKu0pB2sy_2xrkqOHZKb3zjk22IC4sSpybUjs_irlx78dAKfJZPCqGV65esL0N8Skvbzy7Y1HZO8A7TXb0S7P2aeJiJ2HCWpd9SyFF7mafbeNqtyhIDBMMXSV90WvkdfaW4RSaptkFZvNjqMabE3u4nsyiSbbbob385HObp1DscbG3zeTWFIbzReJ-eCUUsRzXRSkLegfRQcZ_fjRX54R-r5kmfGuYv5HMyHcYoqXGswuUrXZ4d0FseYxaj_HwO06ciHHMeJjGyexwciylDnbfyjW7XXSKkDaUYg9qW8ych2j07vf6YwB0h2RMRUmuwiSYiW9p8jhCuS4XChzoFNklvliGGiCjxcny7zoBD6WevqBYTdytv8OaNOiWkbQjB5JDpJ571XuMHxWbMLhKbydvagwoc-5kV4uqcaEGQquQxZy9aCbUrW8--04msIl4bZaonzWdWLTxZCmgQ0Cw_3BI1SSgl3LECP5ht2zWV7RW8DkdbGCDMUlrWWEG1073AYm4BK6tNL3o2RdOxZPv5TxNfxrvY599DRZwd4dA0cssw; Path=/; Expires=Fri, 08 Mar 2024 10:18:07 GMT; HttpOnly; Secure"
+								},
+								{
+									"key": "Date",
+									"value": "Fri, 01 Mar 2024 10:18:07 GMT"
+								},
+								{
+									"key": "Content-Length",
+									"value": "0"
+								}
+							],
+							"cookie": [],
+							"body": null
+						}
+					]
+				},
+				{
+					"name": "Sign Out",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "{{croissant-server}}/auth/signout",
+							"host": [
+								"{{croissant-server}}"
+							],
+							"path": [
+								"auth",
+								"signout"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Sign Out",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"url": {
+									"raw": "{{croissant-server}}/auth/signout",
+									"host": [
+										"{{croissant-server}}"
+									],
+									"path": [
+										"auth",
+										"signout"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "plain",
+							"header": [
+								{
+									"key": "Access-Control-Allow-Credentials",
+									"value": "true"
+								},
+								{
+									"key": "Access-Control-Allow-Headers",
+									"value": "Accept, Content-Type, Content-Length, Accept-Encoding, X-CSRF-Token, Authorization"
+								},
+								{
+									"key": "Access-Control-Allow-Methods",
+									"value": "POST, GET, OPTIONS, PUT, DELETE"
+								},
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": "http://localhost:5173"
+								},
+								{
+									"key": "Date",
+									"value": "Fri, 01 Mar 2024 10:18:29 GMT"
+								},
+								{
+									"key": "Content-Length",
+									"value": "0"
+								}
+							],
+							"cookie": [],
+							"body": null
+						}
+					]
+				},
+				{
+					"name": "Refresh",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "{{croissant-server}}/auth/refresh",
+							"host": [
+								"{{croissant-server}}"
+							],
+							"path": [
+								"auth",
+								"refresh"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Refresh",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"url": {
+									"raw": "{{croissant-server}}/auth/refresh",
+									"host": [
+										"{{croissant-server}}"
+									],
+									"path": [
+										"auth",
+										"refresh"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "plain",
+							"header": [
+								{
+									"key": "Access-Control-Allow-Credentials",
+									"value": "true"
+								},
+								{
+									"key": "Access-Control-Allow-Headers",
+									"value": "Accept, Content-Type, Content-Length, Accept-Encoding, X-CSRF-Token, Authorization"
+								},
+								{
+									"key": "Access-Control-Allow-Methods",
+									"value": "POST, GET, OPTIONS, PUT, DELETE"
+								},
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": "http://localhost:5173"
+								},
+								{
+									"key": "Set-Cookie",
+									"value": "access_token=eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJjcm9pc3NhbnQtc2VydmVyIiwic3ViIjoiYTVhYzM3ZjgtYWU3ZC00NGVjLTkwM2EtOGFkMjg0YjVmNmE5IiwiYXVkIjoiZGV2X3Rlc3RfY3JvaXNzYW50IiwiZXhwIjoiMjAyNC0wMy0wMVQxMToxNjoxNi40MTM1NDc1WiIsIm5iZiI6IjIwMjQtMDMtMDFUMTA6MTY6MTYuNDEzNTQ3NVoiLCJpYXQiOiIyMDI0LTAzLTAxVDEwOjE2OjE2LjQxMzU0NzVaIiwianRpIjoiOGEwYmUyOWMtODI5Mi00MTg3LTllNWQtMDBiMjM4ZGZmMjM1In0.WmbjwFbUKblD4FJtySMsj5aBG7v9C1qcgy87tZ7fa7u2Z-vrfGL1BkmJrOQIjQawlzPqmUaUBZ42--EQlKgwlk3KsGJ8_Fh93mfIaGw1cQPwikx1Gc6QsKSL_stp79Nbv_SSmwiNBftfype-4HNgsEGHbj7cn98Wf1AA2cV74IeVDfnyO0J7a3tNa8ckstPdTAgzY5AcJoH9IEwIGtAztiajuB-8VWzN-PXSjMtVpBnHrFOATyDdn7pPrDtW-m8UkgBS-s7C4Ejqim2zQTNzb117FBcLej9FeFZ3FyIn-wsM1QUQPB8NwFy2tTiadqqpzk3FXy5-MYEojiK0d2frJHKQBOwVz6djXzbsgx_7mVg0kZ7PaBgtlGtx9KjdKtzvKfwJJ4RJr7MWPoQDhOVJ5unBu0kyYoRZjiRX2urFsBb6vRAi8d93ej-82Y1saYqQHxBWxb0xzn_jR3qUlYE1LgN_nlUAtjlVgyeN_i7PVdn-b1Cv-nuf0gca-3qW6cgUxbtqW5QqFM9F6qZZ-O8wFMtBy2yB9vfF-murQD2I2iVf38zEupDiqD9YBitA1HiNqYrsQu8ZzA8i1Cb32hnDB7iuPFh9ffyVZy_cMEB2ChauIY9YmCA0rgD9YqwjmK1uSh9_v-dhKUDy5uK1famX_99iNxWBxRcDVvwIsCl9z4U; Path=/; Expires=Fri, 01 Mar 2024 11:16:16 GMT; HttpOnly; Secure"
+								},
+								{
+									"key": "Set-Cookie",
+									"value": "refresh_token=eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJjcm9pc3NhbnQtc2VydmVyIiwic3ViIjoiYTVhYzM3ZjgtYWU3ZC00NGVjLTkwM2EtOGFkMjg0YjVmNmE5IiwiYXVkIjoiZGV2X3Rlc3RfY3JvaXNzYW50IiwiZXhwIjoiMjAyNC0wMy0wOFQxMDoxNjoxNi40MTkxNTdaIiwibmJmIjoiMjAyNC0wMy0wMVQxMDoxNjoxNi40MTkxNTdaIiwiaWF0IjoiMjAyNC0wMy0wMVQxMDoxNjoxNi40MTkxNTdaIiwianRpIjoiYzViMmQ2NTAtODQ2NS00M2ZiLTk1OGItN2E2YzMzMjNkNWJhIn0.Ey4S6f34KF5KseQ7BsLUpNWDmjSyMZeRYzRoza8rjmNTjlzYougRmOBb6zl6BH6YnGHwq-XVnKo7-iIawtcbx-5x3wkYv11Y8Ofx-ALGA2BeopQAzJDHnY6AAvh7NwDgu-ovgWGji-U2GybPIVAfl2IrsAZzQSVqsWrk7xOxwk5d3-2VZFJz7QYlnM4QGb-k6vtqGSBmdZlAgzCMv9cv1-fehGsxW7o0llbLidkn0PZOQNC9opS3E35OOcTiGToj4zlI5EjZ8HTDlsHaW0UoMbcbo1okxSRAyP_VRo1MVuDQ46oWteJv3SByuNvvgdJ4U7tsFFj_c0snpceBGoHty9W1olPHDMJ91NuYpoLWskHCsK3kS8F1CsjcgjE0-InFz9XsJRvZ9CBmd9P1561HeMuGZeiYmhLjbJRU117Ka3fGHswbyhBvOG_Ie2QsgOdtN52zXm6HrEmHlMhQsTvg10t-vCNPyvSaeLPC13D05mzbE2zVpm5IDMETDUclpHfw34GMeQo8DR6WGnRLiLFlrKvFU-N7w8DCx5mpvsuhRavCdoGpt2QlQsQ5m0OVY2myguu4bp-G-4sSn8TJWTFhJENDlJ7HDMCbow3iHp1wUcCkN2_xDRrr5BhzRxt3lpFZBqC8If7FoDa5Rn0nY1N5NJsY2gJMU-l0zOqPHz4JaN8; Path=/; Expires=Fri, 08 Mar 2024 10:16:16 GMT; HttpOnly; Secure"
+								},
+								{
+									"key": "Date",
+									"value": "Fri, 01 Mar 2024 10:16:16 GMT"
+								},
+								{
+									"key": "Content-Length",
+									"value": "0"
+								}
+							],
+							"cookie": [],
+							"body": null
+						}
+					]
+				},
+				{
+					"name": "Status",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{croissant-server}}/auth/status",
+							"host": [
+								"{{croissant-server}}"
+							],
+							"path": [
+								"auth",
+								"status"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "200",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{croissant-server}}/auth/status",
+									"host": [
+										"{{croissant-server}}"
+									],
+									"path": [
+										"auth",
+										"status"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Access-Control-Allow-Credentials",
+									"value": "true"
+								},
+								{
+									"key": "Access-Control-Allow-Headers",
+									"value": "Accept, Content-Type, Content-Length, Accept-Encoding, X-CSRF-Token, Authorization"
+								},
+								{
+									"key": "Access-Control-Allow-Methods",
+									"value": "POST, GET, OPTIONS, PUT, PATCH, DELETE"
+								},
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": "http://localhost:5173"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Date",
+									"value": "Mon, 11 Mar 2024 13:12:37 GMT"
+								},
+								{
+									"key": "Content-Length",
+									"value": "22"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"role\": \"shop_owner\"\n}"
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "user",
+			"item": [
+				{
+					"name": "Register",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\": \"user5@example.com\",\r\n    \"password\": \"Securepassword123!\",\r\n    \"name\": \"John Doe\",\r\n    \"phone_number\": \"123-456-7890\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{croissant-server}}/users/register",
+							"host": [
+								"{{croissant-server}}"
+							],
+							"path": [
+								"users",
+								"register"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Conflict",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"email\": \"user6@example.com\",\r\n    \"password\": \"Securepassword123!\",\r\n    \"name\": \"John Doe\",\r\n    \"phone_number\": \"123-456-7890\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{croissant-server}}/users/register",
+									"host": [
+										"{{croissant-server}}"
+									],
+									"path": [
+										"users",
+										"register"
+									]
+								}
+							},
+							"status": "Conflict",
+							"code": 409,
+							"_postman_previewlanguage": "plain",
+							"header": [
+								{
+									"key": "Access-Control-Allow-Credentials",
+									"value": "true"
+								},
+								{
+									"key": "Access-Control-Allow-Headers",
+									"value": "Accept, Content-Type, Content-Length, Accept-Encoding, X-CSRF-Token, Authorization"
+								},
+								{
+									"key": "Access-Control-Allow-Methods",
+									"value": "POST, GET, OPTIONS, PUT, DELETE"
+								},
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": "http://localhost:5173"
+								},
+								{
+									"key": "Content-Type",
+									"value": "text/plain; charset=utf-8"
+								},
+								{
+									"key": "X-Content-Type-Options",
+									"value": "nosniff"
+								},
+								{
+									"key": "Date",
+									"value": "Mon, 04 Mar 2024 13:03:49 GMT"
+								},
+								{
+									"key": "Content-Length",
+									"value": "1"
+								}
+							],
+							"cookie": [],
+							"body": "\n"
+						},
+						{
+							"name": "Register",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"email\": \"user7@example.com\",\r\n    \"password\": \"Securepassword123!\",\r\n    \"name\": \"John Doe\",\r\n    \"phone_number\": \"123-456-7890\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{croissant-server}}/users/register",
+									"host": [
+										"{{croissant-server}}"
+									],
+									"path": [
+										"users",
+										"register"
+									]
+								}
+							},
+							"status": "Created",
+							"code": 201,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Access-Control-Allow-Credentials",
+									"value": "true"
+								},
+								{
+									"key": "Access-Control-Allow-Headers",
+									"value": "Accept, Content-Type, Content-Length, Accept-Encoding, X-CSRF-Token, Authorization"
+								},
+								{
+									"key": "Access-Control-Allow-Methods",
+									"value": "POST, GET, OPTIONS, PUT, DELETE"
+								},
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": "http://localhost:5173"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Date",
+									"value": "Mon, 04 Mar 2024 13:04:14 GMT"
+								},
+								{
+									"key": "Content-Length",
+									"value": "151"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"id\": \"\",\n    \"email\": \"user7@example.com\",\n    \"password\": \"\",\n    \"state\": \"active\",\n    \"name\": \"John Doe\",\n    \"phone_number\": \"123-456-7890\",\n    \"roles\": \"user\",\n    \"preferences\": null\n}"
+						}
+					]
+				},
+				{
+					"name": "Profile",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "token",
+								"value": "",
+								"type": "text",
+								"disabled": true
+							}
+						],
+						"url": {
+							"raw": "{{croissant-server}}/users/profile",
+							"host": [
+								"{{croissant-server}}"
+							],
+							"path": [
+								"users",
+								"profile"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "product management",
+			"item": [
+				{
+					"name": "Category",
+					"item": [
+						{
+							"name": "New Category",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n  \"name\": {\"en\": \"Category Name20001\"}\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{croissant-server}}/categories",
+									"host": [
+										"{{croissant-server}}"
+									],
+									"path": [
+										"categories"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Update Category",
+							"request": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n  \"name\": {\"EN\": \"Category Name23\"},\r\n  \"display_order\": 3\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{croissant-server}}/categories/b2cc5353-d90d-4adc-a869-35e1f6644b2f",
+									"host": [
+										"{{croissant-server}}"
+									],
+									"path": [
+										"categories",
+										"b2cc5353-d90d-4adc-a869-35e1f6644b2f"
+									]
+								},
+								"description": "Either name or display_order may be updated. Either can be ommitted in the json body."
+							},
+							"response": [
+								{
+									"name": "404",
+									"originalRequest": {
+										"method": "PUT",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\r\n  \"name\": {\"EN\": \"Category Name23\"},\r\n  \"display_order\": 3\r\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{croissant-server}}/categories/b2cc5353-d90d-4adc-a869-35e1f6644b2a",
+											"host": [
+												"{{croissant-server}}"
+											],
+											"path": [
+												"categories",
+												"b2cc5353-d90d-4adc-a869-35e1f6644b2a"
+											]
+										}
+									},
+									"status": "Not Found",
+									"code": 404,
+									"_postman_previewlanguage": "plain",
+									"header": [
+										{
+											"key": "Access-Control-Allow-Credentials",
+											"value": "true"
+										},
+										{
+											"key": "Access-Control-Allow-Headers",
+											"value": "Accept, Content-Type, Content-Length, Accept-Encoding, X-CSRF-Token, Authorization"
+										},
+										{
+											"key": "Access-Control-Allow-Methods",
+											"value": "POST, GET, OPTIONS, PUT, DELETE"
+										},
+										{
+											"key": "Access-Control-Allow-Origin",
+											"value": "http://localhost:5173"
+										},
+										{
+											"key": "Content-Type",
+											"value": "text/plain; charset=utf-8"
+										},
+										{
+											"key": "X-Content-Type-Options",
+											"value": "nosniff"
+										},
+										{
+											"key": "Date",
+											"value": "Mon, 04 Mar 2024 13:35:14 GMT"
+										},
+										{
+											"key": "Content-Length",
+											"value": "1"
+										}
+									],
+									"cookie": [],
+									"body": "\n"
+								},
+								{
+									"name": "200",
+									"originalRequest": {
+										"method": "PUT",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\r\n  \"name\": {\"EN\": \"Category Name23\"},\r\n  \"display_order\": 3\r\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{croissant-server}}/categories/b2cc5353-d90d-4adc-a869-35e1f6644b2f",
+											"host": [
+												"{{croissant-server}}"
+											],
+											"path": [
+												"categories",
+												"b2cc5353-d90d-4adc-a869-35e1f6644b2f"
+											]
+										}
+									},
+									"status": "OK",
+									"code": 200,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "Access-Control-Allow-Credentials",
+											"value": "true"
+										},
+										{
+											"key": "Access-Control-Allow-Headers",
+											"value": "Accept, Content-Type, Content-Length, Accept-Encoding, X-CSRF-Token, Authorization"
+										},
+										{
+											"key": "Access-Control-Allow-Methods",
+											"value": "POST, GET, OPTIONS, PUT, DELETE"
+										},
+										{
+											"key": "Access-Control-Allow-Origin",
+											"value": "http://localhost:5173"
+										},
+										{
+											"key": "Content-Type",
+											"value": "application/json"
+										},
+										{
+											"key": "Date",
+											"value": "Mon, 04 Mar 2024 13:35:39 GMT"
+										},
+										{
+											"key": "Content-Length",
+											"value": "96"
+										}
+									],
+									"cookie": [],
+									"body": "{\n    \"id\": \"b2cc5353-d90d-4adc-a869-35e1f6644b2f\",\n    \"name\": {\n        \"EN\": \"Category Name23\"\n    },\n    \"display_order\": 3\n}"
+								}
+							]
+						},
+						{
+							"name": "Delete Category",
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "{{croissant-server}}/categories/a478b706-f2a1-4285-b346-770e65cf8fd3",
+									"host": [
+										"{{croissant-server}}"
+									],
+									"path": [
+										"categories",
+										"a478b706-f2a1-4285-b346-770e65cf8fd3"
+									]
+								}
+							},
+							"response": [
+								{
+									"name": "200",
+									"originalRequest": {
+										"method": "DELETE",
+										"header": [],
+										"url": {
+											"raw": "{{croissant-server}}/categories/73d7029f-97e7-4c27-b34c-110b7ca80269",
+											"host": [
+												"{{croissant-server}}"
+											],
+											"path": [
+												"categories",
+												"73d7029f-97e7-4c27-b34c-110b7ca80269"
+											]
+										}
+									},
+									"status": "OK",
+									"code": 200,
+									"_postman_previewlanguage": "plain",
+									"header": [
+										{
+											"key": "Access-Control-Allow-Credentials",
+											"value": "true"
+										},
+										{
+											"key": "Access-Control-Allow-Headers",
+											"value": "Accept, Content-Type, Content-Length, Accept-Encoding, X-CSRF-Token, Authorization"
+										},
+										{
+											"key": "Access-Control-Allow-Methods",
+											"value": "POST, GET, OPTIONS, PUT, DELETE"
+										},
+										{
+											"key": "Access-Control-Allow-Origin",
+											"value": "http://localhost:5173"
+										},
+										{
+											"key": "Date",
+											"value": "Mon, 04 Mar 2024 14:12:56 GMT"
+										},
+										{
+											"key": "Content-Length",
+											"value": "0"
+										}
+									],
+									"cookie": [],
+									"body": null
+								},
+								{
+									"name": "404",
+									"originalRequest": {
+										"method": "DELETE",
+										"header": [],
+										"url": {
+											"raw": "{{croissant-server}}/categories/73d7029f-97e7-4c27-b34c-110b7ca80269",
+											"host": [
+												"{{croissant-server}}"
+											],
+											"path": [
+												"categories",
+												"73d7029f-97e7-4c27-b34c-110b7ca80269"
+											]
+										}
+									},
+									"status": "Not Found",
+									"code": 404,
+									"_postman_previewlanguage": "plain",
+									"header": [
+										{
+											"key": "Access-Control-Allow-Credentials",
+											"value": "true"
+										},
+										{
+											"key": "Access-Control-Allow-Headers",
+											"value": "Accept, Content-Type, Content-Length, Accept-Encoding, X-CSRF-Token, Authorization"
+										},
+										{
+											"key": "Access-Control-Allow-Methods",
+											"value": "POST, GET, OPTIONS, PUT, DELETE"
+										},
+										{
+											"key": "Access-Control-Allow-Origin",
+											"value": "http://localhost:5173"
+										},
+										{
+											"key": "Content-Type",
+											"value": "text/plain; charset=utf-8"
+										},
+										{
+											"key": "X-Content-Type-Options",
+											"value": "nosniff"
+										},
+										{
+											"key": "Date",
+											"value": "Mon, 04 Mar 2024 14:13:04 GMT"
+										},
+										{
+											"key": "Content-Length",
+											"value": "1"
+										}
+									],
+									"cookie": [],
+									"body": "\n"
+								},
+								{
+									"name": "409",
+									"originalRequest": {
+										"method": "DELETE",
+										"header": [],
+										"url": {
+											"raw": "{{croissant-server}}/categories/c1aa7e8d-2d4c-48a9-81e5-9dbe1bc9a586",
+											"host": [
+												"{{croissant-server}}"
+											],
+											"path": [
+												"categories",
+												"c1aa7e8d-2d4c-48a9-81e5-9dbe1bc9a586"
+											]
+										}
+									},
+									"status": "Conflict",
+									"code": 409,
+									"_postman_previewlanguage": "plain",
+									"header": [
+										{
+											"key": "Access-Control-Allow-Credentials",
+											"value": "true"
+										},
+										{
+											"key": "Access-Control-Allow-Headers",
+											"value": "Accept, Content-Type, Content-Length, Accept-Encoding, X-CSRF-Token, Authorization"
+										},
+										{
+											"key": "Access-Control-Allow-Methods",
+											"value": "POST, GET, OPTIONS, PUT, DELETE"
+										},
+										{
+											"key": "Access-Control-Allow-Origin",
+											"value": "http://localhost:5173"
+										},
+										{
+											"key": "Content-Type",
+											"value": "text/plain; charset=utf-8"
+										},
+										{
+											"key": "X-Content-Type-Options",
+											"value": "nosniff"
+										},
+										{
+											"key": "Date",
+											"value": "Mon, 04 Mar 2024 14:23:26 GMT"
+										},
+										{
+											"key": "Content-Length",
+											"value": "1"
+										}
+									],
+									"cookie": [],
+									"body": "\n"
+								}
+							]
+						}
+					]
+				},
+				{
+					"name": "Subcategory",
+					"item": [
+						{
+							"name": "New Subcategory",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n  \"name\": {\"en\":\"Subcategory Names2332\"}\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{croissant-server}}/categories/fd19e09e-7cfb-4671-a8bc-9755ab47d9d0/subcategories",
+									"host": [
+										"{{croissant-server}}"
+									],
+									"path": [
+										"categories",
+										"fd19e09e-7cfb-4671-a8bc-9755ab47d9d0",
+										"subcategories"
+									]
+								}
+							},
+							"response": [
+								{
+									"name": "201",
+									"originalRequest": {
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\r\n  \"name\": {\"EN\":\"Subcategory Names\"}\r\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{croissant-server}}/categories/f5988b86-7f0d-409e-af60-0164a85203b6/subcategories",
+											"host": [
+												"{{croissant-server}}"
+											],
+											"path": [
+												"categories",
+												"f5988b86-7f0d-409e-af60-0164a85203b6",
+												"subcategories"
+											]
+										}
+									},
+									"status": "Created",
+									"code": 201,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "Access-Control-Allow-Credentials",
+											"value": "true"
+										},
+										{
+											"key": "Access-Control-Allow-Headers",
+											"value": "Accept, Content-Type, Content-Length, Accept-Encoding, X-CSRF-Token, Authorization"
+										},
+										{
+											"key": "Access-Control-Allow-Methods",
+											"value": "POST, GET, OPTIONS, PUT, DELETE"
+										},
+										{
+											"key": "Access-Control-Allow-Origin",
+											"value": "http://localhost:5173"
+										},
+										{
+											"key": "Content-Type",
+											"value": "application/json"
+										},
+										{
+											"key": "Date",
+											"value": "Mon, 04 Mar 2024 13:48:40 GMT"
+										},
+										{
+											"key": "Content-Length",
+											"value": "151"
+										}
+									],
+									"cookie": [],
+									"body": "{\n    \"id\": \"8c6c98a9-a7f3-45a0-97a3-72adae5a3e7b\",\n    \"category_id\": \"f5988b86-7f0d-409e-af60-0164a85203b6\",\n    \"name\": {\n        \"EN\": \"Subcategory Names\"\n    },\n    \"display_order\": 0\n}"
+								},
+								{
+									"name": "404",
+									"originalRequest": {
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\r\n  \"name\": {\"EN\":\"Subcategory Names\"}\r\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{croissant-server}}/categories/f5988b86-7f0d-409e-af60-0164a85203ba/subcategories",
+											"host": [
+												"{{croissant-server}}"
+											],
+											"path": [
+												"categories",
+												"f5988b86-7f0d-409e-af60-0164a85203ba",
+												"subcategories"
+											]
+										}
+									},
+									"status": "Not Found",
+									"code": 404,
+									"_postman_previewlanguage": "plain",
+									"header": [
+										{
+											"key": "Access-Control-Allow-Credentials",
+											"value": "true"
+										},
+										{
+											"key": "Access-Control-Allow-Headers",
+											"value": "Accept, Content-Type, Content-Length, Accept-Encoding, X-CSRF-Token, Authorization"
+										},
+										{
+											"key": "Access-Control-Allow-Methods",
+											"value": "POST, GET, OPTIONS, PUT, DELETE"
+										},
+										{
+											"key": "Access-Control-Allow-Origin",
+											"value": "http://localhost:5173"
+										},
+										{
+											"key": "Content-Type",
+											"value": "text/plain; charset=utf-8"
+										},
+										{
+											"key": "X-Content-Type-Options",
+											"value": "nosniff"
+										},
+										{
+											"key": "Date",
+											"value": "Mon, 04 Mar 2024 13:50:14 GMT"
+										},
+										{
+											"key": "Content-Length",
+											"value": "1"
+										}
+									],
+									"cookie": [],
+									"body": "\n"
+								}
+							]
+						},
+						{
+							"name": "Update Subcategory",
+							"request": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n  \"name\": {\"EN\":\"Subcategory Name233\"},\r\n  \"display_order\": 1\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{croissant-server}}/subcategories/c1aa7e8d-2d4c-48a9-81e5-9dbe1bc9a586",
+									"host": [
+										"{{croissant-server}}"
+									],
+									"path": [
+										"subcategories",
+										"c1aa7e8d-2d4c-48a9-81e5-9dbe1bc9a586"
+									]
+								},
+								"description": "Either name or display_order may be updated. Either can be ommitted in the json body."
+							},
+							"response": [
+								{
+									"name": "500",
+									"originalRequest": {
+										"method": "PUT",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\r\n  \"name\": {\"EN\":\"Subcategory Name233\"},\r\n  \"display_order\": 1\r\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{croissant-server}}/subcategories/7c80c582-dfaa-45ff-bcbf-83ba8ab4e934",
+											"host": [
+												"{{croissant-server}}"
+											],
+											"path": [
+												"subcategories",
+												"7c80c582-dfaa-45ff-bcbf-83ba8ab4e934"
+											]
+										}
+									},
+									"status": "Internal Server Error",
+									"code": 500,
+									"_postman_previewlanguage": "plain",
+									"header": [
+										{
+											"key": "Access-Control-Allow-Credentials",
+											"value": "true"
+										},
+										{
+											"key": "Access-Control-Allow-Headers",
+											"value": "Accept, Content-Type, Content-Length, Accept-Encoding, X-CSRF-Token, Authorization"
+										},
+										{
+											"key": "Access-Control-Allow-Methods",
+											"value": "POST, GET, OPTIONS, PUT, DELETE"
+										},
+										{
+											"key": "Access-Control-Allow-Origin",
+											"value": "http://localhost:5173"
+										},
+										{
+											"key": "Content-Type",
+											"value": "text/plain; charset=utf-8"
+										},
+										{
+											"key": "X-Content-Type-Options",
+											"value": "nosniff"
+										},
+										{
+											"key": "Date",
+											"value": "Mon, 04 Mar 2024 13:58:43 GMT"
+										},
+										{
+											"key": "Content-Length",
+											"value": "1"
+										}
+									],
+									"cookie": [],
+									"body": "\n"
+								},
+								{
+									"name": "404",
+									"originalRequest": {
+										"method": "PUT",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\r\n  \"name\": {\"EN\":\"Subcategory Name233\"},\r\n  \"display_order\": 1\r\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{croissant-server}}/subcategories/7c80c582-dfaa-45ff-bcbf-83ba8ab4e934",
+											"host": [
+												"{{croissant-server}}"
+											],
+											"path": [
+												"subcategories",
+												"7c80c582-dfaa-45ff-bcbf-83ba8ab4e934"
+											]
+										}
+									},
+									"status": "Not Found",
+									"code": 404,
+									"_postman_previewlanguage": "plain",
+									"header": [
+										{
+											"key": "Access-Control-Allow-Credentials",
+											"value": "true"
+										},
+										{
+											"key": "Access-Control-Allow-Headers",
+											"value": "Accept, Content-Type, Content-Length, Accept-Encoding, X-CSRF-Token, Authorization"
+										},
+										{
+											"key": "Access-Control-Allow-Methods",
+											"value": "POST, GET, OPTIONS, PUT, DELETE"
+										},
+										{
+											"key": "Access-Control-Allow-Origin",
+											"value": "http://localhost:5173"
+										},
+										{
+											"key": "Content-Type",
+											"value": "text/plain; charset=utf-8"
+										},
+										{
+											"key": "X-Content-Type-Options",
+											"value": "nosniff"
+										},
+										{
+											"key": "Date",
+											"value": "Mon, 04 Mar 2024 14:03:24 GMT"
+										},
+										{
+											"key": "Content-Length",
+											"value": "1"
+										}
+									],
+									"cookie": [],
+									"body": "\n"
+								},
+								{
+									"name": "200",
+									"originalRequest": {
+										"method": "PUT",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\r\n  \"name\": {\"EN\":\"Subcategory Name233\"},\r\n  \"display_order\": 1\r\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{croissant-server}}/subcategories/8c6c98a9-a7f3-45a0-97a3-72adae5a3e7b",
+											"host": [
+												"{{croissant-server}}"
+											],
+											"path": [
+												"subcategories",
+												"8c6c98a9-a7f3-45a0-97a3-72adae5a3e7b"
+											]
+										}
+									},
+									"status": "OK",
+									"code": 200,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "Access-Control-Allow-Credentials",
+											"value": "true"
+										},
+										{
+											"key": "Access-Control-Allow-Headers",
+											"value": "Accept, Content-Type, Content-Length, Accept-Encoding, X-CSRF-Token, Authorization"
+										},
+										{
+											"key": "Access-Control-Allow-Methods",
+											"value": "POST, GET, OPTIONS, PUT, DELETE"
+										},
+										{
+											"key": "Access-Control-Allow-Origin",
+											"value": "http://localhost:5173"
+										},
+										{
+											"key": "Content-Type",
+											"value": "application/json"
+										},
+										{
+											"key": "Date",
+											"value": "Mon, 04 Mar 2024 14:03:47 GMT"
+										},
+										{
+											"key": "Content-Length",
+											"value": "153"
+										}
+									],
+									"cookie": [],
+									"body": "{\n    \"id\": \"8c6c98a9-a7f3-45a0-97a3-72adae5a3e7b\",\n    \"category_id\": \"f5988b86-7f0d-409e-af60-0164a85203b6\",\n    \"name\": {\n        \"EN\": \"Subcategory Name233\"\n    },\n    \"display_order\": 1\n}"
+								}
+							]
+						},
+						{
+							"name": "Delete Subcategory",
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "{{croissant-server}}/subcategories/cadf1042-3222-4714-affa-5b7b15e5c4f2",
+									"host": [
+										"{{croissant-server}}"
+									],
+									"path": [
+										"subcategories",
+										"cadf1042-3222-4714-affa-5b7b15e5c4f2"
+									]
+								}
+							},
+							"response": [
+								{
+									"name": "500",
+									"originalRequest": {
+										"method": "DELETE",
+										"header": [],
+										"url": {
+											"raw": "{{croissant-server}}/subcategories/b8a88dad-5e96-482f-93f4-4b24df15d99a",
+											"host": [
+												"{{croissant-server}}"
+											],
+											"path": [
+												"subcategories",
+												"b8a88dad-5e96-482f-93f4-4b24df15d99a"
+											]
+										}
+									},
+									"status": "Internal Server Error",
+									"code": 500,
+									"_postman_previewlanguage": "plain",
+									"header": [
+										{
+											"key": "Access-Control-Allow-Credentials",
+											"value": "true"
+										},
+										{
+											"key": "Access-Control-Allow-Headers",
+											"value": "Accept, Content-Type, Content-Length, Accept-Encoding, X-CSRF-Token, Authorization"
+										},
+										{
+											"key": "Access-Control-Allow-Methods",
+											"value": "POST, GET, OPTIONS, PUT, DELETE"
+										},
+										{
+											"key": "Access-Control-Allow-Origin",
+											"value": "http://localhost:5173"
+										},
+										{
+											"key": "Content-Type",
+											"value": "text/plain; charset=utf-8"
+										},
+										{
+											"key": "X-Content-Type-Options",
+											"value": "nosniff"
+										},
+										{
+											"key": "Date",
+											"value": "Mon, 04 Mar 2024 14:32:27 GMT"
+										},
+										{
+											"key": "Content-Length",
+											"value": "1"
+										}
+									],
+									"cookie": [],
+									"body": "\n"
+								},
+								{
+									"name": "409",
+									"originalRequest": {
+										"method": "DELETE",
+										"header": [],
+										"url": {
+											"raw": "{{croissant-server}}/subcategories/b8a88dad-5e96-482f-93f4-4b24df15d99a",
+											"host": [
+												"{{croissant-server}}"
+											],
+											"path": [
+												"subcategories",
+												"b8a88dad-5e96-482f-93f4-4b24df15d99a"
+											]
+										}
+									},
+									"status": "Conflict",
+									"code": 409,
+									"_postman_previewlanguage": "plain",
+									"header": [
+										{
+											"key": "Access-Control-Allow-Credentials",
+											"value": "true"
+										},
+										{
+											"key": "Access-Control-Allow-Headers",
+											"value": "Accept, Content-Type, Content-Length, Accept-Encoding, X-CSRF-Token, Authorization"
+										},
+										{
+											"key": "Access-Control-Allow-Methods",
+											"value": "POST, GET, OPTIONS, PUT, DELETE"
+										},
+										{
+											"key": "Access-Control-Allow-Origin",
+											"value": "http://localhost:5173"
+										},
+										{
+											"key": "Content-Type",
+											"value": "text/plain; charset=utf-8"
+										},
+										{
+											"key": "X-Content-Type-Options",
+											"value": "nosniff"
+										},
+										{
+											"key": "Date",
+											"value": "Mon, 04 Mar 2024 14:33:03 GMT"
+										},
+										{
+											"key": "Content-Length",
+											"value": "1"
+										}
+									],
+									"cookie": [],
+									"body": "\n"
+								},
+								{
+									"name": "200",
+									"originalRequest": {
+										"method": "DELETE",
+										"header": [],
+										"url": {
+											"raw": "{{croissant-server}}/subcategories/b8a88dad-5e96-482f-93f4-4b24df15d99a",
+											"host": [
+												"{{croissant-server}}"
+											],
+											"path": [
+												"subcategories",
+												"b8a88dad-5e96-482f-93f4-4b24df15d99a"
+											]
+										}
+									},
+									"status": "OK",
+									"code": 200,
+									"_postman_previewlanguage": "plain",
+									"header": [
+										{
+											"key": "Access-Control-Allow-Credentials",
+											"value": "true"
+										},
+										{
+											"key": "Access-Control-Allow-Headers",
+											"value": "Accept, Content-Type, Content-Length, Accept-Encoding, X-CSRF-Token, Authorization"
+										},
+										{
+											"key": "Access-Control-Allow-Methods",
+											"value": "POST, GET, OPTIONS, PUT, DELETE"
+										},
+										{
+											"key": "Access-Control-Allow-Origin",
+											"value": "http://localhost:5173"
+										},
+										{
+											"key": "Date",
+											"value": "Mon, 04 Mar 2024 14:35:59 GMT"
+										},
+										{
+											"key": "Content-Length",
+											"value": "0"
+										}
+									],
+									"cookie": [],
+									"body": null
+								}
+							]
+						}
+					]
+				},
+				{
+					"name": "Product",
+					"item": [
+						{
+							"name": "Product Revision",
+							"item": [
+								{
+									"name": "Unit",
+									"item": [
+										{
+											"name": "New Base Unit",
+											"request": {
+												"method": "POST",
+												"header": [],
+												"body": {
+													"mode": "raw",
+													"raw": "{\r\n  \"name\": {\"en\": \"Unit Name\"},\r\n  \"is_base_unit\": true,\r\n  \"price\": \"0\"\r\n}",
+													"options": {
+														"raw": {
+															"language": "json"
+														}
+													}
+												},
+												"url": {
+													"raw": "{{croissant-server}}/productrevisions/f1dc80ca-cea6-4370-81d6-0a2e8bc9cb49/units",
+													"host": [
+														"{{croissant-server}}"
+													],
+													"path": [
+														"productrevisions",
+														"f1dc80ca-cea6-4370-81d6-0a2e8bc9cb49",
+														"units"
+													]
+												}
+											},
+											"response": []
+										},
+										{
+											"name": "New Unit",
+											"request": {
+												"method": "POST",
+												"header": [],
+												"body": {
+													"mode": "raw",
+													"raw": "{\r\n  \"name\": {\"en\": \"Unit Name\"},\r\n  \"is_base_unit\": false,\r\n  \"base_unit_conversion\": \"0\"\r\n}",
+													"options": {
+														"raw": {
+															"language": "json"
+														}
+													}
+												},
+												"url": {
+													"raw": "{{croissant-server}}/productrevisions/79f2e2aa-d2c2-4fc0-a9f5-7ddc2a8cbe4b/units",
+													"host": [
+														"{{croissant-server}}"
+													],
+													"path": [
+														"productrevisions",
+														"79f2e2aa-d2c2-4fc0-a9f5-7ddc2a8cbe4b",
+														"units"
+													]
+												}
+											},
+											"response": []
+										},
+										{
+											"name": "Update Unit",
+											"request": {
+												"method": "PUT",
+												"header": [],
+												"body": {
+													"mode": "raw",
+													"raw": "{\r\n  \"name\": {\"en\": \"KG\"},\r\n  \"is_base_unit\": false,\r\n  \"base_unit_conversion\": 1.5\r\n}",
+													"options": {
+														"raw": {
+															"language": "json"
+														}
+													}
+												},
+												"url": {
+													"raw": "{{croissant-server}}/units/a897ca07-36a8-4855-b39e-213adda04976",
+													"host": [
+														"{{croissant-server}}"
+													],
+													"path": [
+														"units",
+														"a897ca07-36a8-4855-b39e-213adda04976"
+													]
+												}
+											},
+											"response": [
+												{
+													"name": "200",
+													"originalRequest": {
+														"method": "PUT",
+														"header": [],
+														"body": {
+															"mode": "raw",
+															"raw": "{\r\n  \"name\": {\"en\": \"KG\"},\r\n  \"is_base_unit\": false,\r\n  \"base_unit_conversion\": 1.5\r\n}",
+															"options": {
+																"raw": {
+																	"language": "json"
+																}
+															}
+														},
+														"url": {
+															"raw": "{{croissant-server}}/units/a897ca07-36a8-4855-b39e-213adda04976",
+															"host": [
+																"{{croissant-server}}"
+															],
+															"path": [
+																"units",
+																"a897ca07-36a8-4855-b39e-213adda04976"
+															]
+														}
+													},
+													"status": "OK",
+													"code": 200,
+													"_postman_previewlanguage": "json",
+													"header": [
+														{
+															"key": "Access-Control-Allow-Credentials",
+															"value": "true"
+														},
+														{
+															"key": "Access-Control-Allow-Headers",
+															"value": "Accept, Content-Type, Content-Length, Accept-Encoding, X-CSRF-Token, Authorization"
+														},
+														{
+															"key": "Access-Control-Allow-Methods",
+															"value": "POST, GET, OPTIONS, PUT, PATCH, DELETE"
+														},
+														{
+															"key": "Access-Control-Allow-Origin",
+															"value": "http://localhost:5173"
+														},
+														{
+															"key": "Content-Type",
+															"value": "application/json"
+														},
+														{
+															"key": "Date",
+															"value": "Tue, 19 Mar 2024 11:00:05 GMT"
+														},
+														{
+															"key": "Content-Length",
+															"value": "94"
+														}
+													],
+													"cookie": [],
+													"body": "{\n    \"id\": \"a897ca07-36a8-4855-b39e-213adda04976\",\n    \"name\": {\n        \"en\": \"KG\"\n    },\n    \"base_unit_conversion\": \"3/2\"\n}"
+												}
+											]
+										},
+										{
+											"name": "Delete Unit",
+											"request": {
+												"method": "DELETE",
+												"header": [],
+												"url": {
+													"raw": "{{croissant-server}}/units/a897ca07-36a8-4855-b39e-213adda04976",
+													"host": [
+														"{{croissant-server}}"
+													],
+													"path": [
+														"units",
+														"a897ca07-36a8-4855-b39e-213adda04976"
+													]
+												}
+											},
+											"response": [
+												{
+													"name": "204",
+													"originalRequest": {
+														"method": "DELETE",
+														"header": [],
+														"url": {
+															"raw": "{{croissant-server}}/units/a897ca07-36a8-4855-b39e-213adda04976",
+															"host": [
+																"{{croissant-server}}"
+															],
+															"path": [
+																"units",
+																"a897ca07-36a8-4855-b39e-213adda04976"
+															]
+														}
+													},
+													"status": "No Content",
+													"code": 204,
+													"_postman_previewlanguage": "plain",
+													"header": [
+														{
+															"key": "Access-Control-Allow-Credentials",
+															"value": "true"
+														},
+														{
+															"key": "Access-Control-Allow-Headers",
+															"value": "Accept, Content-Type, Content-Length, Accept-Encoding, X-CSRF-Token, Authorization"
+														},
+														{
+															"key": "Access-Control-Allow-Methods",
+															"value": "POST, GET, OPTIONS, PUT, PATCH, DELETE"
+														},
+														{
+															"key": "Access-Control-Allow-Origin",
+															"value": "http://localhost:5173"
+														},
+														{
+															"key": "Date",
+															"value": "Tue, 19 Mar 2024 11:02:08 GMT"
+														}
+													],
+													"cookie": [],
+													"body": null
+												}
+											]
+										}
+									]
+								},
+								{
+									"name": "Create First Product Revision",
+									"request": {
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\r\n    \"allergen\": {\r\n        \"nuts\": true\r\n    },\r\n    \"vat\": \"20\",\r\n    \"state\": \"archived\",\r\n    \"name\": {\r\n        \"en\": \"Product Name50 archived\"\r\n    },\r\n    \"description\": {\r\n        \"en\": \"Product Description\"\r\n    },\r\n    \"images\": [\r\n        {\r\n            \"path\": \"/path/to/image1.jpg\",\r\n            \"display_order\": 1\r\n        },\r\n        {\r\n            \"path\": \"/path/to/image2.jpg\",\r\n            \"display_order\": 2\r\n        }\r\n    ],\r\n    \"display_order\": 1,\r\n    \"units\": [\r\n        {\r\n            \"name\": {\r\n                \"en\": \"Piece\"\r\n            },\r\n            \"is_base_unit\": true,\r\n            \"price\": \"10.99\"\r\n        },\r\n        {\r\n            \"name\": {\r\n                \"en\": \"Box\"\r\n            },\r\n            \"is_base_unit\": false,\r\n            \"base_unit_conversion\": \"6\"\r\n        }\r\n    ]\r\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{croissant-server}}/subcategories/4f29d9ff-4207-47ef-a123-d0febc962735/productrevisions",
+											"host": [
+												"{{croissant-server}}"
+											],
+											"path": [
+												"subcategories",
+												"4f29d9ff-4207-47ef-a123-d0febc962735",
+												"productrevisions"
+											]
+										},
+										"description": "Create the very first Product Revision, which will also create a new Product and assign it to the Product Revision. Vat is stored as String to ensure precision in the backend conversion."
+									},
+									"response": [
+										{
+											"name": "404",
+											"originalRequest": {
+												"method": "POST",
+												"header": [],
+												"body": {
+													"mode": "raw",
+													"raw": "{\r\n  \"allergen\": {\r\n    \"nuts\": true\r\n  },\r\n  \"vat\": \"20.00\",\r\n  \"state\": \"published\",\r\n  \"name\": {\r\n    \"EN\": \"Product Name50\"\r\n  },\r\n  \"description\": {\r\n    \"EN\": \"Product Description\"\r\n  },\r\n  \"images\": [{\"path\": \"/path/to/image1.jpg\", \"display_order\": 1}, {\"path\": \"/path/to/image2.jpg\", \"display_order\": 2}],\r\n  \"display_order\": 1\r\n}",
+													"options": {
+														"raw": {
+															"language": "json"
+														}
+													}
+												},
+												"url": {
+													"raw": "{{croissant-server}}/subcategories/b8a88dad-5e96-482f-93f4-4b24df15d99a/productrevisions",
+													"host": [
+														"{{croissant-server}}"
+													],
+													"path": [
+														"subcategories",
+														"b8a88dad-5e96-482f-93f4-4b24df15d99a",
+														"productrevisions"
+													]
+												}
+											},
+											"status": "Not Found",
+											"code": 404,
+											"_postman_previewlanguage": "plain",
+											"header": [
+												{
+													"key": "Access-Control-Allow-Credentials",
+													"value": "true"
+												},
+												{
+													"key": "Access-Control-Allow-Headers",
+													"value": "Accept, Content-Type, Content-Length, Accept-Encoding, X-CSRF-Token, Authorization"
+												},
+												{
+													"key": "Access-Control-Allow-Methods",
+													"value": "POST, GET, OPTIONS, PUT, DELETE"
+												},
+												{
+													"key": "Access-Control-Allow-Origin",
+													"value": "http://localhost:5173"
+												},
+												{
+													"key": "Content-Type",
+													"value": "text/plain; charset=utf-8"
+												},
+												{
+													"key": "X-Content-Type-Options",
+													"value": "nosniff"
+												},
+												{
+													"key": "Date",
+													"value": "Mon, 04 Mar 2024 14:56:09 GMT"
+												},
+												{
+													"key": "Content-Length",
+													"value": "1"
+												}
+											],
+											"cookie": [],
+											"body": "\n"
+										},
+										{
+											"name": "201",
+											"originalRequest": {
+												"method": "POST",
+												"header": [],
+												"body": {
+													"mode": "raw",
+													"raw": "{\r\n    \"allergen\": {\r\n        \"nuts\": true\r\n    },\r\n    \"vat\": \"20\",\r\n    \"state\": \"published\",\r\n    \"name\": {\r\n        \"en\": \"Product Name50\"\r\n    },\r\n    \"description\": {\r\n        \"en\": \"Product Description\"\r\n    },\r\n    \"images\": [\r\n        {\r\n            \"path\": \"/path/to/image1.jpg\",\r\n            \"display_order\": 1\r\n        },\r\n        {\r\n            \"path\": \"/path/to/image2.jpg\",\r\n            \"display_order\": 2\r\n        }\r\n    ],\r\n    \"display_order\": 1,\r\n    \"units\": [\r\n        {\r\n            \"name\": {\r\n                \"en\": \"Piece\"\r\n            },\r\n            \"is_base_unit\": true,\r\n            \"price\": \"10.99\"\r\n        },\r\n        {\r\n            \"name\": {\r\n                \"en\": \"Box\"\r\n            },\r\n            \"is_base_unit\": false,\r\n            \"base_unit_conversion\": \"6\"\r\n        }\r\n    ]\r\n}",
+													"options": {
+														"raw": {
+															"language": "json"
+														}
+													}
+												},
+												"url": {
+													"raw": "{{croissant-server}}/subcategories/1a04d909-f0e9-4148-937b-24cabdec06b7/productrevisions",
+													"host": [
+														"{{croissant-server}}"
+													],
+													"path": [
+														"subcategories",
+														"1a04d909-f0e9-4148-937b-24cabdec06b7",
+														"productrevisions"
+													]
+												}
+											},
+											"status": "Created",
+											"code": 201,
+											"_postman_previewlanguage": "json",
+											"header": [
+												{
+													"key": "Access-Control-Allow-Credentials",
+													"value": "true"
+												},
+												{
+													"key": "Access-Control-Allow-Headers",
+													"value": "Accept, Content-Type, Content-Length, Accept-Encoding, X-CSRF-Token, Authorization"
+												},
+												{
+													"key": "Access-Control-Allow-Methods",
+													"value": "POST, GET, OPTIONS, PUT, PATCH, DELETE"
+												},
+												{
+													"key": "Access-Control-Allow-Origin",
+													"value": "http://localhost:5173"
+												},
+												{
+													"key": "Content-Type",
+													"value": "application/json"
+												},
+												{
+													"key": "Date",
+													"value": "Mon, 11 Mar 2024 16:19:54 GMT"
+												},
+												{
+													"key": "Content-Length",
+													"value": "738"
+												}
+											],
+											"cookie": [],
+											"body": "{\n    \"id\": \"f981a359-f232-4e98-81d0-21a4dee3b8e4\",\n    \"product_id\": \"f59404cc-4acd-49f3-9805-30389f53bf13\",\n    \"revision_date\": \"2024-03-11T17:19:55.047259+01:00\",\n    \"allergen\": {\n        \"nuts\": true\n    },\n    \"vat\": \"20\",\n    \"state\": \"published\",\n    \"name\": {\n        \"en\": \"Product Name50\"\n    },\n    \"description\": {\n        \"en\": \"Product Description\"\n    },\n    \"images\": [\n        {\n            \"path\": \"/path/to/image1.jpg\",\n            \"display_order\": 1\n        },\n        {\n            \"path\": \"/path/to/image2.jpg\",\n            \"display_order\": 2\n        }\n    ],\n    \"display_order\": 1,\n    \"units\": [\n        {\n            \"id\": \"f09523d6-0a77-4c48-9ae7-c75b2eba08de\",\n            \"product_revision_id\": \"f981a359-f232-4e98-81d0-21a4dee3b8e4\",\n            \"name\": {\n                \"en\": \"Piece\"\n            },\n            \"is_base_unit\": true,\n            \"price\": \"1099/100\"\n        },\n        {\n            \"id\": \"0d3d23bc-a792-4846-9e13-aef6f3b80ada\",\n            \"product_revision_id\": \"f981a359-f232-4e98-81d0-21a4dee3b8e4\",\n            \"name\": {\n                \"en\": \"Box\"\n            },\n            \"base_unit_conversion\": \"6\"\n        }\n    ]\n}"
+										}
+									]
+								},
+								{
+									"name": "New Product Revision",
+									"request": {
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\r\n    \"allergen\": {\r\n        \"nuts\": true,\r\n        \"sesame\": false\r\n    },\r\n    \"vat\": \"20\",\r\n    \"state\": \"published\",\r\n    \"name\": {\r\n        \"en\": \"Product Name50 published\"\r\n    },\r\n    \"description\": {\r\n        \"en\": \"Product Description\"\r\n    },\r\n    \"images\": [\r\n        {\r\n            \"path\": \"/path/to/image1.jpg\",\r\n            \"display_order\": 1\r\n        },\r\n        {\r\n            \"path\": \"/path/to/image2.jpg\",\r\n            \"display_order\": 2\r\n        }\r\n    ],\r\n    \"display_order\": 1,\r\n    \"units\": [\r\n        {\r\n            \"name\": {\r\n                \"en\": \"Piece\"\r\n            },\r\n            \"is_base_unit\": true,\r\n            \"price\": \"10.99\"\r\n        },\r\n        {\r\n            \"name\": {\r\n                \"en\": \"Box\"\r\n            },\r\n            \"is_base_unit\": false,\r\n            \"base_unit_conversion\": \"6\"\r\n        }\r\n    ]\r\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{croissant-server}}/products/38bb957b-9380-43d8-ac5b-7ccca2a0d3a8",
+											"host": [
+												"{{croissant-server}}"
+											],
+											"path": [
+												"products",
+												"38bb957b-9380-43d8-ac5b-7ccca2a0d3a8"
+											]
+										},
+										"description": "You may only include what you want to change in the JSON body. The rest will be copied from the last Product Revision."
+									},
+									"response": [
+										{
+											"name": "404",
+											"originalRequest": {
+												"method": "POST",
+												"header": [],
+												"body": {
+													"mode": "raw",
+													"raw": "{\r\n  \"allergen\": {\r\n    \"nuts\": true\r\n  },\r\n  \"vat\": \"20.00\",\r\n  \"state\": \"published\",\r\n  \"name\": {\r\n    \"EN\": \"Product Name-Draft\"\r\n  },\r\n  \"description\": {\r\n    \"EN\": \"Product Description\"\r\n  },\r\n  \"images\": [{\"path\": \"/path/to/image1.jpg\", \"display_order\": 1}, {\"path\": \"/path/to/image2.jpg\", \"display_order\": 2}],\r\n  \"display_order\": 1\r\n}",
+													"options": {
+														"raw": {
+															"language": "json"
+														}
+													}
+												},
+												"url": {
+													"raw": "{{croissant-server}}/products/a4ebcde1-3796-4777-b4bd-ddce0f2229c0",
+													"host": [
+														"{{croissant-server}}"
+													],
+													"path": [
+														"products",
+														"a4ebcde1-3796-4777-b4bd-ddce0f2229c0"
+													]
+												}
+											},
+											"status": "Not Found",
+											"code": 404,
+											"_postman_previewlanguage": "plain",
+											"header": [
+												{
+													"key": "Access-Control-Allow-Credentials",
+													"value": "true"
+												},
+												{
+													"key": "Access-Control-Allow-Headers",
+													"value": "Accept, Content-Type, Content-Length, Accept-Encoding, X-CSRF-Token, Authorization"
+												},
+												{
+													"key": "Access-Control-Allow-Methods",
+													"value": "POST, GET, OPTIONS, PUT, DELETE"
+												},
+												{
+													"key": "Access-Control-Allow-Origin",
+													"value": "http://localhost:5173"
+												},
+												{
+													"key": "Content-Type",
+													"value": "text/plain; charset=utf-8"
+												},
+												{
+													"key": "X-Content-Type-Options",
+													"value": "nosniff"
+												},
+												{
+													"key": "Date",
+													"value": "Mon, 04 Mar 2024 15:26:05 GMT"
+												},
+												{
+													"key": "Content-Length",
+													"value": "1"
+												}
+											],
+											"cookie": [],
+											"body": "\n"
+										},
+										{
+											"name": "201",
+											"originalRequest": {
+												"method": "POST",
+												"header": [],
+												"body": {
+													"mode": "raw",
+													"raw": "{\r\n    \"allergen\": {\r\n        \"nuts\": true\r\n    },\r\n    \"vat\": \"20\",\r\n    \"state\": \"published\",\r\n    \"name\": {\r\n        \"en\": \"Product Name50\"\r\n    },\r\n    \"description\": {\r\n        \"en\": \"Product Description\"\r\n    },\r\n    \"images\": [\r\n        {\r\n            \"path\": \"/path/to/image1.jpg\",\r\n            \"display_order\": 1\r\n        },\r\n        {\r\n            \"path\": \"/path/to/image2.jpg\",\r\n            \"display_order\": 2\r\n        }\r\n    ],\r\n    \"display_order\": 1,\r\n    \"units\": [\r\n        {\r\n            \"name\": {\r\n                \"en\": \"Piece\"\r\n            },\r\n            \"is_base_unit\": true,\r\n            \"price\": \"10.99\"\r\n        },\r\n        {\r\n            \"name\": {\r\n                \"en\": \"Box\"\r\n            },\r\n            \"is_base_unit\": false,\r\n            \"base_unit_conversion\": \"6\"\r\n        }\r\n    ]\r\n}",
+													"options": {
+														"raw": {
+															"language": "json"
+														}
+													}
+												},
+												"url": {
+													"raw": "{{croissant-server}}/products/b2f203eb-b799-4192-97b0-a1e8c8907987",
+													"host": [
+														"{{croissant-server}}"
+													],
+													"path": [
+														"products",
+														"b2f203eb-b799-4192-97b0-a1e8c8907987"
+													]
+												}
+											},
+											"status": "Created",
+											"code": 201,
+											"_postman_previewlanguage": "json",
+											"header": [
+												{
+													"key": "Access-Control-Allow-Credentials",
+													"value": "true"
+												},
+												{
+													"key": "Access-Control-Allow-Headers",
+													"value": "Accept, Content-Type, Content-Length, Accept-Encoding, X-CSRF-Token, Authorization"
+												},
+												{
+													"key": "Access-Control-Allow-Methods",
+													"value": "POST, GET, OPTIONS, PUT, PATCH, DELETE"
+												},
+												{
+													"key": "Access-Control-Allow-Origin",
+													"value": "http://localhost:5173"
+												},
+												{
+													"key": "Content-Type",
+													"value": "application/json"
+												},
+												{
+													"key": "Date",
+													"value": "Mon, 11 Mar 2024 16:14:53 GMT"
+												},
+												{
+													"key": "Content-Length",
+													"value": "738"
+												}
+											],
+											"cookie": [],
+											"body": "{\n    \"id\": \"ae7518e0-208b-4fcd-a333-d34a165fde53\",\n    \"product_id\": \"b2f203eb-b799-4192-97b0-a1e8c8907987\",\n    \"revision_date\": \"2024-03-11T17:14:53.823293+01:00\",\n    \"allergen\": {\n        \"nuts\": true\n    },\n    \"vat\": \"20\",\n    \"state\": \"published\",\n    \"name\": {\n        \"en\": \"Product Name50\"\n    },\n    \"description\": {\n        \"en\": \"Product Description\"\n    },\n    \"images\": [\n        {\n            \"path\": \"/path/to/image1.jpg\",\n            \"display_order\": 1\n        },\n        {\n            \"path\": \"/path/to/image2.jpg\",\n            \"display_order\": 2\n        }\n    ],\n    \"display_order\": 1,\n    \"units\": [\n        {\n            \"id\": \"32629c0e-30e5-43e3-9d61-39c3a3a98bc7\",\n            \"product_revision_id\": \"ae7518e0-208b-4fcd-a333-d34a165fde53\",\n            \"name\": {\n                \"en\": \"Piece\"\n            },\n            \"is_base_unit\": true,\n            \"price\": \"1099/100\"\n        },\n        {\n            \"id\": \"8c981ee2-ebef-492f-beb1-ba0d9bf4ebdf\",\n            \"product_revision_id\": \"ae7518e0-208b-4fcd-a333-d34a165fde53\",\n            \"name\": {\n                \"en\": \"Box\"\n            },\n            \"base_unit_conversion\": \"6\"\n        }\n    ]\n}"
+										}
+									]
+								},
+								{
+									"name": "Update Draft Product Revision",
+									"request": {
+										"method": "PUT",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\r\n    \"allergen\": {\r\n        \"nuts\": true\r\n    },\r\n    \"vat\": \"20\",\r\n    \"state\": \"published\",\r\n    \"name\": {\r\n        \"en\": \"Product Name2\"\r\n    },\r\n    \"description\": {\r\n        \"en\": \"Product Description2\"\r\n    },\r\n    \"images\": [\r\n        {\r\n            \"path\": \"/path/to/image1.jpg\",\r\n            \"display_order\": 1\r\n        },\r\n        {\r\n            \"path\": \"/path/to/image23.jpg\",\r\n            \"display_order\": 2\r\n        }\r\n    ],\r\n    \"display_order\": 1,\r\n    \"units\": [\r\n        {\r\n            \"name\": {\r\n                \"en\": \"Piece\"\r\n            },\r\n            \"is_base_unit\": true,\r\n            \"price\": \"10.50\"\r\n        },\r\n        {\r\n            \"name\": {\r\n                \"en\": \"Box\"\r\n            },\r\n            \"is_base_unit\": false,\r\n            \"base_unit_conversion\": \"6\"\r\n        }\r\n    ]\r\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{croissant-server}}/productrevisions/d53b57b3-135e-4093-88d2-1b9f0b3cd32b",
+											"host": [
+												"{{croissant-server}}"
+											],
+											"path": [
+												"productrevisions",
+												"d53b57b3-135e-4093-88d2-1b9f0b3cd32b"
+											]
+										}
+									},
+									"response": [
+										{
+											"name": "200",
+											"originalRequest": {
+												"method": "PUT",
+												"header": [],
+												"body": {
+													"mode": "raw",
+													"raw": "{\r\n    \"allergen\": {\r\n        \"nuts\": true\r\n    },\r\n    \"vat\": \"20\",\r\n    \"state\": \"published\",\r\n    \"name\": {\r\n        \"en\": \"Product Name2\"\r\n    },\r\n    \"description\": {\r\n        \"en\": \"Product Description2\"\r\n    },\r\n    \"images\": [\r\n        {\r\n            \"path\": \"/path/to/image1.jpg\",\r\n            \"display_order\": 1\r\n        },\r\n        {\r\n            \"path\": \"/path/to/image23.jpg\",\r\n            \"display_order\": 2\r\n        }\r\n    ],\r\n    \"display_order\": 1,\r\n    \"units\": [\r\n        {\r\n            \"name\": {\r\n                \"en\": \"Piece\"\r\n            },\r\n            \"is_base_unit\": true,\r\n            \"price\": \"10.50\"\r\n        },\r\n        {\r\n            \"name\": {\r\n                \"en\": \"Box\"\r\n            },\r\n            \"is_base_unit\": false,\r\n            \"base_unit_conversion\": \"6\"\r\n        }\r\n    ]\r\n}",
+													"options": {
+														"raw": {
+															"language": "json"
+														}
+													}
+												},
+												"url": {
+													"raw": "{{croissant-server}}/productrevisions/a71375b8-fb19-40bb-a796-70be91554156",
+													"host": [
+														"{{croissant-server}}"
+													],
+													"path": [
+														"productrevisions",
+														"a71375b8-fb19-40bb-a796-70be91554156"
+													]
+												}
+											},
+											"status": "OK",
+											"code": 200,
+											"_postman_previewlanguage": "json",
+											"header": [
+												{
+													"key": "Access-Control-Allow-Credentials",
+													"value": "true"
+												},
+												{
+													"key": "Access-Control-Allow-Headers",
+													"value": "Accept, Content-Type, Content-Length, Accept-Encoding, X-CSRF-Token, Authorization"
+												},
+												{
+													"key": "Access-Control-Allow-Methods",
+													"value": "POST, GET, OPTIONS, PUT, PATCH, DELETE"
+												},
+												{
+													"key": "Access-Control-Allow-Origin",
+													"value": "http://localhost:5173"
+												},
+												{
+													"key": "Content-Type",
+													"value": "application/json"
+												},
+												{
+													"key": "Date",
+													"value": "Mon, 11 Mar 2024 16:40:05 GMT"
+												},
+												{
+													"key": "Content-Length",
+													"value": "477"
+												}
+											],
+											"cookie": [],
+											"body": "{\n    \"id\": \"a71375b8-fb19-40bb-a796-70be91554156\",\n    \"product_id\": \"\",\n    \"revision_date\": \"0001-01-01T00:00:00Z\",\n    \"allergen\": {\n        \"nuts\": true\n    },\n    \"vat\": \"20\",\n    \"state\": \"published\",\n    \"name\": {\n        \"en\": \"Product Name2\"\n    },\n    \"description\": {\n        \"en\": \"Product Description2\"\n    },\n    \"images\": [\n        {\n            \"path\": \"/path/to/image1.jpg\",\n            \"display_order\": 1\n        },\n        {\n            \"path\": \"/path/to/image23.jpg\",\n            \"display_order\": 2\n        }\n    ],\n    \"display_order\": 1,\n    \"units\": [\n        {\n            \"name\": {\n                \"en\": \"Piece\"\n            },\n            \"is_base_unit\": true,\n            \"price\": \"21/2\"\n        },\n        {\n            \"name\": {\n                \"en\": \"Box\"\n            },\n            \"base_unit_conversion\": \"6\"\n        }\n    ]\n}"
+										},
+										{
+											"name": "409",
+											"originalRequest": {
+												"method": "PUT",
+												"header": [],
+												"body": {
+													"mode": "raw",
+													"raw": "{\r\n    \"allergen\": {\r\n        \"nuts\": true\r\n    },\r\n    \"vat\": \"20\",\r\n    \"state\": \"published\",\r\n    \"name\": {\r\n        \"en\": \"Product Name2\"\r\n    },\r\n    \"description\": {\r\n        \"en\": \"Product Description2\"\r\n    },\r\n    \"images\": [\r\n        {\r\n            \"path\": \"/path/to/image1.jpg\",\r\n            \"display_order\": 1\r\n        },\r\n        {\r\n            \"path\": \"/path/to/image23.jpg\",\r\n            \"display_order\": 2\r\n        }\r\n    ],\r\n    \"display_order\": 1,\r\n    \"units\": [\r\n        {\r\n            \"name\": {\r\n                \"en\": \"Piece\"\r\n            },\r\n            \"is_base_unit\": true,\r\n            \"price\": \"10.50\"\r\n        },\r\n        {\r\n            \"name\": {\r\n                \"en\": \"Box\"\r\n            },\r\n            \"is_base_unit\": false,\r\n            \"base_unit_conversion\": \"6\"\r\n        }\r\n    ]\r\n}",
+													"options": {
+														"raw": {
+															"language": "json"
+														}
+													}
+												},
+												"url": {
+													"raw": "{{croissant-server}}/productrevisions/1a6a310d-08b0-4fa8-9a53-f2ad17a05c65",
+													"host": [
+														"{{croissant-server}}"
+													],
+													"path": [
+														"productrevisions",
+														"1a6a310d-08b0-4fa8-9a53-f2ad17a05c65"
+													]
+												}
+											},
+											"status": "Conflict",
+											"code": 409,
+											"_postman_previewlanguage": "plain",
+											"header": [
+												{
+													"key": "Access-Control-Allow-Credentials",
+													"value": "true"
+												},
+												{
+													"key": "Access-Control-Allow-Headers",
+													"value": "Accept, Content-Type, Content-Length, Accept-Encoding, X-CSRF-Token, Authorization"
+												},
+												{
+													"key": "Access-Control-Allow-Methods",
+													"value": "POST, GET, OPTIONS, PUT, PATCH, DELETE"
+												},
+												{
+													"key": "Access-Control-Allow-Origin",
+													"value": "http://localhost:5173"
+												},
+												{
+													"key": "Content-Type",
+													"value": "text/plain; charset=utf-8"
+												},
+												{
+													"key": "X-Content-Type-Options",
+													"value": "nosniff"
+												},
+												{
+													"key": "Date",
+													"value": "Mon, 11 Mar 2024 16:41:36 GMT"
+												},
+												{
+													"key": "Content-Length",
+													"value": "71"
+												}
+											],
+											"cookie": [],
+											"body": "ProductRevision already exists: product revision is not in draft state\n"
+										}
+									]
+								},
+								{
+									"name": "Update State",
+									"request": {
+										"method": "PATCH",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\r\n  \"state\": \"archived\"\r\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{croissant-server}}/productrevisions/d99d3e4e-04e4-4f25-abff-1d70542fa6f1/state",
+											"host": [
+												"{{croissant-server}}"
+											],
+											"path": [
+												"productrevisions",
+												"d99d3e4e-04e4-4f25-abff-1d70542fa6f1",
+												"state"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Bulk Update State",
+									"request": {
+										"method": "PATCH",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\r\n  \"ids\": [\"efa7ecc4-658e-41aa-b9fc-cd9a82ded84e\", \"bc9e6006-0bf2-487d-a780-0dcc4295029d\"],\r\n  \"state\": \"published\"\r\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{croissant-server}}/productrevisions/state",
+											"host": [
+												"{{croissant-server}}"
+											],
+											"path": [
+												"productrevisions",
+												"state"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Get Product Revisions Of One Product (+drafts)",
+									"request": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{croissant-server}}/products/38bb957b-9380-43d8-ac5b-7ccca2a0d3a8?state=draft&state=published&state=archived&excludeAllergen=sesame&page=1&pageSize=10",
+											"host": [
+												"{{croissant-server}}"
+											],
+											"path": [
+												"products",
+												"38bb957b-9380-43d8-ac5b-7ccca2a0d3a8"
+											],
+											"query": [
+												{
+													"key": "state",
+													"value": "draft"
+												},
+												{
+													"key": "state",
+													"value": "published"
+												},
+												{
+													"key": "state",
+													"value": "archived"
+												},
+												{
+													"key": "excludeAllergen",
+													"value": "gluten",
+													"disabled": true
+												},
+												{
+													"key": "excludeAllergen",
+													"value": "sesame"
+												},
+												{
+													"key": "page",
+													"value": "1"
+												},
+												{
+													"key": "pageSize",
+													"value": "10"
+												}
+											]
+										},
+										"description": "All the filters are applied via URI query parameters. You will only get the latest active productrevision. You can also filter on category and subcategory."
+									},
+									"response": [
+										{
+											"name": "200",
+											"originalRequest": {
+												"method": "GET",
+												"header": [],
+												"url": {
+													"raw": "{{croissant-server}}/products/281b9121-5bb9-4d15-9fae-fa502069849e?state=draft&state=published&state=archived&allergen=dairy,gluten&page=1&pageSize=10",
+													"host": [
+														"{{croissant-server}}"
+													],
+													"path": [
+														"products",
+														"281b9121-5bb9-4d15-9fae-fa502069849e"
+													],
+													"query": [
+														{
+															"key": "state",
+															"value": "draft"
+														},
+														{
+															"key": "state",
+															"value": "published"
+														},
+														{
+															"key": "state",
+															"value": "archived"
+														},
+														{
+															"key": "allergen",
+															"value": "dairy,gluten",
+															"description": "Comma seperated allergens."
+														},
+														{
+															"key": "page",
+															"value": "1"
+														},
+														{
+															"key": "pageSize",
+															"value": "10"
+														}
+													]
+												}
+											},
+											"status": "OK",
+											"code": 200,
+											"_postman_previewlanguage": "json",
+											"header": [
+												{
+													"key": "Access-Control-Allow-Credentials",
+													"value": "true"
+												},
+												{
+													"key": "Access-Control-Allow-Headers",
+													"value": "Accept, Content-Type, Content-Length, Accept-Encoding, X-CSRF-Token, Authorization"
+												},
+												{
+													"key": "Access-Control-Allow-Methods",
+													"value": "POST, GET, OPTIONS, PUT, PATCH, DELETE"
+												},
+												{
+													"key": "Access-Control-Allow-Origin",
+													"value": "http://localhost:5173"
+												},
+												{
+													"key": "Content-Type",
+													"value": "application/json"
+												},
+												{
+													"key": "Date",
+													"value": "Tue, 19 Mar 2024 14:58:52 GMT"
+												},
+												{
+													"key": "Content-Length",
+													"value": "1225"
+												}
+											],
+											"cookie": [],
+											"body": "{\n    \"productRevisions\": [\n        {\n            \"id\": \"79f2e2aa-d2c2-4fc0-a9f5-7ddc2a8cbe4b\",\n            \"product_id\": \"281b9121-5bb9-4d15-9fae-fa502069849e\",\n            \"revision_date\": \"2024-03-19T11:40:50.358794+01:00\",\n            \"allergen\": {\n                \"dairy\": true,\n                \"gluten\": true\n            },\n            \"vat\": null,\n            \"state\": \"draft\",\n            \"name\": {\n                \"en\": \"Product Name50 draft\"\n            },\n            \"description\": {\n                \"en\": \"Product Description\"\n            },\n            \"images\": [\n                {\n                    \"display_order\": 2,\n                    \"path\": \"http://localhost:3000/images/3591d315-d513-4729-a2d1-aad4300221d5\"\n                },\n                {\n                    \"display_order\": 3,\n                    \"path\": \"http://localhost:3000/images/8757adb8-ab42-4321-9860-1c739f4d0457\"\n                },\n                {\n                    \"display_order\": 4,\n                    \"path\": \"http://localhost:3000/images/d7458323-e901-4311-8c05-e55eb8e42a92\"\n                },\n                {\n                    \"display_order\": 5,\n                    \"path\": \"http://localhost:3000/images/d2a92bd6-afc6-4fbd-a3b5-9650bec9075a\"\n                },\n                {\n                    \"display_order\": 6,\n                    \"path\": \"http://localhost:3000/images/9f8deb4b-974f-4243-8f44-6c9a19db2974\"\n                }\n            ],\n            \"display_order\": 0,\n            \"units\": [\n                {\n                    \"id\": \"30009dd5-5dc7-4920-836a-24bb7867417a\",\n                    \"product_revision_id\": \"79f2e2aa-d2c2-4fc0-a9f5-7ddc2a8cbe4b\",\n                    \"name\": {\n                        \"en\": \"KG\"\n                    },\n                    \"is_base_unit\": true,\n                    \"price\": \"200\",\n                    \"base_unit_conversion\": \"1\"\n                },\n                {\n                    \"id\": \"93922f88-d4f5-4e93-85fd-270fca8e79f5\",\n                    \"product_revision_id\": \"79f2e2aa-d2c2-4fc0-a9f5-7ddc2a8cbe4b\",\n                    \"name\": {\n                        \"en\": \"gram\"\n                    },\n                    \"base_unit_conversion\": \"1152921504606847/1152921504606846976\"\n                }\n            ]\n        }\n    ],\n    \"totalPages\": 1\n}"
+										}
+									]
+								},
+								{
+									"name": "Get Product Revisions (+drafts)",
+									"request": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{croissant-server}}/productrevisions?state=draft&state=published&state=archived&page=1&pageSize=200",
+											"host": [
+												"{{croissant-server}}"
+											],
+											"path": [
+												"productrevisions"
+											],
+											"query": [
+												{
+													"key": "state",
+													"value": "draft"
+												},
+												{
+													"key": "state",
+													"value": "published"
+												},
+												{
+													"key": "state",
+													"value": "archived"
+												},
+												{
+													"key": "category",
+													"value": "a478b706-f2a1-4285-b346-770e65cf8fd3",
+													"disabled": true
+												},
+												{
+													"key": "subcategory",
+													"value": "4f29d9ff-4207-47ef-a123-d0febc962735",
+													"disabled": true
+												},
+												{
+													"key": "excludeAllergen",
+													"value": "sesame",
+													"disabled": true
+												},
+												{
+													"key": "excludeAllergen",
+													"value": "gluten",
+													"disabled": true
+												},
+												{
+													"key": "page",
+													"value": "1"
+												},
+												{
+													"key": "pageSize",
+													"value": "200"
+												}
+											]
+										}
+									},
+									"response": [
+										{
+											"name": "200",
+											"originalRequest": {
+												"method": "GET",
+												"header": [],
+												"url": {
+													"raw": "{{croissant-server}}/productrevisions?state=draft&state=published&state=archived&page=1&pageSize=5",
+													"host": [
+														"{{croissant-server}}"
+													],
+													"path": [
+														"productrevisions"
+													],
+													"query": [
+														{
+															"key": "state",
+															"value": "draft"
+														},
+														{
+															"key": "state",
+															"value": "published"
+														},
+														{
+															"key": "state",
+															"value": "archived"
+														},
+														{
+															"key": "category",
+															"value": "f5b22999-63ee-4951-8648-858826555cb3",
+															"disabled": true
+														},
+														{
+															"key": "subcategory",
+															"value": "0ba85076-f641-4236-aa2c-9224858d05e2",
+															"disabled": true
+														},
+														{
+															"key": "allergen",
+															"value": "nuts",
+															"disabled": true
+														},
+														{
+															"key": "page",
+															"value": "1"
+														},
+														{
+															"key": "pageSize",
+															"value": "5"
+														}
+													]
+												}
+											},
+											"status": "OK",
+											"code": 200,
+											"_postman_previewlanguage": "json",
+											"header": [
+												{
+													"key": "Access-Control-Allow-Credentials",
+													"value": "true"
+												},
+												{
+													"key": "Access-Control-Allow-Headers",
+													"value": "Accept, Content-Type, Content-Length, Accept-Encoding, X-CSRF-Token, Authorization"
+												},
+												{
+													"key": "Access-Control-Allow-Methods",
+													"value": "POST, GET, OPTIONS, PUT, DELETE"
+												},
+												{
+													"key": "Access-Control-Allow-Origin",
+													"value": "http://localhost:5173"
+												},
+												{
+													"key": "Content-Type",
+													"value": "application/json"
+												},
+												{
+													"key": "Date",
+													"value": "Mon, 04 Mar 2024 12:41:30 GMT"
+												},
+												{
+													"key": "Content-Length",
+													"value": "755"
+												}
+											],
+											"cookie": [],
+											"body": "{\n    \"productRevisions\": [\n        {\n            \"id\": \"e8116efa-529a-4f9a-8242-81943d3184ef\",\n            \"product_id\": \"a4ebcde1-3796-4777-b4bd-ddce0f2229c0\",\n            \"revision_date\": \"2024-03-04T13:41:21.482103+01:00\",\n            \"allergen\": {\n                \"nuts\": true\n            },\n            \"vat\": \"20\",\n            \"state\": \"published\",\n            \"name\": {\n                \"EN\": \"Product Name50\"\n            },\n            \"description\": {\n                \"EN\": \"Product Description\"\n            },\n            \"images\": [\n                {\n                    \"display_order\": 1,\n                    \"path\": \"/path/to/image1.jpg\"\n                },\n                {\n                    \"display_order\": 2,\n                    \"path\": \"/path/to/image2.jpg\"\n                }\n            ],\n            \"display_order\": 1\n        },\n        {\n            \"id\": \"9145e69b-169d-4644-a951-2bcf36f6187e\",\n            \"product_id\": \"37479309-2d18-4b0f-badd-a471216f6e32\",\n            \"revision_date\": \"2024-03-04T13:32:48.257826+01:00\",\n            \"allergen\": {\n                \"nuts\": true\n            },\n            \"vat\": \"20\",\n            \"state\": \"published\",\n            \"name\": {\n                \"EN\": \"Product Name50\"\n            },\n            \"description\": {\n                \"EN\": \"Product Description\"\n            },\n            \"images\": null,\n            \"display_order\": 1\n        }\n    ],\n    \"totalPages\": 1\n}"
+										}
+									]
+								}
+							]
+						},
+						{
+							"name": "Change Subcategory Of Product",
+							"request": {
+								"method": "PATCH",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n  \"subcategory_id\": \"bb43bcac-8ac2-4508-a4cb-906fd1dc133b\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{croissant-server}}/products/c9f57441-dfd8-45b3-bac5-d0086713ae06",
+									"host": [
+										"{{croissant-server}}"
+									],
+									"path": [
+										"products",
+										"c9f57441-dfd8-45b3-bac5-d0086713ae06"
+									]
+								},
+								"description": "Change the sub category this product is assigned to."
+							},
+							"response": [
+								{
+									"name": "404",
+									"originalRequest": {
+										"method": "PUT",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\r\n  \"subcategory_id\": \"bb43bcac-8ac2-4508-a4cb-906fd1dc133a\"\r\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{croissant-server}}/products/c9f57441-dfd8-45b3-bac5-d0086713ae06",
+											"host": [
+												"{{croissant-server}}"
+											],
+											"path": [
+												"products",
+												"c9f57441-dfd8-45b3-bac5-d0086713ae06"
+											]
+										}
+									},
+									"status": "Not Found",
+									"code": 404,
+									"_postman_previewlanguage": "plain",
+									"header": [
+										{
+											"key": "Access-Control-Allow-Credentials",
+											"value": "true"
+										},
+										{
+											"key": "Access-Control-Allow-Headers",
+											"value": "Accept, Content-Type, Content-Length, Accept-Encoding, X-CSRF-Token, Authorization"
+										},
+										{
+											"key": "Access-Control-Allow-Methods",
+											"value": "POST, GET, OPTIONS, PUT, DELETE"
+										},
+										{
+											"key": "Access-Control-Allow-Origin",
+											"value": "http://localhost:5173"
+										},
+										{
+											"key": "Content-Type",
+											"value": "text/plain; charset=utf-8"
+										},
+										{
+											"key": "X-Content-Type-Options",
+											"value": "nosniff"
+										},
+										{
+											"key": "Date",
+											"value": "Mon, 04 Mar 2024 14:59:48 GMT"
+										},
+										{
+											"key": "Content-Length",
+											"value": "1"
+										}
+									],
+									"cookie": [],
+									"body": "\n"
+								},
+								{
+									"name": "200",
+									"originalRequest": {
+										"method": "PUT",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\r\n  \"subcategory_id\": \"bb43bcac-8ac2-4508-a4cb-906fd1dc133b\"\r\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{croissant-server}}/products/c9f57441-dfd8-45b3-bac5-d0086713ae06",
+											"host": [
+												"{{croissant-server}}"
+											],
+											"path": [
+												"products",
+												"c9f57441-dfd8-45b3-bac5-d0086713ae06"
+											]
+										}
+									},
+									"status": "OK",
+									"code": 200,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "Access-Control-Allow-Credentials",
+											"value": "true"
+										},
+										{
+											"key": "Access-Control-Allow-Headers",
+											"value": "Accept, Content-Type, Content-Length, Accept-Encoding, X-CSRF-Token, Authorization"
+										},
+										{
+											"key": "Access-Control-Allow-Methods",
+											"value": "POST, GET, OPTIONS, PUT, DELETE"
+										},
+										{
+											"key": "Access-Control-Allow-Origin",
+											"value": "http://localhost:5173"
+										},
+										{
+											"key": "Content-Type",
+											"value": "application/json"
+										},
+										{
+											"key": "Date",
+											"value": "Mon, 04 Mar 2024 15:00:00 GMT"
+										},
+										{
+											"key": "Content-Length",
+											"value": "102"
+										}
+									],
+									"cookie": [],
+									"body": "{\n    \"id\": \"c9f57441-dfd8-45b3-bac5-d0086713ae06\",\n    \"subcategory_id\": \"bb43bcac-8ac2-4508-a4cb-906fd1dc133b\"\n}"
+								}
+							]
+						},
+						{
+							"name": "Delete Product",
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "{{croissant-server}}/products/acc1e2ba-6235-425f-bad0-2705e39533d9",
+									"host": [
+										"{{croissant-server}}"
+									],
+									"path": [
+										"products",
+										"acc1e2ba-6235-425f-bad0-2705e39533d9"
+									]
+								}
+							},
+							"response": [
+								{
+									"name": "500",
+									"originalRequest": {
+										"method": "DELETE",
+										"header": [],
+										"url": {
+											"raw": "{{croissant-server}}/products/22a0162b-e15e-46c4-b4c1-33cf535f5e0b",
+											"host": [
+												"{{croissant-server}}"
+											],
+											"path": [
+												"products",
+												"22a0162b-e15e-46c4-b4c1-33cf535f5e0b"
+											]
+										}
+									},
+									"status": "Internal Server Error",
+									"code": 500,
+									"_postman_previewlanguage": "plain",
+									"header": [
+										{
+											"key": "Access-Control-Allow-Credentials",
+											"value": "true"
+										},
+										{
+											"key": "Access-Control-Allow-Headers",
+											"value": "Accept, Content-Type, Content-Length, Accept-Encoding, X-CSRF-Token, Authorization"
+										},
+										{
+											"key": "Access-Control-Allow-Methods",
+											"value": "POST, GET, OPTIONS, PUT, DELETE"
+										},
+										{
+											"key": "Access-Control-Allow-Origin",
+											"value": "http://localhost:5173"
+										},
+										{
+											"key": "Content-Type",
+											"value": "text/plain; charset=utf-8"
+										},
+										{
+											"key": "X-Content-Type-Options",
+											"value": "nosniff"
+										},
+										{
+											"key": "Date",
+											"value": "Mon, 04 Mar 2024 14:34:18 GMT"
+										},
+										{
+											"key": "Content-Length",
+											"value": "1"
+										}
+									],
+									"cookie": [],
+									"body": "\n"
+								},
+								{
+									"name": "404",
+									"originalRequest": {
+										"method": "DELETE",
+										"header": [],
+										"url": {
+											"raw": "{{croissant-server}}/products/22a0162b-e15e-46c4-b4c1-33cf535f5e0b",
+											"host": [
+												"{{croissant-server}}"
+											],
+											"path": [
+												"products",
+												"22a0162b-e15e-46c4-b4c1-33cf535f5e0b"
+											]
+										}
+									},
+									"status": "Not Found",
+									"code": 404,
+									"_postman_previewlanguage": "plain",
+									"header": [
+										{
+											"key": "Access-Control-Allow-Credentials",
+											"value": "true"
+										},
+										{
+											"key": "Access-Control-Allow-Headers",
+											"value": "Accept, Content-Type, Content-Length, Accept-Encoding, X-CSRF-Token, Authorization"
+										},
+										{
+											"key": "Access-Control-Allow-Methods",
+											"value": "POST, GET, OPTIONS, PUT, DELETE"
+										},
+										{
+											"key": "Access-Control-Allow-Origin",
+											"value": "http://localhost:5173"
+										},
+										{
+											"key": "Content-Type",
+											"value": "text/plain; charset=utf-8"
+										},
+										{
+											"key": "X-Content-Type-Options",
+											"value": "nosniff"
+										},
+										{
+											"key": "Date",
+											"value": "Mon, 04 Mar 2024 14:40:12 GMT"
+										},
+										{
+											"key": "Content-Length",
+											"value": "1"
+										}
+									],
+									"cookie": [],
+									"body": "\n"
+								}
+							]
+						},
+						{
+							"name": "Get Product",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{croissant-server}}/products/38bb957b-9380-43d8-ac5b-7ccca2a0d3a8/details",
+									"host": [
+										"{{croissant-server}}"
+									],
+									"path": [
+										"products",
+										"38bb957b-9380-43d8-ac5b-7ccca2a0d3a8",
+										"details"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Get Categories With SubCategories",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{croissant-server}}/categories-with-subcategories",
+							"host": [
+								"{{croissant-server}}"
+							],
+							"path": [
+								"categories-with-subcategories"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Image Upload",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "image",
+									"type": "file",
+									"src": "/C:/Users/samra/Downloads/wheat-bread-icon.png"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{croissant-server}}/image-upload",
+							"host": [
+								"{{croissant-server}}"
+							],
+							"path": [
+								"image-upload"
+							]
+						},
+						"description": "receives an image file, and returns a publically available url."
+					},
+					"response": []
+				},
+				{
+					"name": "Create Bucket",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "{{croissant-server}}/create-bucket?name=dev-test-croissant",
+							"host": [
+								"{{croissant-server}}"
+							],
+							"path": [
+								"create-bucket"
+							],
+							"query": [
+								{
+									"key": "name",
+									"value": "dev-test-croissant"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Settings",
+			"item": [
+				{
+					"name": "Post Settings",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"shop_name\": {\r\n        \"en\": \"My Shop\",\r\n        \"fr\": \"Ma Boutique\"\r\n    },\r\n    \"description\": {\r\n        \"en\": \"Welcome to my shop!\",\r\n        \"fr\": \"Bienvenue dans ma boutique !\"\r\n    },\r\n    \"logo_image_url\": \"http://localhost:3000/images/fa625683-20fa-4c3c-a492-141a4415d4d8\",\r\n    \"content_images\": null,\r\n    \"payment_methods\": [\r\n        \"Credit Card\",\r\n        \"PayPal\"\r\n    ],\r\n    \"terms_conditions\": {\r\n        \"en\": \"Terms and conditions...\",\r\n        \"fr\": \"Conditions générales...\"\r\n    },\r\n    \"pickup_delay_time\": 20,\r\n    \"social_media_links\": {\r\n        \"facebook_link\": \"https://facebook.com/myshop\",\r\n        \"x_link\": \"\",\r\n        \"instagram_link\": \"https://instagram.com/myshop\",\r\n        \"tiktok_link\": \"https://tiktok.com/@myshop\"\r\n    },\r\n    \"theme\": {\r\n        \"--body-bg-color\": \"#ffffff\",\r\n        \"--body-text-color\": \"#212529\",\r\n        \"--border-color\": \"#010102\",\r\n        \"--border-focus-color\": \"#80bdff\",\r\n        \"--border-radius-large\": \"1rem\",\r\n        \"--border-radius-medium\": \"0.5rem\",\r\n        \"--border-radius-small\": \"0.25rem\",\r\n        \"--box-shadow-lg\": \"0 1rem 3rem rgba(0, 0, 0, 0.175)\",\r\n        \"--box-shadow-md\": \"0 0.5rem 1rem rgba(0, 0, 0, 0.15)\",\r\n        \"--box-shadow-sm\": \"0 0.125rem 0.25rem rgba(0, 0, 0, 0.075)\",\r\n        \"--button-bg-color\": \"#007bff\",\r\n        \"--button-hover-bg-color\": \"#0069d9\",\r\n        \"--button-hover-text-color\": \"#ffffff\",\r\n        \"--button-text-color\": \"#ffffff\",\r\n        \"--component-bg-color\": \"#d7dce0\",\r\n        \"--danger-color\": \"#dc3545\",\r\n        \"--dark-color\": \"#343a40\",\r\n        \"--font-family-base\": \"-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif\",\r\n        \"--font-family-heading\": \"inherit\",\r\n        \"--font-family-monospace\": \"SFMono-Regular, Menlo, Monaco, Consolas, 'Liberation Mono', 'Courier New', monospace\",\r\n        \"--font-size-base\": \"1rem\",\r\n        \"--font-size-large\": \"1.25rem\",\r\n        \"--font-size-small\": \"0.875rem\",\r\n        \"--font-weight-bold\": \"700\",\r\n        \"--font-weight-normal\": \"400\",\r\n        \"--heading-text-color\": \"#343a40\",\r\n        \"--info-color\": \"#17a2b8\",\r\n        \"--light-color\": \"#f8f9fa\",\r\n        \"--line-height-base\": \"1.5\",\r\n        \"--link-hover-text-color\": \"#0056b3\",\r\n        \"--link-text-color\": \"#007bff\",\r\n        \"--primary-color\": \"#007bff\",\r\n        \"--secondary-color\": \"#6c757d\",\r\n        \"--spacing-lg\": \"1.5rem\",\r\n        \"--spacing-md\": \"1rem\",\r\n        \"--spacing-sm\": \"0.5rem\",\r\n        \"--spacing-xl\": \"2rem\",\r\n        \"--spacing-xs\": \"0.25rem\",\r\n        \"--success-color\": \"#28a745\",\r\n        \"--warning-color\": \"#ffc107\",\r\n        \"--z-index-fixed\": \"500\",\r\n        \"--z-index-overlay\": \"400\"\r\n    }\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{croissant-server}}/settings",
+							"host": [
+								"{{croissant-server}}"
+							],
+							"path": [
+								"settings"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "200",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n  \"shop_name\": {\r\n    \"en\": \"My Shop\",\r\n    \"fr\": \"Ma Boutique\"\r\n  },\r\n  \"description\": {\r\n    \"en\": \"Welcome to my shop!\",\r\n    \"fr\": \"Bienvenue dans ma boutique !\"\r\n  },\r\n  \"payment_methods\": [\"Credit Card\", \"PayPal\"],\r\n  \"terms_conditions\": {\r\n    \"en\": \"Terms and conditions...\",\r\n    \"fr\": \"Conditions générales...\"\r\n  },\r\n  \"pickup_delay_time\": 30,\r\n  \"social_media_links\": {\r\n    \"facebook_link\": \"https://facebook.com/myshop\",\r\n    \"x_link\": \"\",\r\n    \"instagram_link\": \"https://instagram.com/myshop\",\r\n    \"tiktok_link\": \"https://tiktok.com/@myshop\"\r\n  },\r\n  \"theme\": {\r\n    \"--primary-color\": \"#007bff\",\r\n    \"--secondary-color\": \"#6c757d\",\r\n    \"--button-bg-color\": \"#230562\",\r\n    \"--button-text-color\": \"#84d34b\"\r\n  }\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{croissant-server}}/settings",
+									"host": [
+										"{{croissant-server}}"
+									],
+									"path": [
+										"settings"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "plain",
+							"header": [
+								{
+									"key": "Access-Control-Allow-Credentials",
+									"value": "true"
+								},
+								{
+									"key": "Access-Control-Allow-Headers",
+									"value": "Accept, Content-Type, Content-Length, Accept-Encoding, X-CSRF-Token, Authorization"
+								},
+								{
+									"key": "Access-Control-Allow-Methods",
+									"value": "POST, GET, OPTIONS, PUT, DELETE"
+								},
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": "http://localhost:5173"
+								},
+								{
+									"key": "Date",
+									"value": "Wed, 06 Mar 2024 15:15:35 GMT"
+								},
+								{
+									"key": "Content-Length",
+									"value": "0"
+								}
+							],
+							"cookie": [],
+							"body": null
+						},
+						{
+							"name": "403",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n  \"shop_name\": {\r\n    \"en\": \"My Shop\",\r\n    \"fr\": \"Ma Boutique\"\r\n  },\r\n  \"description\": {\r\n    \"en\": \"Welcome to my shop!\",\r\n    \"fr\": \"Bienvenue dans ma boutique !\"\r\n  },\r\n  \"payment_methods\": [\"Credit Card\", \"PayPal\"],\r\n  \"terms_conditions\": {\r\n    \"en\": \"Terms and conditions...\",\r\n    \"fr\": \"Conditions générales...\"\r\n  },\r\n  \"pickup_delay_time\": 20,\r\n  \"social_media_links\": {\r\n    \"facebook_link\": \"https://facebook.com/myshop\",\r\n    \"x_link\": \"\",\r\n    \"instagram_link\": \"https://instagram.com/myshop\",\r\n    \"tiktok_link\": \"https://tiktok.com/@myshop\"\r\n  },\r\n\"theme\": {\r\n    \"--primary-color\": \"#007bff\",\r\n    \"--secondary-color\": \"#6c757d\",\r\n    \"--success-color\": \"#28a745\",\r\n    \"--info-color\": \"#17a2b8\",\r\n    \"--warning-color\": \"#ffc107\",\r\n    \"--danger-color\": \"#dc3545\",\r\n    \"--light-color\": \"#f8f9fa\",\r\n    \"--dark-color\": \"#343a40\",\r\n    \"--body-bg-color\": \"#ffffff\",\r\n    \"--component-bg-color\": \"#d7dce0\",\r\n    \"--body-text-color\": \"#212529\",\r\n    \"--heading-text-color\": \"#343a40\",\r\n    \"--link-text-color\": \"#007bff\",\r\n    \"--link-hover-text-color\": \"#0056b3\",\r\n    \"--button-bg-color\": \"#007bff\",\r\n    \"--button-text-color\": \"#ffffff\",\r\n    \"--button-hover-bg-color\": \"#0069d9\",\r\n    \"--button-hover-text-color\": \"#ffffff\",\r\n    \"--border-color\": \"#010102\",\r\n    \"--border-focus-color\": \"#80bdff\",\r\n    \"--font-family-base\": \"-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif\",\r\n    \"--font-family-heading\": \"inherit\",\r\n    \"--font-family-monospace\": \"SFMono-Regular, Menlo, Monaco, Consolas, 'Liberation Mono', 'Courier New', monospace\",\r\n    \"--font-size-base\": \"1rem\",\r\n    \"--font-size-large\": \"1.25rem\",\r\n    \"--font-size-small\": \"0.875rem\",\r\n    \"--font-weight-normal\": \"400\",\r\n    \"--font-weight-bold\": \"700\",\r\n    \"--line-height-base\": \"1.5\",\r\n    \"--spacing-xs\": \"0.25rem\",\r\n    \"--spacing-sm\": \"0.5rem\",\r\n    \"--spacing-md\": \"1rem\",\r\n    \"--spacing-lg\": \"1.5rem\",\r\n    \"--spacing-xl\": \"2rem\",\r\n    \"--border-radius-small\": \"0.25rem\",\r\n    \"--border-radius-medium\": \"0.5rem\",\r\n    \"--border-radius-large\": \"1rem\",\r\n    \"--box-shadow-sm\": \"0 0.125rem 0.25rem rgba(0, 0, 0, 0.075)\",\r\n    \"--box-shadow-md\": \"0 0.5rem 1rem rgba(0, 0, 0, 0.15)\",\r\n    \"--box-shadow-lg\": \"0 1rem 3rem rgba(0, 0, 0, 0.175)\"\r\n  }\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{croissant-server}}/settings",
+									"host": [
+										"{{croissant-server}}"
+									],
+									"path": [
+										"settings"
+									]
+								}
+							},
+							"status": "Forbidden",
+							"code": 403,
+							"_postman_previewlanguage": "plain",
+							"header": [
+								{
+									"key": "Access-Control-Allow-Credentials",
+									"value": "true"
+								},
+								{
+									"key": "Access-Control-Allow-Headers",
+									"value": "Accept, Content-Type, Content-Length, Accept-Encoding, X-CSRF-Token, Authorization"
+								},
+								{
+									"key": "Access-Control-Allow-Methods",
+									"value": "POST, GET, OPTIONS, PUT, PATCH, DELETE"
+								},
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": "http://localhost:5173"
+								},
+								{
+									"key": "Content-Type",
+									"value": "text/plain; charset=utf-8"
+								},
+								{
+									"key": "X-Content-Type-Options",
+									"value": "nosniff"
+								},
+								{
+									"key": "Date",
+									"value": "Mon, 11 Mar 2024 10:33:46 GMT"
+								},
+								{
+									"key": "Content-Length",
+									"value": "1"
+								}
+							],
+							"cookie": [],
+							"body": "\n"
+						}
+					]
+				},
+				{
+					"name": "Get Settings",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{croissant-server}}/settings",
+							"host": [
+								"{{croissant-server}}"
+							],
+							"path": [
+								"settings"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "200",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{croissant-server}}/settings",
+									"host": [
+										"{{croissant-server}}"
+									],
+									"path": [
+										"settings"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Access-Control-Allow-Credentials",
+									"value": "true"
+								},
+								{
+									"key": "Access-Control-Allow-Headers",
+									"value": "Accept, Content-Type, Content-Length, Accept-Encoding, X-CSRF-Token, Authorization"
+								},
+								{
+									"key": "Access-Control-Allow-Methods",
+									"value": "POST, GET, OPTIONS, PUT, DELETE"
+								},
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": "http://localhost:5173"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Date",
+									"value": "Wed, 06 Mar 2024 15:17:27 GMT"
+								},
+								{
+									"key": "Content-Length",
+									"value": "582"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"shop_name\": {\n        \"en\": \"My Shop\",\n        \"fr\": \"Ma Boutique\"\n    },\n    \"description\": {\n        \"en\": \"Welcome to my shop!\",\n        \"fr\": \"Bienvenue dans ma boutique !\"\n    },\n    \"payment_methods\": [\n        \"Credit Card\",\n        \"PayPal\"\n    ],\n    \"terms_conditions\": {\n        \"en\": \"Terms and conditions...\",\n        \"fr\": \"Conditions générales...\"\n    },\n    \"pickup_delay_time\": 30,\n    \"social_media_links\": {\n        \"facebook_link\": \"https://facebook.com/myshop\",\n        \"x_link\": \"\",\n        \"instagram_link\": \"https://instagram.com/myshop\",\n        \"tiktok_link\": \"https://tiktok.com/@myshop\"\n    },\n    \"theme\": {\n        \"--primary-color\": \"#007bff\",\n        \"--secondary-color\": \"#6c757d\",\n        \"--button-bg-color\": \"#d13232\",\n        \"--button-text-color\": \"#84d34b\"\n    }\n}"
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "Get Image",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{croissant-server}}/images/89739457-e332-45bd-91de-ad0f8898b26e",
+					"host": [
+						"{{croissant-server}}"
+					],
+					"path": [
+						"images",
+						"89739457-e332-45bd-91de-ad0f8898b26e"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "croissant-server",
+			"value": "uri"
+		},
+		{
+			"key": "categoryid",
+			"value": "485351e0-4844-4ca8-8f01-346cf5dfde22"
+		}
+	]
+}

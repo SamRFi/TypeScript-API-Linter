@@ -22,11 +22,46 @@ describe('parseCollection', () => {
         path: 'auth/signin',
         name: 'Sign In',
         requestBody: {
-          email: 'user@example.com',
-          password: 'password123',
-          stay_logged_in: true
-        }
-      }
+          email: 'user5@example.com',
+          password: 'Securepassword123!',
+          stay_logged_in: true,
+        },
+      },
+      {
+        method: 'POST',
+        path: 'auth/signout',
+        name: 'Sign Out',
+        requestBody: undefined,
+      },
+      {
+        method: 'POST',
+        path: 'auth/refresh',
+        name: 'Refresh',
+        requestBody: undefined,
+      },
+      {
+        method: 'GET',
+        path: 'auth/status',
+        name: 'Status',
+        requestBody: undefined,
+      },
+      {
+        method: 'POST',
+        path: 'users/register',
+        name: 'Register',
+        requestBody: {
+          email: 'user5@example.com',
+          password: 'Securepassword123!',
+          name: 'John Doe',
+          phone_number: '123-456-7890',
+        },
+      },
+      {
+        method: 'GET',
+        path: 'users/profile',
+        name: 'Profile',
+        requestBody: undefined,
+      },
     ];
 
     // Use Jest's expect function to assert the parsed endpoints against the expected ones

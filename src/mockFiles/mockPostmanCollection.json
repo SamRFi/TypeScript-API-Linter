@@ -1,98 +1,450 @@
 {
-  "info": {
-    "_postman_id": "test-id",
-    "name": "test-collection",
-    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
-    "_exporter_id": "test-exporter-id"
-  },
-  "item": [
-    {
-      "name": "authentication",
-      "item": [
-        {
-          "name": "Sign In",
-          "request": {
-            "method": "POST",
-            "header": [],
-            "body": {
-              "mode": "raw",
-              "raw": "{\r\n    \"email\": \"user@example.com\",\r\n    \"password\": \"password123\",\r\n    \"stay_logged_in\": true\r\n}",
-              "options": {
-                "raw": {
-                  "language": "json"
-                }
-              }
-            },
-            "url": {
-              "raw": "{{host}}/auth/signin",
-              "host": ["{{host}}"],
-              "path": ["auth", "signin"]
-            }
-          },
-          "response": [
-            {
-              "name": "Sign In",
-              "originalRequest": {
-                "method": "POST",
-                "header": [],
-                "body": {
-                  "mode": "raw",
-                  "raw": "{\r\n    \"email\": \"user@example.com\",\r\n    \"password\": \"password123\",\r\n    \"stay_logged_in\": true\r\n}",
-                  "options": {
-                    "raw": {
-                      "language": "json"
-                    }
-                  }
-                },
-                "url": {
-                  "raw": "{{host}}/auth/signin",
-                  "host": ["{{host}}"],
-                  "path": ["auth", "signin"]
-                }
-              },
-              "status": "OK",
-              "code": 200,
-              "_postman_previewlanguage": "plain",
-              "header": [
-                {
-                  "key": "Access-Control-Allow-Credentials",
-                  "value": "true"
-                },
-                {
-                  "key": "Access-Control-Allow-Headers",
-                  "value": "Accept, Content-Type, Content-Length, Accept-Encoding, X-CSRF-Token, Authorization"
-                },
-                {
-                  "key": "Access-Control-Allow-Methods",
-                  "value": "POST, GET, OPTIONS, PUT, DELETE"
-                },
-                {
-                  "key": "Access-Control-Allow-Origin",
-                  "value": "http://localhost:5173"
-                },
-                {
-                  "key": "Set-Cookie",
-                  "value": "access_token=test-access-token; Path=/; Expires=Fri, 01 Mar 2024 11:18:07 GMT; HttpOnly; Secure"
-                },
-                {
-                  "key": "Set-Cookie",
-                  "value": "refresh_token=test-refresh-token; Path=/; Expires=Fri, 08 Mar 2024 10:18:07 GMT; HttpOnly; Secure"
-                },
-                {
-                  "key": "Date",
-                  "value": "Fri, 01 Mar 2024 10:18:07 GMT"
-                },
-                {
-                  "key": "Content-Length",
-                  "value": "0"
-                }
-              ],
-              "cookie": [],
-              "body": null
-            }
-          ]
-        }
-      ]
-    }
+	"info": {
+		"_postman_id": "094baad6-1dff-4e70-af06-b9e0ce19a804",
+		"name": "project-croissant",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "20112357"
+	},
+	"item": [
+		{
+			"name": "authentication",
+			"item": [
+				{
+					"name": "Sign In",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\": \"user5@example.com\",\r\n    \"password\": \"Securepassword123!\",\r\n    \"stay_logged_in\": true\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{croissant-server}}/auth/signin",
+							"host": [
+								"{{croissant-server}}"
+							],
+							"path": [
+								"auth",
+								"signin"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "200",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"email\": \"user5@example.com\",\r\n    \"password\": \"Securepassword123!\",\r\n    \"stay_logged_in\": true\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{croissant-server}}/auth/signin",
+									"host": [
+										"{{croissant-server}}"
+									],
+									"path": [
+										"auth",
+										"signin"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "plain",
+							"header": [
+								{
+									"key": "Access-Control-Allow-Credentials",
+									"value": "true"
+								},
+								{
+									"key": "Access-Control-Allow-Headers",
+									"value": "Accept, Content-Type, Content-Length, Accept-Encoding, X-CSRF-Token, Authorization"
+								},
+								{
+									"key": "Access-Control-Allow-Methods",
+									"value": "POST, GET, OPTIONS, PUT, DELETE"
+								},
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": "http://localhost:5173"
+								},
+								{
+									"key": "Set-Cookie",
+									"value": "access_token=eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJjcm9pc3NhbnQtc2VydmVyIiwic3ViIjoiYTVhYzM3ZjgtYWU3ZC00NGVjLTkwM2EtOGFkMjg0YjVmNmE5IiwiYXVkIjoiZGV2X3Rlc3RfY3JvaXNzYW50IiwiZXhwIjoiMjAyNC0wMy0wMVQxMToxODowNy40NTU1MzMxWiIsIm5iZiI6IjIwMjQtMDMtMDFUMTA6MTg6MDcuNDU1NTMzMVoiLCJpYXQiOiIyMDI0LTAzLTAxVDEwOjE4OjA3LjQ1NTUzMzFaIiwianRpIjoiYzhjZWYyNWQtNTZjMS00ODgzLThlMDgtYTFmMzk0ZDc1MWQ1In0.Xe6n0iWUn-Achq3sWstsURPzaMY3j-oY1a8EAcjwdefuRktwyEbwJLwlBsn8tm4ruEr4XLooOj4md0lQsaCmbd7sBnMh4AJul2JViONLceENSpFOY4uXD9YCoN-G90YAmS0sJeJBrHDnTLGjBm4eT8lpcaZMARD5iZIHwAmOM_jrmGag06YeoPtwT2eH-6jzInINN3FsvUYdn1qWFWVjlBMAQDOd7FZ5Oejmqqn3Lb2cLYnP8-lmiVj0LNXUdtYhQsKrZYuI5V848FDktorfCfnO_ltjaDBZSRIkzKjHscCId8KrKY5D5jtfZlKu_104Y2chzpvYqR3HNLPr4rdbeFhIevA1lVBjZ9gZxF_yEomsN5QJP_46ebWE4hesSf1XDOa4smjF6HQymfEMzkekpnK8cPaWxPJLk5JX2OFQLRZ166v19ozcSMMTqy7F4tdg-RhAxCQyZ2NAH71N_J5zaehpGkDZxvtFGSFVZLCNqxdxhI_lIfqTi-g9SMj16IxY6E7LoEH4c5_yIg_Ljfy59K-FfJZPX5XLsRWMj0kT3jPiUgiJ0U8Z-rf6xy3usHbHdDdQ8cBHdfKMaHcXOeM9v44-w7PuRp5bnbYgRiHvHOJfMv0YFSV01ibXSG3s-GFwf9NG1vroYg_M_oepL2th_cRDjZ76IBWebXT8EkZY-7I; Path=/; Expires=Fri, 01 Mar 2024 11:18:07 GMT; HttpOnly; Secure"
+								},
+								{
+									"key": "Set-Cookie",
+									"value": "refresh_token=eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJjcm9pc3NhbnQtc2VydmVyIiwic3ViIjoiYTVhYzM3ZjgtYWU3ZC00NGVjLTkwM2EtOGFkMjg0YjVmNmE5IiwiYXVkIjoiZGV2X3Rlc3RfY3JvaXNzYW50IiwiZXhwIjoiMjAyNC0wMy0wOFQxMDoxODowNy40NjExNTM5WiIsIm5iZiI6IjIwMjQtMDMtMDFUMTA6MTg6MDcuNDYxMTUzOVoiLCJpYXQiOiIyMDI0LTAzLTAxVDEwOjE4OjA3LjQ2MTE1MzlaIiwianRpIjoiOWFmZjg4N2EtZTg3MC00N2QwLThkZWEtNjI0NDQ4YTA3NTU3In0.QfHh4vbXUmmfuuzvRTZCXjjzW5jvFprxUcJsVbvj51988pyG0e6_PL6ZsWc4ygvWrj1NS_82ad2mkAOXYo8AM_vVzibYzE10JF5tc8BahcVpU_r2BEEH7WqKYcBG-CcehKu0pB2sy_2xrkqOHZKb3zjk22IC4sSpybUjs_irlx78dAKfJZPCqGV65esL0N8Skvbzy7Y1HZO8A7TXb0S7P2aeJiJ2HCWpd9SyFF7mafbeNqtyhIDBMMXSV90WvkdfaW4RSaptkFZvNjqMabE3u4nsyiSbbbob385HObp1DscbG3zeTWFIbzReJ-eCUUsRzXRSkLegfRQcZ_fjRX54R-r5kmfGuYv5HMyHcYoqXGswuUrXZ4d0FseYxaj_HwO06ciHHMeJjGyexwciylDnbfyjW7XXSKkDaUYg9qW8ych2j07vf6YwB0h2RMRUmuwiSYiW9p8jhCuS4XChzoFNklvliGGiCjxcny7zoBD6WevqBYTdytv8OaNOiWkbQjB5JDpJ571XuMHxWbMLhKbydvagwoc-5kV4uqcaEGQquQxZy9aCbUrW8--04msIl4bZaonzWdWLTxZCmgQ0Cw_3BI1SSgl3LECP5ht2zWV7RW8DkdbGCDMUlrWWEG1073AYm4BK6tNL3o2RdOxZPv5TxNfxrvY599DRZwd4dA0cssw; Path=/; Expires=Fri, 08 Mar 2024 10:18:07 GMT; HttpOnly; Secure"
+								},
+								{
+									"key": "Date",
+									"value": "Fri, 01 Mar 2024 10:18:07 GMT"
+								},
+								{
+									"key": "Content-Length",
+									"value": "0"
+								}
+							],
+							"cookie": [],
+							"body": null
+						}
+					]
+				},
+				{
+					"name": "Sign Out",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "{{croissant-server}}/auth/signout",
+							"host": [
+								"{{croissant-server}}"
+							],
+							"path": [
+								"auth",
+								"signout"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Sign Out",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"url": {
+									"raw": "{{croissant-server}}/auth/signout",
+									"host": [
+										"{{croissant-server}}"
+									],
+									"path": [
+										"auth",
+										"signout"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "plain",
+							"header": [
+								{
+									"key": "Access-Control-Allow-Credentials",
+									"value": "true"
+								},
+								{
+									"key": "Access-Control-Allow-Headers",
+									"value": "Accept, Content-Type, Content-Length, Accept-Encoding, X-CSRF-Token, Authorization"
+								},
+								{
+									"key": "Access-Control-Allow-Methods",
+									"value": "POST, GET, OPTIONS, PUT, DELETE"
+								},
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": "http://localhost:5173"
+								},
+								{
+									"key": "Date",
+									"value": "Fri, 01 Mar 2024 10:18:29 GMT"
+								},
+								{
+									"key": "Content-Length",
+									"value": "0"
+								}
+							],
+							"cookie": [],
+							"body": null
+						}
+					]
+				},
+				{
+					"name": "Refresh",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "{{croissant-server}}/auth/refresh",
+							"host": [
+								"{{croissant-server}}"
+							],
+							"path": [
+								"auth",
+								"refresh"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Refresh",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"url": {
+									"raw": "{{croissant-server}}/auth/refresh",
+									"host": [
+										"{{croissant-server}}"
+									],
+									"path": [
+										"auth",
+										"refresh"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "plain",
+							"header": [
+								{
+									"key": "Access-Control-Allow-Credentials",
+									"value": "true"
+								},
+								{
+									"key": "Access-Control-Allow-Headers",
+									"value": "Accept, Content-Type, Content-Length, Accept-Encoding, X-CSRF-Token, Authorization"
+								},
+								{
+									"key": "Access-Control-Allow-Methods",
+									"value": "POST, GET, OPTIONS, PUT, DELETE"
+								},
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": "http://localhost:5173"
+								},
+								{
+									"key": "Set-Cookie",
+									"value": "access_token=eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJjcm9pc3NhbnQtc2VydmVyIiwic3ViIjoiYTVhYzM3ZjgtYWU3ZC00NGVjLTkwM2EtOGFkMjg0YjVmNmE5IiwiYXVkIjoiZGV2X3Rlc3RfY3JvaXNzYW50IiwiZXhwIjoiMjAyNC0wMy0wMVQxMToxNjoxNi40MTM1NDc1WiIsIm5iZiI6IjIwMjQtMDMtMDFUMTA6MTY6MTYuNDEzNTQ3NVoiLCJpYXQiOiIyMDI0LTAzLTAxVDEwOjE2OjE2LjQxMzU0NzVaIiwianRpIjoiOGEwYmUyOWMtODI5Mi00MTg3LTllNWQtMDBiMjM4ZGZmMjM1In0.WmbjwFbUKblD4FJtySMsj5aBG7v9C1qcgy87tZ7fa7u2Z-vrfGL1BkmJrOQIjQawlzPqmUaUBZ42--EQlKgwlk3KsGJ8_Fh93mfIaGw1cQPwikx1Gc6QsKSL_stp79Nbv_SSmwiNBftfype-4HNgsEGHbj7cn98Wf1AA2cV74IeVDfnyO0J7a3tNa8ckstPdTAgzY5AcJoH9IEwIGtAztiajuB-8VWzN-PXSjMtVpBnHrFOATyDdn7pPrDtW-m8UkgBS-s7C4Ejqim2zQTNzb117FBcLej9FeFZ3FyIn-wsM1QUQPB8NwFy2tTiadqqpzk3FXy5-MYEojiK0d2frJHKQBOwVz6djXzbsgx_7mVg0kZ7PaBgtlGtx9KjdKtzvKfwJJ4RJr7MWPoQDhOVJ5unBu0kyYoRZjiRX2urFsBb6vRAi8d93ej-82Y1saYqQHxBWxb0xzn_jR3qUlYE1LgN_nlUAtjlVgyeN_i7PVdn-b1Cv-nuf0gca-3qW6cgUxbtqW5QqFM9F6qZZ-O8wFMtBy2yB9vfF-murQD2I2iVf38zEupDiqD9YBitA1HiNqYrsQu8ZzA8i1Cb32hnDB7iuPFh9ffyVZy_cMEB2ChauIY9YmCA0rgD9YqwjmK1uSh9_v-dhKUDy5uK1famX_99iNxWBxRcDVvwIsCl9z4U; Path=/; Expires=Fri, 01 Mar 2024 11:16:16 GMT; HttpOnly; Secure"
+								},
+								{
+									"key": "Set-Cookie",
+									"value": "refresh_token=eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJjcm9pc3NhbnQtc2VydmVyIiwic3ViIjoiYTVhYzM3ZjgtYWU3ZC00NGVjLTkwM2EtOGFkMjg0YjVmNmE5IiwiYXVkIjoiZGV2X3Rlc3RfY3JvaXNzYW50IiwiZXhwIjoiMjAyNC0wMy0wOFQxMDoxNjoxNi40MTkxNTdaIiwibmJmIjoiMjAyNC0wMy0wMVQxMDoxNjoxNi40MTkxNTdaIiwiaWF0IjoiMjAyNC0wMy0wMVQxMDoxNjoxNi40MTkxNTdaIiwianRpIjoiYzViMmQ2NTAtODQ2NS00M2ZiLTk1OGItN2E2YzMzMjNkNWJhIn0.Ey4S6f34KF5KseQ7BsLUpNWDmjSyMZeRYzRoza8rjmNTjlzYougRmOBb6zl6BH6YnGHwq-XVnKo7-iIawtcbx-5x3wkYv11Y8Ofx-ALGA2BeopQAzJDHnY6AAvh7NwDgu-ovgWGji-U2GybPIVAfl2IrsAZzQSVqsWrk7xOxwk5d3-2VZFJz7QYlnM4QGb-k6vtqGSBmdZlAgzCMv9cv1-fehGsxW7o0llbLidkn0PZOQNC9opS3E35OOcTiGToj4zlI5EjZ8HTDlsHaW0UoMbcbo1okxSRAyP_VRo1MVuDQ46oWteJv3SByuNvvgdJ4U7tsFFj_c0snpceBGoHty9W1olPHDMJ91NuYpoLWskHCsK3kS8F1CsjcgjE0-InFz9XsJRvZ9CBmd9P1561HeMuGZeiYmhLjbJRU117Ka3fGHswbyhBvOG_Ie2QsgOdtN52zXm6HrEmHlMhQsTvg10t-vCNPyvSaeLPC13D05mzbE2zVpm5IDMETDUclpHfw34GMeQo8DR6WGnRLiLFlrKvFU-N7w8DCx5mpvsuhRavCdoGpt2QlQsQ5m0OVY2myguu4bp-G-4sSn8TJWTFhJENDlJ7HDMCbow3iHp1wUcCkN2_xDRrr5BhzRxt3lpFZBqC8If7FoDa5Rn0nY1N5NJsY2gJMU-l0zOqPHz4JaN8; Path=/; Expires=Fri, 08 Mar 2024 10:16:16 GMT; HttpOnly; Secure"
+								},
+								{
+									"key": "Date",
+									"value": "Fri, 01 Mar 2024 10:16:16 GMT"
+								},
+								{
+									"key": "Content-Length",
+									"value": "0"
+								}
+							],
+							"cookie": [],
+							"body": null
+						}
+					]
+				},
+				{
+					"name": "Status",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{croissant-server}}/auth/status",
+							"host": [
+								"{{croissant-server}}"
+							],
+							"path": [
+								"auth",
+								"status"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "200",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{croissant-server}}/auth/status",
+									"host": [
+										"{{croissant-server}}"
+									],
+									"path": [
+										"auth",
+										"status"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Access-Control-Allow-Credentials",
+									"value": "true"
+								},
+								{
+									"key": "Access-Control-Allow-Headers",
+									"value": "Accept, Content-Type, Content-Length, Accept-Encoding, X-CSRF-Token, Authorization"
+								},
+								{
+									"key": "Access-Control-Allow-Methods",
+									"value": "POST, GET, OPTIONS, PUT, PATCH, DELETE"
+								},
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": "http://localhost:5173"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Date",
+									"value": "Mon, 11 Mar 2024 13:12:37 GMT"
+								},
+								{
+									"key": "Content-Length",
+									"value": "22"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"role\": \"shop_owner\"\n}"
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "user",
+			"item": [
+				{
+					"name": "Register",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\": \"user5@example.com\",\r\n    \"password\": \"Securepassword123!\",\r\n    \"name\": \"John Doe\",\r\n    \"phone_number\": \"123-456-7890\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{croissant-server}}/users/register",
+							"host": [
+								"{{croissant-server}}"
+							],
+							"path": [
+								"users",
+								"register"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Conflict",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"email\": \"user6@example.com\",\r\n    \"password\": \"Securepassword123!\",\r\n    \"name\": \"John Doe\",\r\n    \"phone_number\": \"123-456-7890\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{croissant-server}}/users/register",
+									"host": [
+										"{{croissant-server}}"
+									],
+									"path": [
+										"users",
+										"register"
+									]
+								}
+							},
+							"status": "Conflict",
+							"code": 409,
+							"_postman_previewlanguage": "plain",
+							"header": [
+								{
+									"key": "Access-Control-Allow-Credentials",
+									"value": "true"
+								},
+								{
+									"key": "Access-Control-Allow-Headers",
+									"value": "Accept, Content-Type, Content-Length, Accept-Encoding, X-CSRF-Token, Authorization"
+								},
+								{
+									"key": "Access-Control-Allow-Methods",
+									"value": "POST, GET, OPTIONS, PUT, DELETE"
+								},
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": "http://localhost:5173"
+								},
+								{
+									"key": "Content-Type",
+									"value": "text/plain; charset=utf-8"
+								},
+								{
+									"key": "X-Content-Type-Options",
+									"value": "nosniff"
+								},
+								{
+									"key": "Date",
+									"value": "Mon, 04 Mar 2024 13:03:49 GMT"
+								},
+								{
+									"key": "Content-Length",
+									"value": "1"
+								}
+							],
+							"cookie": [],
+							"body": "\n"
+						}
+					]
+				},
+				{
+					"name": "Profile",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "token",
+								"value": "",
+								"type": "text",
+								"disabled": true
+							}
+						],
+						"url": {
+							"raw": "{{croissant-server}}/users/profile",
+							"host": [
+								"{{croissant-server}}"
+							],
+							"path": [
+								"users",
+								"profile"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
   ]
 }

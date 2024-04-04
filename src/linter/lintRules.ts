@@ -12,14 +12,13 @@ function lintEndpointRules(endpointDefinitions: EndpointDefinition[], tsEndpoint
     const normalizedDefPath = normalizePath(def.path);
     const matchingTSEndpoint = findMatchingTSEndpoint(tsEndpoints, def.method, normalizedDefPath);
 
-    if (!matchingTSEndpoint) {
-      errors.push(createEndpointNotFoundError(def.method, normalizedDefPath));
-    } else {
+    if (matchingTSEndpoint) {
       lintRequestBody(def, matchingTSEndpoint, typeDefinitions, errors);
     }
   });
 
   lintMissingEndpoints(tsEndpoints, endpointDefinitions, errors);
+  lintExtraEndpoints(tsEndpoints, endpointDefinitions, errors);
 
   return errors;
 }
@@ -28,18 +27,18 @@ function findMatchingTSEndpoint(tsEndpoints: TSEndpoint[], method: string, path:
   return tsEndpoints.find(e => e.method === method && normalizePath(e.path) === path);
 }
 
-function createEndpointNotFoundError(method: string, path: string): string {
-  return `Endpoint defined in Postman collection not found in code: ${method} ${path}`;
-}
-
 function lintRequestBody(def: EndpointDefinition, matchingTSEndpoint: TSEndpoint, typeDefinitions: TypeDefinition[], errors: string[]): void {
   if (def.requestBody) {
     const expectedProperties = Object.keys(def.requestBody);
+    console.log(`Endpoint: ${def.name}`);
+    console.log(`Request Body Type: ${matchingTSEndpoint.requestBodyType}`);
     const matchingType = findMatchingType(typeDefinitions, matchingTSEndpoint.requestBodyType);
 
     if (!matchingType) {
+      console.log(`No matching type found for endpoint: ${def.name}`);
       errors.push(createNoMatchingTypeError(def.name));
     } else {
+      console.log(`Matching Type: ${matchingType.name}`);
       const actualProperties = Object.keys(matchingType.properties);
       lintMissingProperties(def.name, expectedProperties, actualProperties, errors);
       lintExtraProperties(def.name, expectedProperties, actualProperties, errors);
@@ -50,9 +49,17 @@ function lintRequestBody(def: EndpointDefinition, matchingTSEndpoint: TSEndpoint
 
 function findMatchingType(typeDefinitions: TypeDefinition[], requestBodyType: string | null | undefined): TypeDefinition | undefined {
   if (requestBodyType === null || requestBodyType === undefined) {
+    console.log(`Request Body Type is null or undefined`);
     return undefined;
   }
-  return typeDefinitions.find(type => type.name === requestBodyType);
+  console.log(`Searching for type: ${requestBodyType}`);
+  const matchingType = typeDefinitions.find(type => type.name === requestBodyType);
+  if (matchingType) {
+    console.log(`Found matching type: ${matchingType.name}`);
+  } else {
+    console.log(`No matching type found for: ${requestBodyType}`);
+  }
+  return matchingType;
 }
 
 function createNoMatchingTypeError(endpointName: string): string {
@@ -88,6 +95,15 @@ function lintMissingEndpoints(tsEndpoints: TSEndpoint[], endpointDefinitions: En
     const normalizedTSPath = normalizePath(e.path);
     if (!endpointDefinitions.some(def => def.method === e.method && normalizePath(def.path) === normalizedTSPath)) {
       errors.push(`Endpoint found in code but not defined in Postman collection: ${e.method} ${normalizedTSPath}`);
+    }
+  });
+}
+
+function lintExtraEndpoints(tsEndpoints: TSEndpoint[], endpointDefinitions: EndpointDefinition[], errors: string[]): void {
+  endpointDefinitions.forEach((def) => {
+    const normalizedDefPath = normalizePath(def.path);
+    if (!tsEndpoints.some(e => e.method === def.method && normalizePath(e.path) === normalizedDefPath)) {
+      errors.push(`Endpoint defined in Postman collection but not found in code: ${def.method} ${def.path}`);
     }
   });
 }

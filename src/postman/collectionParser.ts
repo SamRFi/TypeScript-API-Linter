@@ -3,8 +3,6 @@
 import * as fs from 'fs';
 import { CollectionItem, EndpointDefinition, PostmanCollection, RequestItem } from '../types/Postman.types';
 
-
-
 function readPostmanCollection(filePath: string): PostmanCollection {
     const rawData = fs.readFileSync(filePath, 'utf8');
     const collection: PostmanCollection = JSON.parse(rawData);
@@ -24,8 +22,14 @@ function parseCollection(collection: PostmanCollection): EndpointDefinition[] {
                 extractEndpoints(item.item);
             } else if (item.request) {
                 const { method, url, body } = item.request;
-                const fullPath = url.path.join('/');
-                
+                let fullPath = '';
+
+                if (url && url.path && Array.isArray(url.path)) {
+                    fullPath = url.path.join('/');
+                } else if (url && url.raw) {
+                    fullPath = url.raw.replace(/^https?:\/\/[^/]+/, '');
+                }
+
                 let requestBody;
                 if (body && body.mode === 'raw' && body.raw) {
                     try {
