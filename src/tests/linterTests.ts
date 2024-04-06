@@ -1,29 +1,21 @@
 // tests/linterTests.ts
-import { lintEndpointRules } from '../linter/lintRules';
+import { lintProject } from '../linter/index';
 import { parseCollection, readPostmanCollection } from '../postman/collectionParser';
-import { tsParser, TSEndpoint } from '../linter/tsParser';
-import { parseTypes, TypeDefinition } from '../linter/typeParser';
 import path from 'path';
 
 describe('Linter Functionality', () => {
-  it('should detect mismatched endpoints and types between TS files and Postman collection', () => {
+  it('should detect mismatched endpoints and types between TS files and Postman collection', async () => {
     // Adjust the path to the directory containing your mock TypeScript file
     const tsFilesPath = path.join(__dirname, '../mockFiles/succeedingMockRequests'); 
     const typesPath = path.join(__dirname, '../mockFiles/succeedingMockTypes'); 
-
-    // Use tsParser to parse TypeScript files in the directory and get endpoints
-    const tsEndpoints: TSEndpoint[] = tsParser(tsFilesPath);
-
-    // Use parseTypes to parse TypeScript type definitions
-    const typeDefinitions: TypeDefinition[] = parseTypes(typesPath);
 
     // Path to the Postman collection JSON file
     const collectionFilePath = path.join(__dirname, '../mockFiles/mockPostmanCollection.json');
     const postmanCollection = readPostmanCollection(collectionFilePath);
     const postmanEndpoints = parseCollection(postmanCollection);
 
-    // Run the linting rule checker
-    const errors = lintEndpointRules(postmanEndpoints, tsEndpoints, typeDefinitions);
+    // Run the linting project function
+    const errors = await lintProject(tsFilesPath, typesPath, postmanEndpoints);
 
     // Assert there are no errors (or adjust assertion based on expected outcome)
     expect(errors).toEqual([]);
@@ -31,24 +23,19 @@ describe('Linter Functionality', () => {
 });
 
 describe('Linter Functionality - Failure Cases', () => {
-  it('should correctly identify mismatched endpoints and types between TS files and Postman collection', () => {
+  it('should correctly identify mismatched endpoints and types between TS files and Postman collection', async () => {
     // Path to the directory containing the intentionally failing mock TypeScript files
     const tsFilesPath = path.join(__dirname, '../mockFiles/failingMockRequests');
     const typesPath = path.join(__dirname, '../mockFiles/failingMockTypes');
-
-    // Use tsParser to parse TypeScript files in the directory and get endpoints
-    const tsEndpoints: TSEndpoint[] = tsParser(tsFilesPath);
-
-    // Use parseTypes to parse TypeScript type definitions
-    const typeDefinitions: TypeDefinition[] = parseTypes(typesPath);
 
     // Path to the Postman collection JSON file
     const collectionFilePath = path.join(__dirname, '../mockFiles/mockPostmanCollection.json');
     const postmanCollection = readPostmanCollection(collectionFilePath);
     const postmanEndpoints = parseCollection(postmanCollection);
 
-    // Run the linting rule checker
-    const errors = lintEndpointRules(postmanEndpoints, tsEndpoints, typeDefinitions);
+    // Run the linting project function
+    const errors = await lintProject(tsFilesPath, typesPath, postmanEndpoints);
+
     console.log(errors);
     // Assert that errors are present
     expect(errors.length).toBeGreaterThan(0);

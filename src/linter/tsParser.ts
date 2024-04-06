@@ -1,56 +1,49 @@
-// src/linter/tsParser.ts
 import ts from 'typescript';
 import fs from 'fs';
 import path from 'path';
 import { TSEndpoint } from '../types/TSEndpoint';
+import { createProgram } from './createProgram';
 
-
-function findEndpointsInFile(fileContent: string, fileName: string): TSEndpoint[] {
+function findEndpointsInFile(fileContent: string, fileName: string, program: ts.Program): TSEndpoint[] {
   let endpoints: TSEndpoint[] = [];
 
   const sourceFile = ts.createSourceFile(
     fileName,
     fileContent,
-    ts.ScriptTarget.ES2015,
+    ts.ScriptTarget.ES2019,
     /*setParentNodes */ true
   );
 
-  function findVariableDeclaration(node: ts.Node, variableName: string): ts.VariableDeclaration | undefined {
-    let variableDeclaration: ts.VariableDeclaration | undefined;
-
-    function visit(node: ts.Node) {
-      if (ts.isVariableDeclaration(node) && ts.isIdentifier(node.name) && node.name.text === variableName) {
-        variableDeclaration = node;
-        return;
-      }
-      ts.forEachChild(node, visit);
-    }
-
-    ts.forEachChild(node, visit);
-    return variableDeclaration;
-  }
+  const typeChecker = program.getTypeChecker();
 
   function visit(node: ts.Node) {
     if (ts.isCallExpression(node) && node.expression.getText(sourceFile).includes('fetch')) {
-      let method = 'GET'; 
+      let method = 'GET';
       let url = '';
-
       let requestBodyType: string | null = null;
+
+      console.log('Found fetch call expression');
 
       node.arguments.forEach(arg => {
         if (ts.isObjectLiteralExpression(arg)) {
+          console.log('Processing object literal argument');
+
           arg.properties.forEach(prop => {
             if (ts.isPropertyAssignment(prop) && prop.name.getText(sourceFile) === 'body') {
+              console.log('Found body property');
+
               const initializer = prop.initializer;
               if (ts.isCallExpression(initializer) && initializer.expression.getText(sourceFile) === 'JSON.stringify') {
+                console.log('Found JSON.stringify call');
+
                 const argument = initializer.arguments[0];
                 if (ts.isIdentifier(argument)) {
-                  const variableName = argument.getText(sourceFile);
-                  const variableDeclaration = findVariableDeclaration(sourceFile, variableName);
+                  console.log('Processing identifier argument:', argument.getText(sourceFile));
 
-                  if (variableDeclaration && variableDeclaration.type) {
-                    requestBodyType = variableDeclaration.type.getText(sourceFile);
-                  }
+                  const type = typeChecker.getTypeAtLocation(argument);
+                  requestBodyType = typeChecker.typeToString(type);
+
+                  console.log('Extracted request body type:', requestBodyType);
                 }
               }
             }
@@ -71,9 +64,11 @@ function findEndpointsInFile(fileContent: string, fileName: string): TSEndpoint[
       });
 
       if (url) {
-        const urlObj = new URL(url, "https://baseurl.com"); // Use a dummy base URL for parsing
-        const path = urlObj.pathname; // Extract path, ignoring the domain
+        const urlObj = new URL(url, "https://baseurl.com");
+        const path = urlObj.pathname;
         endpoints.push({ method, path, requestBodyType });
+
+        console.log('Endpoint found:', { method, path, requestBodyType });
       }
     }
     ts.forEachChild(node, visit);
@@ -84,7 +79,7 @@ function findEndpointsInFile(fileContent: string, fileName: string): TSEndpoint[
   return endpoints;
 }
 
-function tsParser(directoryPath: string): TSEndpoint[] {
+function tsParser(directoryPath: string, program: ts.Program): TSEndpoint[] {
   let endpoints: TSEndpoint[] = [];
 
   function readFilesFromDirectory(directory: string) {
@@ -94,7 +89,7 @@ function tsParser(directoryPath: string): TSEndpoint[] {
         readFilesFromDirectory(resolvedPath);
       } else if (dirent.isFile() && dirent.name.endsWith('.ts')) {
         const fileContent = fs.readFileSync(resolvedPath, 'utf8');
-        endpoints = endpoints.concat(findEndpointsInFile(fileContent, dirent.name));
+        endpoints = endpoints.concat(findEndpointsInFile(fileContent, dirent.name, program));
       }
     });
   }

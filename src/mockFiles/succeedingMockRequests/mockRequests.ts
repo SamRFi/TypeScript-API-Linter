@@ -21,6 +21,7 @@ async function fetchData() {
 
   return response.json();
 }
+
 export const signOut = async (): Promise<any> => {
   const response = await fetch('https://example.com/auth/signout', {
     method: 'POST',

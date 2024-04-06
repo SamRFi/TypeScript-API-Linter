@@ -6,7 +6,7 @@ import { TypeDefinition } from '../types/TypeDefinition';
 
 
 
-function findTypesInFile(fileContent: string, fileName: string): TypeDefinition[] {
+function findTypesInFile(fileContent: string, fileName: string, program: ts.Program): TypeDefinition[] {
     const types: TypeDefinition[] = [];
   
     const sourceFile = ts.createSourceFile(
@@ -74,7 +74,7 @@ function findTypesInFile(fileContent: string, fileName: string): TypeDefinition[
     return types;
   }
 
-function parseTypes(directoryPath: string): TypeDefinition[] {
+function parseTypes(directoryPath: string, program: ts.Program): TypeDefinition[] {
   let types: TypeDefinition[] = [];
 
   function readFilesFromDirectory(directory: string) {
@@ -84,7 +84,7 @@ function parseTypes(directoryPath: string): TypeDefinition[] {
         readFilesFromDirectory(resolvedPath);
       } else if (dirent.isFile() && dirent.name.endsWith('.ts')) {
         const fileContent = fs.readFileSync(resolvedPath, 'utf8');
-        types = types.concat(findTypesInFile(fileContent, dirent.name));
+        types = types.concat(findTypesInFile(fileContent, dirent.name, program));
       }
     });
   }
