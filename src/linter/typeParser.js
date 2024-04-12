@@ -74,7 +74,7 @@ function parseTypes(directoryPath) {
             if (dirent.isDirectory()) {
                 readFilesFromDirectory(resolvedPath);
             }
-            else if (dirent.isFile() && dirent.name.endsWith('.ts')) {
+            else if (dirent.isFile()) {
                 var fileContent = fs.readFileSync(resolvedPath, 'utf8');
                 var fileTypes = findTypesInFile(fileContent, dirent.name);
                 types = types.concat(fileTypes);

@@ -38,23 +38,23 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.lintProject = void 0;
 var lintRules_1 = require("./lintRules");
-var tsParser_1 = require("./tsParser");
+var requestParser_1 = require("./requestParser");
 var typeParser_1 = require("./typeParser");
 var ts_morph_1 = require("ts-morph");
-function lintProject(tsFilesDirectory, typesDirectory, postmanEndpoints) {
+function lintProject(requestFilesDirectory, typesDirectory, postmanEndpoints) {
     return __awaiter(this, void 0, void 0, function () {
-        var project, tsEndpoints, typeDefinitions, errors;
+        var project, requestEndpoints, typeDefinitions, errors;
         return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0:
                     project = new ts_morph_1.Project();
-                    project.addSourceFilesAtPaths("".concat(tsFilesDirectory, "/**/*.ts"));
-                    project.addSourceFilesAtPaths("".concat(typesDirectory, "/**/*.ts"));
-                    return [4 /*yield*/, (0, tsParser_1.tsParser)(project, postmanEndpoints)];
+                    project.addSourceFilesAtPaths("".concat(requestFilesDirectory, "/**/*"));
+                    project.addSourceFilesAtPaths("".concat(typesDirectory, "/**/*"));
+                    return [4 /*yield*/, (0, requestParser_1.tsParser)(project, postmanEndpoints)];
                 case 1:
-                    tsEndpoints = _a.sent();
+                    requestEndpoints = _a.sent();
                     typeDefinitions = (0, typeParser_1.parseTypes)(typesDirectory);
-                    errors = (0, lintRules_1.lintEndpointRules)(postmanEndpoints, tsEndpoints, typeDefinitions);
+                    errors = (0, lintRules_1.lintEndpointRules)(postmanEndpoints, requestEndpoints, typeDefinitions);
                     if (errors.length > 0) {
                         console.log('Linting errors found:');
                         errors.forEach(function (error) { return console.log(error); });

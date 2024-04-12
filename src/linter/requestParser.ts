@@ -1,4 +1,4 @@
-// src/linter/tsParser.ts
+// src/linter/requestParser.ts
 import { Project, SourceFile, SyntaxKind, Node, ObjectLiteralExpression, PropertyAssignment, CallExpression, Identifier, StringLiteral } from 'ts-morph';
 import { TSEndpoint } from '../types/TSEndpoint';
 import { EndpointDefinition } from '../types/Postman.types';

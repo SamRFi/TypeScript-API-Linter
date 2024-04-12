@@ -1,7 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.tsParser = void 0;
-// src/linter/tsParser.ts
+// src/linter/requestParser.ts
 var ts_morph_1 = require("ts-morph");
 function findEndpointsInFile(sourceFile, postmanEndpoints) {
     var endpoints = [];
