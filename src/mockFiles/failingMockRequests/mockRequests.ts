@@ -3,7 +3,7 @@ import { DeleteCategoryResponseBody, DeleteSubcategoryResponseBody, NewCategoryR
 async function fetchData() {
   const requestBody: SignInRequestBody = {
     email: 'testemail',
-    password: 12345,
+    password: 'testpassword',
     stay_logged_in: true,
   };
 
@@ -60,17 +60,6 @@ export const profile = async (): Promise<ProfileResponseBody> => {
 };
 
 // src/api/categoryEndpoints.ts
-
-export const newCategory = async (data: NewCategoryRequestBody): Promise<NewCategoryResponseBody> => {
-  const response = await fetch('https://example.com/categories', {
-    method: 'POST',
-    body: JSON.stringify(data),
-    headers: {
-      'Content-Type': 'application/json',
-    },
-  });
-  return response.json();
-};
 
 export const updateCategory = async (id: string, data: UpdateCategoryRequestBody): Promise<UpdateCategoryResponseBody> => {
   const response = await fetch(`https://example.com/categories/${id}`, {

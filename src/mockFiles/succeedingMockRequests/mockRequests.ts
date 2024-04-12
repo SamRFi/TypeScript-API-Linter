@@ -44,11 +44,10 @@ export const status = async (): Promise<any> => {
 // src/api/userEndpoints.ts
 
 export const register = async (data: RegisterRequestBody): Promise<RegisterResponseBody> => {
-  const requestBody: RegisterRequestBody = data;
 
   const response = await fetch('https://example.com/users/register', {
     method: 'POST', 
-    body: JSON.stringify(requestBody),
+    body: JSON.stringify(data),
     headers: {
       'Content-Type': 'application/json',
     },

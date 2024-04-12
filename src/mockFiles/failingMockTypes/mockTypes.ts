@@ -2,7 +2,7 @@
 
 export interface SignInRequestBody {
   email: string;
-  password: number;
+  password: string;
   stay_logged_in: boolean;
 }
   
@@ -26,7 +26,7 @@ export interface SignInRequestBody {
     id: string;
     email: string;
     name: string;
-    phone_number: string;
+    phone_number: number;
   }
   
   export interface ProfileRequestBody {}

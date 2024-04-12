@@ -14,32 +14,32 @@ function findEndpointsInFile(sourceFile: SourceFile, postmanEndpoints: EndpointD
         let url = '';
         let requestBodyTypeName: string | null = null;
 
-        console.log('Found fetch call expression');
+        //console.log('Found fetch call expression');
 
         callExpression.getArguments().forEach(arg => {
           if (Node.isObjectLiteralExpression(arg)) {
-            console.log('Processing object literal argument');
+            //console.log('Processing object literal argument');
 
             (arg as ObjectLiteralExpression).getProperties().forEach(prop => {
               if (prop.asKind(SyntaxKind.PropertyAssignment)) {
                 const propAssignment = prop as PropertyAssignment;
                 if (propAssignment.getName() === 'body') {
-                  console.log('Found body property');
+                  //console.log('Found body property');
 
                   const initializer = propAssignment.getInitializer();
                   if (Node.isCallExpression(initializer) && initializer.getExpression().getText() === 'JSON.stringify') {
-                    console.log('Found JSON.stringify call');
+                    //console.log('Found JSON.stringify call');
 
                     const argument = initializer.getArguments()[0];
                     if (Node.isIdentifier(argument)) {
-                      console.log('Processing identifier argument:', argument.getText());
+                      //console.log('Processing identifier argument:', argument.getText());
                     
                       const typeSymbol = (argument as Identifier).getType().getSymbol();
                       if (typeSymbol) {
                         requestBodyTypeName = typeSymbol.getName();
-                        console.log('Extracted request body type name:', requestBodyTypeName);
+                        //console.log('Extracted request body type name:', requestBodyTypeName);
                       } else {
-                        console.log('Type symbol not found for argument:', argument.getText());
+                        //console.log('Type symbol not found for argument:', argument.getText());
                       }
                     }                    
                   }
@@ -71,7 +71,7 @@ function findEndpointsInFile(sourceFile: SourceFile, postmanEndpoints: EndpointD
           const urlObj = new URL(url, "https://baseurl.com");
           const path = urlObj.pathname;
           endpoints.push({ method, path, requestBodyType: requestBodyTypeName });
-          console.log('Endpoint found:', { method, path, requestBodyType: requestBodyTypeName });
+          //console.log('Endpoint found:', { method, path, requestBodyType: requestBodyTypeName });
         }
       }
     }
