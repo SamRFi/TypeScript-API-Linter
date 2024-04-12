@@ -1,26 +1,5 @@
 import { DeleteCategoryResponseBody, DeleteSubcategoryResponseBody, NewCategoryRequestBody, NewCategoryResponseBody, NewSubcategoryRequestBody, NewSubcategoryResponseBody, ProfileResponseBody, RegisterRequestBody, RegisterResponseBody, SignInRequestBody, UpdateCategoryRequestBody, UpdateCategoryResponseBody, UpdateSubcategoryRequestBody, UpdateSubcategoryResponseBody } from "../failingMockTypes/mockTypes";
 
-async function fetchData() {
-  const requestBody: SignInRequestBody = {
-    email: 'testemail',
-    password: 'testpassword',
-    stay_logged_in: true,
-  };
-
-  const response = await fetch('https://example.com/auth/signin', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify(requestBody),
-  });
-
-  if (!response.ok) {
-    throw new Error('Network response was not ok');
-  }
-
-  return response.json();
-}
 
 export const signOut = async (): Promise<any> => {
   const response = await fetch('https://example.com/auth/signout', {
@@ -110,5 +89,5 @@ export const deleteSubcategory = async (id: string): Promise<DeleteSubcategoryRe
   return response.json();
 };
 
-export { fetchData };
+export { };
   

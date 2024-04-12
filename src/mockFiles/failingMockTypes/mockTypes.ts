@@ -19,14 +19,14 @@ export interface SignInRequestBody {
     email: string;
     password: string;
     name: string;
-    phone_number: string;
+    phone_number: number;
   }
   
   export interface RegisterResponseBody {
     id: string;
     email: string;
     name: string;
-    phone_number: number;
+    phone_number: string;
   }
   
   export interface ProfileRequestBody {}

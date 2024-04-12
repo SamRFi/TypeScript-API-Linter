@@ -33,9 +33,9 @@ function findTypesInFile(fileContent: string, fileName: string): TypeDefinition[
         usages: [],
       });
 
-      console.log(`Found interface: ${typeName}`);
-      console.log('Properties:');
-      console.log(typeProperties);
+      //console.log(`Found interface: ${typeName}`);
+      //console.log('Properties:');
+      //console.log(typeProperties);
     } else if (ts.isTypeAliasDeclaration(node)) {
       const typeName = node.name.getText(sourceFile);
       const typeProperties: { [key: string]: string } = {};
@@ -56,9 +56,9 @@ function findTypesInFile(fileContent: string, fileName: string): TypeDefinition[
         usages: [],
       });
 
-      console.log(`Found type alias: ${typeName}`);
-      console.log('Properties:');
-      console.log(typeProperties);
+      //console.log(`Found type alias: ${typeName}`);
+      //console.log('Properties:');
+      //console.log(typeProperties);
     } else if (ts.isVariableDeclaration(node)) {
       const variableName = node.name.getText(sourceFile);
       const variableType = node.type ? node.type.getText(sourceFile) : 'any';
@@ -69,7 +69,7 @@ function findTypesInFile(fileContent: string, fileName: string): TypeDefinition[
       if (matchingType) {
         // If a matching type is found, add the variable declaration as a usage of that type
         matchingType.usages.push(variableName);
-        console.log(`Found usage of type ${variableType} in variable ${variableName}`);
+        //console.log(`Found usage of type ${variableType} in variable ${variableName}`);
       }
     }
 
@@ -93,8 +93,8 @@ function parseTypes(directoryPath: string): TypeDefinition[] {
         const fileContent = fs.readFileSync(resolvedPath, 'utf8');
         const fileTypes = findTypesInFile(fileContent, dirent.name);
         types = types.concat(fileTypes);
-        console.log(`Parsed types from file: ${dirent.name}`);
-        console.log(fileTypes);
+        //console.log(`Parsed types from file: ${dirent.name}`);
+        //console.log(fileTypes);
       }
     });
   }
