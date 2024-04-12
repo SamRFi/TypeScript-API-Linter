@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "jest",
+    "test": "npx tsc src/cli/index.ts & jest",
     "lint": "node src/cli/index.js"
   },
   "bin": {
