@@ -50,7 +50,7 @@ function lintProject(requestFilesDirectory, typesDirectory, postmanEndpoints) {
                     project = new ts_morph_1.Project();
                     project.addSourceFilesAtPaths("".concat(requestFilesDirectory, "/**/*"));
                     project.addSourceFilesAtPaths("".concat(typesDirectory, "/**/*"));
-                    return [4 /*yield*/, (0, requestParser_1.tsParser)(project, postmanEndpoints)];
+                    return [4 /*yield*/, (0, requestParser_1.tsParser)(project)];
                 case 1:
                     requestEndpoints = _a.sent();
                     typeDefinitions = (0, typeParser_1.parseTypes)(typesDirectory);

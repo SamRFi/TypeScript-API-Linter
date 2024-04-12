@@ -12,7 +12,7 @@ async function lintProject(requestFilesDirectory: string, typesDirectory: string
     project.addSourceFilesAtPaths(`${typesDirectory}/**/*`);
 
     // Get endpoints from request files
-    const requestEndpoints = await tsParser(project, postmanEndpoints);
+    const requestEndpoints = await tsParser(project);
 
     // Parse type definitions
     const typeDefinitions = parseTypes(typesDirectory);
