@@ -1,100 +1,96 @@
-import ts from 'typescript';
-import fs from 'fs';
-import path from 'path';
+// src/linter/tsParser.ts
+import { Project, SourceFile, SyntaxKind, Node, ObjectLiteralExpression, PropertyAssignment, CallExpression, Identifier, StringLiteral } from 'ts-morph';
 import { TSEndpoint } from '../types/TSEndpoint';
-import { createProgram } from './createProgram';
+import { EndpointDefinition } from '../types/Postman.types';
 
-function findEndpointsInFile(fileContent: string, fileName: string, program: ts.Program): TSEndpoint[] {
-  let endpoints: TSEndpoint[] = [];
+function findEndpointsInFile(sourceFile: SourceFile, postmanEndpoints: EndpointDefinition[]): TSEndpoint[] {
+  const endpoints: TSEndpoint[] = [];
 
-  const sourceFile = ts.createSourceFile(
-    fileName,
-    fileContent,
-    ts.ScriptTarget.ES2019,
-    /*setParentNodes */ true
-  );
+  function visit(node: Node) {
+    if (Node.isCallExpression(node)) {
+      const callExpression = node as CallExpression;
+      if (callExpression.getExpression().getText().includes('fetch')) {
+        let method = 'GET';
+        let url = '';
+        let requestBodyTypeName: string | null = null;
 
-  const typeChecker = program.getTypeChecker();
+        console.log('Found fetch call expression');
 
-  function visit(node: ts.Node) {
-    if (ts.isCallExpression(node) && node.expression.getText(sourceFile).includes('fetch')) {
-      let method = 'GET';
-      let url = '';
-      let requestBodyType: string | null = null;
+        callExpression.getArguments().forEach(arg => {
+          if (Node.isObjectLiteralExpression(arg)) {
+            console.log('Processing object literal argument');
 
-      console.log('Found fetch call expression');
+            (arg as ObjectLiteralExpression).getProperties().forEach(prop => {
+              if (prop.asKind(SyntaxKind.PropertyAssignment)) {
+                const propAssignment = prop as PropertyAssignment;
+                if (propAssignment.getName() === 'body') {
+                  console.log('Found body property');
 
-      node.arguments.forEach(arg => {
-        if (ts.isObjectLiteralExpression(arg)) {
-          console.log('Processing object literal argument');
+                  const initializer = propAssignment.getInitializer();
+                  if (Node.isCallExpression(initializer) && initializer.getExpression().getText() === 'JSON.stringify') {
+                    console.log('Found JSON.stringify call');
 
-          arg.properties.forEach(prop => {
-            if (ts.isPropertyAssignment(prop) && prop.name.getText(sourceFile) === 'body') {
-              console.log('Found body property');
-
-              const initializer = prop.initializer;
-              if (ts.isCallExpression(initializer) && initializer.expression.getText(sourceFile) === 'JSON.stringify') {
-                console.log('Found JSON.stringify call');
-
-                const argument = initializer.arguments[0];
-                if (ts.isIdentifier(argument)) {
-                  console.log('Processing identifier argument:', argument.getText(sourceFile));
-
-                  const type = typeChecker.getTypeAtLocation(argument);
-                  requestBodyType = typeChecker.typeToString(type);
-
-                  console.log('Extracted request body type:', requestBodyType);
+                    const argument = initializer.getArguments()[0];
+                    if (Node.isIdentifier(argument)) {
+                      console.log('Processing identifier argument:', argument.getText());
+                    
+                      const typeSymbol = (argument as Identifier).getType().getSymbol();
+                      if (typeSymbol) {
+                        requestBodyTypeName = typeSymbol.getName();
+                        console.log('Extracted request body type name:', requestBodyTypeName);
+                      } else {
+                        console.log('Type symbol not found for argument:', argument.getText());
+                      }
+                    }                    
+                  }
                 }
               }
-            }
-          });
+            });
+          }
+        });
+
+        callExpression.getArguments().forEach(arg => {
+          if (Node.isStringLiteral(arg)) {
+            url = (arg as StringLiteral).getLiteralValue();
+          } else if (Node.isObjectLiteralExpression(arg)) {
+            (arg as ObjectLiteralExpression).getProperties().forEach(prop => {
+              if (prop.asKind(SyntaxKind.PropertyAssignment)) {
+                const propAssignment = prop as PropertyAssignment;
+                if (propAssignment.getName() === 'method') {
+                  const initializer = propAssignment.getInitializer();
+                  if (initializer && Node.isStringLiteral(initializer)) {
+                    method = initializer.getLiteralValue().toUpperCase();
+                  }
+                }
+              }
+            });
+          }
+        });
+
+        if (url) {
+          const urlObj = new URL(url, "https://baseurl.com");
+          const path = urlObj.pathname;
+          endpoints.push({ method, path, requestBodyType: requestBodyTypeName });
+          console.log('Endpoint found:', { method, path, requestBodyType: requestBodyTypeName });
         }
-      });
-
-      node.arguments.forEach(arg => {
-        if (ts.isStringLiteral(arg)) {
-          url = arg.text;
-        } else if (ts.isObjectLiteralExpression(arg)) {
-          arg.properties.forEach(prop => {
-            if (ts.isPropertyAssignment(prop) && prop.name.getText(sourceFile) === 'method' && ts.isStringLiteral(prop.initializer)) {
-              method = prop.initializer.text.toUpperCase();
-            }
-          });
-        }
-      });
-
-      if (url) {
-        const urlObj = new URL(url, "https://baseurl.com");
-        const path = urlObj.pathname;
-        endpoints.push({ method, path, requestBodyType });
-
-        console.log('Endpoint found:', { method, path, requestBodyType });
       }
     }
-    ts.forEachChild(node, visit);
+
+    node.forEachChild(visit);
   }
 
-  visit(sourceFile);
+  sourceFile.forEachChild(visit);
 
   return endpoints;
 }
 
-function tsParser(directoryPath: string, program: ts.Program): TSEndpoint[] {
-  let endpoints: TSEndpoint[] = [];
+function tsParser(project: Project, postmanEndpoints: EndpointDefinition[]): TSEndpoint[] {
+  const endpoints: TSEndpoint[] = [];
 
-  function readFilesFromDirectory(directory: string) {
-    fs.readdirSync(directory, { withFileTypes: true }).forEach(dirent => {
-      const resolvedPath = path.resolve(directory, dirent.name);
-      if (dirent.isDirectory()) {
-        readFilesFromDirectory(resolvedPath);
-      } else if (dirent.isFile() && dirent.name.endsWith('.ts')) {
-        const fileContent = fs.readFileSync(resolvedPath, 'utf8');
-        endpoints = endpoints.concat(findEndpointsInFile(fileContent, dirent.name, program));
-      }
-    });
-  }
-
-  readFilesFromDirectory(directoryPath);
+  const sourceFiles = project.getSourceFiles();
+  sourceFiles.forEach(sourceFile => {
+    endpoints.push(...findEndpointsInFile(sourceFile, postmanEndpoints));
+  });
 
   return endpoints;
 }

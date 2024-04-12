@@ -6,27 +6,17 @@ import { lintEndpointRules } from './lintRules';
 import { tsParser } from './tsParser';
 import { parseTypes } from './typeParser';
 import { EndpointDefinition } from '../types/Postman.types';
+import { Project } from 'ts-morph';
 
 async function lintProject(tsFilesDirectory: string, typesDirectory: string, postmanEndpoints: EndpointDefinition[]) {
-    // Create a single ts.Program instance
-    const fileNames = [
-        // Include all TypeScript files in the project
-        ...getTypeScriptFiles(tsFilesDirectory),
-        ...getTypeScriptFiles(typesDirectory),
-    ];
-    const options: ts.CompilerOptions = {
-        // Specify your compiler options here
-        target: ts.ScriptTarget.ES2015,
-        module: ts.ModuleKind.CommonJS,
-        // ...
-    };
-    const program = ts.createProgram(fileNames, options);
-
+    const project = new Project();
+    project.addSourceFilesAtPaths(`${tsFilesDirectory}/**/*.ts`);
+    project.addSourceFilesAtPaths(`${typesDirectory}/**/*.ts`);
     // Get endpoints from TS files
-    const tsEndpoints = await tsParser(tsFilesDirectory, program);
+    const tsEndpoints = await tsParser(project, postmanEndpoints);
 
     // Parse TypeScript type definitions
-    const typeDefinitions = parseTypes(typesDirectory, program);
+    const typeDefinitions = parseTypes(typesDirectory);
 
     const errors = lintEndpointRules(postmanEndpoints, tsEndpoints, typeDefinitions);
 
@@ -38,25 +28,6 @@ async function lintProject(tsFilesDirectory: string, typesDirectory: string, pos
     }
 
     return errors;
-}
-
-function getTypeScriptFiles(directory: string): string[] {
-    const files: string[] = [];
-
-    function readFilesFromDirectory(dir: string) {
-        const entries = fs.readdirSync(dir, { withFileTypes: true });
-        for (const entry of entries) {
-            const fullPath = path.join(dir, entry.name);
-            if (entry.isDirectory()) {
-                readFilesFromDirectory(fullPath);
-            } else if (entry.isFile() && entry.name.endsWith('.ts')) {
-                files.push(fullPath);
-            }
-        }
-    }
-
-    readFilesFromDirectory(directory);
-    return files;
 }
 
 export { lintProject };
