@@ -1,3 +1,5 @@
+#!/usr/bin/env node
+
 "use strict";
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
@@ -43,15 +45,15 @@ var collectionParser_1 = require("../postman/collectionParser");
 commander_1.program
     .version('1.0.0')
     .description('TypeScript API Linter')
-    .option('-t, --tsFiles <path>', 'Path to the directory containing TypeScript files')
-    .option('-d, --typeDefs <path>', 'Path to the directory containing type definition files')
+    .option('-r, --requests <path>', 'Path to the directory containing request files')
+    .option('-t, --types <path>', 'Path to the directory containing type definition files')
     .option('-c, --collection <path>', 'Path to the Postman collection JSON file')
     .parse(process.argv);
-var tsFilesPath = commander_1.program.opts().tsFiles;
-var typeDefsPath = commander_1.program.opts().typeDefs;
+var tsFilesPath = commander_1.program.opts().requests;
+var typeDefsPath = commander_1.program.opts().types;
 var collectionPath = commander_1.program.opts().collection;
 if (!tsFilesPath || !typeDefsPath || !collectionPath) {
-    console.error('Please provide the required paths using the -t, -d, and -c options.');
+    console.error('Please provide the required paths using the -r, -t, and -c options.');
     process.exit(1);
 }
 function runLinter() {

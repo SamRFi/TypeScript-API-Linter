@@ -6,17 +6,17 @@ import { parseCollection, readPostmanCollection } from '../postman/collectionPar
 program
     .version('1.0.0')
     .description('TypeScript API Linter')
-    .option('-t, --tsFiles <path>', 'Path to the directory containing TypeScript files')
-    .option('-d, --typeDefs <path>', 'Path to the directory containing type definition files')
+    .option('-r, --requests <path>', 'Path to the directory containing request files')
+    .option('-t, --types <path>', 'Path to the directory containing type definition files')
     .option('-c, --collection <path>', 'Path to the Postman collection JSON file')
     .parse(process.argv);
 
-const tsFilesPath = program.opts().tsFiles;
-const typeDefsPath = program.opts().typeDefs;
+const tsFilesPath = program.opts().requests;
+const typeDefsPath = program.opts().types;
 const collectionPath = program.opts().collection;
 
 if (!tsFilesPath || !typeDefsPath || !collectionPath) {
-  console.error('Please provide the required paths using the -t, -d, and -c options.');
+  console.error('Please provide the required paths using the -r, -t, and -c options.');
   process.exit(1);
 }
 

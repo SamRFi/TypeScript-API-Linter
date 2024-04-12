@@ -7,6 +7,9 @@
     "test": "jest",
     "lint": "node src/cli/index.js"
   },
+  "bin": {
+    "typescript-api-linter": "./src/cli/index.js"
+  },  
   "author": "",
   "license": "ISC",
   "devDependencies": {
