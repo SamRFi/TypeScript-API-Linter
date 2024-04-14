@@ -67,7 +67,15 @@ function findEndpointsInFile(sourceFile: SourceFile): TSEndpoint[] {
         });
 
         if (path) {
-          const fullPath = basePath + path;
+          let fullPath = '';
+          if (path.startsWith('http://') || path.startsWith('https://')) {
+            // If the path is a full URL, extract the path part
+            const url = new URL(path);
+            fullPath = url.pathname;
+          } else {
+            // If the path is a relative path, concatenate it with the base path
+            fullPath = basePath + path;
+          }
           console.log(`Constructed full path: ${fullPath}`);
       
           endpoints.push({ method, path: fullPath, requestBodyType: requestBodyTypeName });

@@ -67,7 +67,16 @@ function findEndpointsInFile(sourceFile) {
                     }
                 });
                 if (path_1) {
-                    var fullPath = basePath + path_1;
+                    var fullPath = '';
+                    if (path_1.startsWith('http://') || path_1.startsWith('https://')) {
+                        // If the path is a full URL, extract the path part
+                        var url = new URL(path_1);
+                        fullPath = url.pathname;
+                    }
+                    else {
+                        // If the path is a relative path, concatenate it with the base path
+                        fullPath = basePath + path_1;
+                    }
                     console.log("Constructed full path: ".concat(fullPath));
                     endpoints.push({ method: method_1, path: fullPath, requestBodyType: requestBodyTypeName_1 });
                     console.log('Endpoint found:', { method: method_1, path: fullPath, requestBodyType: requestBodyTypeName_1 });
