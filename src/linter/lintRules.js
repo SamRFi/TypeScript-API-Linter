@@ -96,6 +96,9 @@ function getObjectTypeShape(obj) {
     return typeShape;
 }
 function formatObjectType(objectType) {
+    if (typeof objectType !== 'string') {
+        return 'undefined';
+    }
     var trimmedType = objectType.trim().slice(1, -1); // Remove the outer curly braces
     var propertyPairs = trimmedType.split(';').map(function (pair) { return pair.trim(); });
     var formattedPairs = propertyPairs

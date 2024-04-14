@@ -1,3 +1,4 @@
+import { CreateCategoryRequestBody } from "../succeedingMockTypes/mockTypes";; // Import the CreateCategoryRequestBody type
 
 const BASE_URL = `${import.meta.env.VITE_API_BASE_URL}`;
 /**
@@ -6,7 +7,7 @@ const BASE_URL = `${import.meta.env.VITE_API_BASE_URL}`;
    * @returns Promise<void>
    */
 const createCategory = useCallback(
-    async (category: any): Promise<void> => {
+    async (category: CreateCategoryRequestBody): Promise<void> => {
       setIsLoading(true);
       setError(null);
       try {

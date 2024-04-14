@@ -111,7 +111,11 @@ function getObjectTypeShape(obj: any): any {
   return typeShape;
 }
 
-function formatObjectType(objectType: string): string {
+function formatObjectType(objectType: string | undefined): string {
+  if (typeof objectType !== 'string') {
+    return 'undefined';
+  }
+
   const trimmedType = objectType.trim().slice(1, -1); // Remove the outer curly braces
   const propertyPairs = trimmedType.split(';').map(pair => pair.trim());
   const formattedPairs = propertyPairs
@@ -122,6 +126,7 @@ function formatObjectType(objectType: string): string {
     });
   return `{\n${formattedPairs.join(',\n')}\n}`;
 }
+
 
 
 function lintMissingEndpoints(tsEndpoints: TSEndpoint[], endpointDefinitions: EndpointDefinition[], errors: string[]): void {

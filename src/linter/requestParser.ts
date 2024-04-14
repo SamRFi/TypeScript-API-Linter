@@ -71,10 +71,10 @@ function findEndpointsInFile(sourceFile: SourceFile): TSEndpoint[] {
           if (path.startsWith('http://') || path.startsWith('https://')) {
             // If the path is a full URL, extract the path part
             const url = new URL(path);
-            fullPath = url.pathname.replace(/^\//, ''); // Remove the leading slash
+            fullPath = url.pathname.replace(/\${}/g, '').replace(/^\//, ''); // Remove the leading slash
           } else {
             // If the path is a relative path, concatenate it with the base path
-            fullPath = (basePath + path).replace(/^\//, ''); // Remove the leading slash
+            fullPath = (basePath + path).replace(/\${}/g, '').replace(/^\//, ''); // Remove the leading slash
           }
           console.log(`Constructed full path: ${fullPath}`);
       

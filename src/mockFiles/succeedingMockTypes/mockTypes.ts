@@ -39,9 +39,9 @@ export interface SignInRequestBody {
   }
   
   
-  export interface NewCategoryRequestBody {
+  export interface CreateCategoryRequestBody {
     name: {
-      EN: string;
+      en: string;
     };
   }
   

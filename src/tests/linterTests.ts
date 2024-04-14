@@ -22,7 +22,7 @@ describe('Linter Functionality', () => {
   });
 });
 
-/*
+
 describe('Linter Functionality - Failure Cases', () => {
   it('should correctly identify mismatched endpoints and types between TS files and Postman collection', async () => {
     // Path to the directory containing the intentionally failing mock TypeScript files
@@ -45,4 +45,4 @@ describe('Linter Functionality - Failure Cases', () => {
     // expect(errors).toContain("Expected error message");
   });
 });
-*/
+
