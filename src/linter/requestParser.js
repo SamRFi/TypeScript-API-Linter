@@ -71,11 +71,11 @@ function findEndpointsInFile(sourceFile) {
                     if (path_1.startsWith('http://') || path_1.startsWith('https://')) {
                         // If the path is a full URL, extract the path part
                         var url = new URL(path_1);
-                        fullPath = url.pathname;
+                        fullPath = url.pathname.replace(/^\//, ''); // Remove the leading slash
                     }
                     else {
                         // If the path is a relative path, concatenate it with the base path
-                        fullPath = basePath + path_1;
+                        fullPath = (basePath + path_1).replace(/^\//, ''); // Remove the leading slash
                     }
                     console.log("Constructed full path: ".concat(fullPath));
                     endpoints.push({ method: method_1, path: fullPath, requestBodyType: requestBodyTypeName_1 });

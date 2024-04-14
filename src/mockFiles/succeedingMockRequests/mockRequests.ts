@@ -23,7 +23,7 @@ export const useAuth = () => {
  * @returns A Promise that resolves to true if the sign-in request was successful, or false otherwise.
  * @throws An error if the server returns a non-200 status code.
  */
-  const signIn = async (signInData: SignInRequest): Promise<boolean> => {
+  const signIn = async (signInData: SignInRequestBody): Promise<boolean> => {
     setIsLoading(true);
     setError(null);
     try {

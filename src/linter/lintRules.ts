@@ -3,7 +3,7 @@ import { EndpointDefinition } from '../postman/collectionParser';
 import { TSEndpoint } from '../types/TSEndpoint';
 import { TypeDefinition } from './typeParser';
 
-const normalizePath = (path: string) => path.replace(/^\//, '');
+const normalizePath = (path: string) => path.replace(/^\//, '').replace(/\/:\w+/g, '').replace(/\/$/, '').replace(/\/\//g, '/');
 
 function lintEndpointRules(endpointDefinitions: EndpointDefinition[], tsEndpoints: TSEndpoint[], typeDefinitions: TypeDefinition[]): string[] {
   const errors: string[] = [];
@@ -93,8 +93,13 @@ function lintPropertyTypes(endpointName: string, requestBody: any, matchingType:
 function lintMissingEndpoints(tsEndpoints: TSEndpoint[], endpointDefinitions: EndpointDefinition[], errors: string[]): void {
   tsEndpoints.forEach((e) => {
     const normalizedTSPath = normalizePath(e.path);
-    if (!endpointDefinitions.some(def => def.method === e.method && normalizePath(def.path) === normalizedTSPath)) {
-      errors.push(`Endpoint found in code but not defined in Postman collection: ${e.method} ${normalizedTSPath}`);
+    console.log(`Checking missing endpoint: ${e.method} ${normalizedTSPath}`);
+    if (!endpointDefinitions.some(def => {
+      const normalizedDefPath = normalizePath(def.path);
+      console.log(`Comparing with Postman endpoint: ${def.method} ${normalizedDefPath}`);
+      return def.method === e.method && normalizedTSPath === normalizedDefPath;
+    })) {
+      errors.push(`Endpoint found in code but not defined in Postman collection: ${e.method} ${e.path}`);
     }
   });
 }
@@ -102,7 +107,12 @@ function lintMissingEndpoints(tsEndpoints: TSEndpoint[], endpointDefinitions: En
 function lintExtraEndpoints(tsEndpoints: TSEndpoint[], endpointDefinitions: EndpointDefinition[], errors: string[]): void {
   endpointDefinitions.forEach((def) => {
     const normalizedDefPath = normalizePath(def.path);
-    if (!tsEndpoints.some(e => e.method === def.method && normalizePath(e.path) === normalizedDefPath)) {
+    console.log(`Checking extra endpoint: ${def.method} ${normalizedDefPath}`);
+    if (!tsEndpoints.some(e => {
+      const normalizedTSPath = normalizePath(e.path);
+      console.log(`Comparing with code endpoint: ${e.method} ${normalizedTSPath}`);
+      return e.method === def.method && normalizedTSPath === normalizedDefPath;
+    })) {
       errors.push(`Endpoint defined in Postman collection but not found in code: ${def.method} ${def.path}`);
     }
   });

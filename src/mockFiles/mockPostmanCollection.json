@@ -493,13 +493,19 @@
 									}
 								},
 								"url": {
-									"raw": "{{croissant-server}}/categories/b2cc5353-d90d-4adc-a869-35e1f6644b2f",
+									"raw": "{{croissant-server}}/categories/:categoryId",
 									"host": [
 										"{{croissant-server}}"
 									],
 									"path": [
 										"categories",
-										"b2cc5353-d90d-4adc-a869-35e1f6644b2f"
+										":categoryId"
+									],
+									"variable": [
+										{
+											"key": "categoryId",
+											"value": ""
+										}
 									]
 								},
 								"description": "Either name or display_order may be updated. Either can be ommitted in the json body."
@@ -639,13 +645,19 @@
 								"method": "DELETE",
 								"header": [],
 								"url": {
-									"raw": "{{croissant-server}}/categories/a478b706-f2a1-4285-b346-770e65cf8fd3",
+									"raw": "{{croissant-server}}/categories/:categoryId",
 									"host": [
 										"{{croissant-server}}"
 									],
 									"path": [
 										"categories",
-										"a478b706-f2a1-4285-b346-770e65cf8fd3"
+										":categoryId"
+									],
+									"variable": [
+										{
+											"key": "categoryId",
+											"value": ""
+										}
 									]
 								}
 							},
@@ -832,14 +844,20 @@
 									}
 								},
 								"url": {
-									"raw": "{{croissant-server}}/categories/fd19e09e-7cfb-4671-a8bc-9755ab47d9d0/subcategories",
+									"raw": "{{croissant-server}}/categories/:categoryId/subcategories",
 									"host": [
 										"{{croissant-server}}"
 									],
 									"path": [
 										"categories",
-										"fd19e09e-7cfb-4671-a8bc-9755ab47d9d0",
+										":categoryId",
 										"subcategories"
+									],
+									"variable": [
+										{
+											"key": "categoryId",
+											"value": ""
+										}
 									]
 								}
 							},
@@ -989,13 +1007,19 @@
 									}
 								},
 								"url": {
-									"raw": "{{croissant-server}}/subcategories/c1aa7e8d-2d4c-48a9-81e5-9dbe1bc9a586",
+									"raw": "{{croissant-server}}/subcategories/:subCategory",
 									"host": [
 										"{{croissant-server}}"
 									],
 									"path": [
 										"subcategories",
-										"c1aa7e8d-2d4c-48a9-81e5-9dbe1bc9a586"
+										":subCategory"
+									],
+									"variable": [
+										{
+											"key": "subCategory",
+											"value": ""
+										}
 									]
 								},
 								"description": "Either name or display_order may be updated. Either can be ommitted in the json body."
@@ -1200,13 +1224,19 @@
 								"method": "DELETE",
 								"header": [],
 								"url": {
-									"raw": "{{croissant-server}}/subcategories/cadf1042-3222-4714-affa-5b7b15e5c4f2",
+									"raw": "{{croissant-server}}/subcategories/:subCategory",
 									"host": [
 										"{{croissant-server}}"
 									],
 									"path": [
 										"subcategories",
-										"cadf1042-3222-4714-affa-5b7b15e5c4f2"
+										":subCategory"
+									],
+									"variable": [
+										{
+											"key": "subCategory",
+											"value": ""
+										}
 									]
 								}
 							},

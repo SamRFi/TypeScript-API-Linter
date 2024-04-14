@@ -1,7 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.lintEndpointRules = void 0;
-var normalizePath = function (path) { return path.replace(/^\//, ''); };
+var normalizePath = function (path) { return path.replace(/^\//, '').replace(/\/:\w+/g, '').replace(/\/$/, '').replace(/\/\//g, '/'); };
 function lintEndpointRules(endpointDefinitions, tsEndpoints, typeDefinitions) {
     var errors = [];
     endpointDefinitions.forEach(function (def) {
@@ -80,15 +80,25 @@ function lintPropertyTypes(endpointName, requestBody, matchingType, expectedProp
 function lintMissingEndpoints(tsEndpoints, endpointDefinitions, errors) {
     tsEndpoints.forEach(function (e) {
         var normalizedTSPath = normalizePath(e.path);
-        if (!endpointDefinitions.some(function (def) { return def.method === e.method && normalizePath(def.path) === normalizedTSPath; })) {
-            errors.push("Endpoint found in code but not defined in Postman collection: ".concat(e.method, " ").concat(normalizedTSPath));
+        console.log("Checking missing endpoint: ".concat(e.method, " ").concat(normalizedTSPath));
+        if (!endpointDefinitions.some(function (def) {
+            var normalizedDefPath = normalizePath(def.path);
+            console.log("Comparing with Postman endpoint: ".concat(def.method, " ").concat(normalizedDefPath));
+            return def.method === e.method && normalizedTSPath === normalizedDefPath;
+        })) {
+            errors.push("Endpoint found in code but not defined in Postman collection: ".concat(e.method, " ").concat(e.path));
         }
     });
 }
 function lintExtraEndpoints(tsEndpoints, endpointDefinitions, errors) {
     endpointDefinitions.forEach(function (def) {
         var normalizedDefPath = normalizePath(def.path);
-        if (!tsEndpoints.some(function (e) { return e.method === def.method && normalizePath(e.path) === normalizedDefPath; })) {
+        console.log("Checking extra endpoint: ".concat(def.method, " ").concat(normalizedDefPath));
+        if (!tsEndpoints.some(function (e) {
+            var normalizedTSPath = normalizePath(e.path);
+            console.log("Comparing with code endpoint: ".concat(e.method, " ").concat(normalizedTSPath));
+            return e.method === def.method && normalizedTSPath === normalizedDefPath;
+        })) {
             errors.push("Endpoint defined in Postman collection but not found in code: ".concat(def.method, " ").concat(def.path));
         }
     });
