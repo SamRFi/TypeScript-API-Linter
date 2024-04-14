@@ -14,7 +14,7 @@ const BASE_URL = `${import.meta.env.VITE_API_BASE_URL}/auth`;
  */
 export const useAuth = () => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
-  const [error, setError] = useState<string | null>(null);
+  const [error, setError] = useState<boolean>(false);
 
   /**
  * Sends a sign-in request to the server with the provided credentials.
@@ -147,4 +147,8 @@ export const deleteSubcategory = async (id: string): Promise<DeleteSubcategoryRe
 };
   
 export { fetchData };
+
+  function useState<T>(arg0: boolean): [any, any] {
+    throw new Error("Function not implemented.");
+  }
   

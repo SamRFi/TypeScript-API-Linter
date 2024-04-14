@@ -1,16 +1,30 @@
 // src/linter/requestParser.ts
-import { Project, SourceFile, SyntaxKind, Node, ObjectLiteralExpression, PropertyAssignment, CallExpression, Identifier, StringLiteral, TemplateExpression } from 'ts-morph';
+import { Project, SourceFile, SyntaxKind, Node, ObjectLiteralExpression, PropertyAssignment, CallExpression, Identifier, StringLiteral, TemplateExpression, VariableDeclaration } from 'ts-morph';
 import { TSEndpoint } from '../types/TSEndpoint';
 
 function findEndpointsInFile(sourceFile: SourceFile): TSEndpoint[] {
   const endpoints: TSEndpoint[] = [];
+  let basePath = '';
+
+  // Find the base path variable declaration
+  sourceFile.getVariableDeclarations().forEach(variableDeclaration => {
+    const initializer = variableDeclaration.getInitializer();
+    if (initializer && Node.isTemplateExpression(initializer)) {
+      const templateExpression = initializer as TemplateExpression;
+      const templateSpans = templateExpression.getTemplateSpans();
+      const head = templateExpression.getHead().getText().replace(/`$/, '');
+      const tail = templateSpans.map(span => span.getLiteral().getText()).join('');
+      basePath = (head + tail).replace('${}/', '').replace(/`/g, '');
+      console.log(`Found base path: ${basePath}`);
+    }
+  });
 
   function visit(node: Node) {
     if (Node.isCallExpression(node)) {
       const callExpression = node as CallExpression;
       if (callExpression.getExpression().getText().includes('fetch')) {
         let method = 'GET';
-        let url = '';
+        let path = '';
         let requestBodyTypeName: string | null = null;
 
         callExpression.getArguments().forEach(arg => {
@@ -19,9 +33,11 @@ function findEndpointsInFile(sourceFile: SourceFile): TSEndpoint[] {
             const templateSpans = templateExpression.getTemplateSpans();
             const head = templateExpression.getHead().getText().replace(/`$/, '');
             const tail = templateSpans.map(span => span.getLiteral().getText()).join('');
-            url = head + tail;
+            path = (head + tail).replace('${}', '').replace(/`/g, '');
+            console.log(`Found path: ${path}`);
           } else if (Node.isStringLiteral(arg)) {
-            url = (arg as StringLiteral).getLiteralValue();
+            path = (arg as StringLiteral).getLiteralValue();
+            console.log(`Found path: ${path}`);
           } else if (Node.isObjectLiteralExpression(arg)) {
             (arg as ObjectLiteralExpression).getProperties().forEach(prop => {
               if (prop.asKind(SyntaxKind.PropertyAssignment)) {
@@ -30,6 +46,7 @@ function findEndpointsInFile(sourceFile: SourceFile): TSEndpoint[] {
                   const initializer = propAssignment.getInitializer();
                   if (initializer && Node.isStringLiteral(initializer)) {
                     method = initializer.getLiteralValue().toUpperCase();
+                    console.log(`Found HTTP method: ${method}`);
                   }
                 } else if (propAssignment.getName() === 'body') {
                   const initializer = propAssignment.getInitializer();
@@ -39,6 +56,7 @@ function findEndpointsInFile(sourceFile: SourceFile): TSEndpoint[] {
                       const typeSymbol = (argument as Identifier).getType().getSymbol();
                       if (typeSymbol) {
                         requestBodyTypeName = typeSymbol.getName();
+                        console.log(`Found request body type: ${requestBodyTypeName}`);
                       }
                     }
                   }
@@ -48,28 +66,12 @@ function findEndpointsInFile(sourceFile: SourceFile): TSEndpoint[] {
           }
         });
 
-        if (url) {
-          let path = '';
-
-          // Check if the URL starts with "http" or "https"
-          if (url.startsWith('http://') || url.startsWith('https://')) {
-            const urlObj = new URL(url);
-            path = urlObj.pathname + urlObj.search;
-          } else {
-            // Remove any leading or trailing backticks and whitespace
-            url = url.replace(/^`\s*|\s*`$/g, '');
-            
-            // Extract the path part of the URL
-            const urlObj = new URL(url, 'https://example.com');
-            path = urlObj.pathname + urlObj.search;
-            
-            // Omit URL-encoded placeholders
-            path = path.replace(/%7B.*?%7D/g, '');
-            path = path.replace('$','');
-          }
-
-          endpoints.push({ method, path, requestBodyType: requestBodyTypeName });
-          console.log('Endpoint found:', { method, path, requestBodyType: requestBodyTypeName });
+        if (path) {
+          const fullPath = basePath + path;
+          console.log(`Constructed full path: ${fullPath}`);
+      
+          endpoints.push({ method, path: fullPath, requestBodyType: requestBodyTypeName });
+          console.log('Endpoint found:', { method, path: fullPath, requestBodyType: requestBodyTypeName });
         }
       }
     }
