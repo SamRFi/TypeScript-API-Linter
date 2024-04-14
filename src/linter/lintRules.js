@@ -70,12 +70,41 @@ function lintExtraProperties(endpointName, expectedProperties, actualProperties,
 }
 function lintPropertyTypes(endpointName, requestBody, matchingType, expectedProperties, errors) {
     expectedProperties.forEach(function (prop) {
-        var expectedType = typeof requestBody[prop];
+        var expectedType = requestBody[prop];
         var actualType = matchingType.properties[prop];
-        if (actualType !== expectedType) {
-            errors.push("Type mismatch for property '".concat(prop, "' in request body for endpoint ").concat(endpointName, ". Expected type: ").concat(expectedType, ", Actual type: ").concat(actualType));
+        if (typeof expectedType === 'object' && expectedType !== null) {
+            var expectedObjectType = JSON.stringify(getObjectTypeShape(expectedType), null, 2);
+            var actualObjectType = formatObjectType(actualType);
+            if (expectedObjectType !== actualObjectType) {
+                errors.push("Type mismatch for property '".concat(prop, "' in request body for endpoint ").concat(endpointName, ". Expected type: ").concat(expectedObjectType, ", Actual type: ").concat(actualObjectType));
+            }
+        }
+        else if (typeof expectedType !== actualType) {
+            errors.push("Type mismatch for property '".concat(prop, "' in request body for endpoint ").concat(endpointName, ". Expected type: ").concat(typeof expectedType, ", Actual type: ").concat(actualType));
         }
     });
+}
+function getObjectTypeShape(obj) {
+    if (typeof obj !== 'object' || obj === null) {
+        return typeof obj;
+    }
+    var typeShape = {};
+    for (var key in obj) {
+        var value = getObjectTypeShape(obj[key]);
+        typeShape[key] = value === 'string' ? 'string' : value;
+    }
+    return typeShape;
+}
+function formatObjectType(objectType) {
+    var trimmedType = objectType.trim().slice(1, -1); // Remove the outer curly braces
+    var propertyPairs = trimmedType.split(';').map(function (pair) { return pair.trim(); });
+    var formattedPairs = propertyPairs
+        .filter(function (pair) { return pair !== ''; }) // Filter out empty pairs
+        .map(function (pair) {
+        var _a = pair.split(':').map(function (part) { return part.trim(); }), key = _a[0], value = _a[1];
+        return "  \"".concat(key, "\": \"").concat(value, "\"");
+    });
+    return "{\n".concat(formattedPairs.join(',\n'), "\n}");
 }
 function lintMissingEndpoints(tsEndpoints, endpointDefinitions, errors) {
     tsEndpoints.forEach(function (e) {

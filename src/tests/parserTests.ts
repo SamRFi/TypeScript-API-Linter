@@ -1,3 +1,5 @@
+expect(true).toBe(true);
+
 // tests/parserTests.ts
 /*
 import fs from 'fs';

@@ -82,13 +82,47 @@ function lintExtraProperties(endpointName: string, expectedProperties: string[],
 
 function lintPropertyTypes(endpointName: string, requestBody: any, matchingType: TypeDefinition, expectedProperties: string[], errors: string[]): void {
   expectedProperties.forEach(prop => {
-    const expectedType = typeof requestBody[prop];
+    const expectedType = requestBody[prop];
     const actualType = matchingType.properties[prop];
-    if (actualType !== expectedType) {
-      errors.push(`Type mismatch for property '${prop}' in request body for endpoint ${endpointName}. Expected type: ${expectedType}, Actual type: ${actualType}`);
+
+    if (typeof expectedType === 'object' && expectedType !== null) {
+      const expectedObjectType = JSON.stringify(getObjectTypeShape(expectedType), null, 2);
+      const actualObjectType = formatObjectType(actualType);
+
+      if (expectedObjectType !== actualObjectType) {
+        errors.push(`Type mismatch for property '${prop}' in request body for endpoint ${endpointName}. Expected type: ${expectedObjectType}, Actual type: ${actualObjectType}`);
+      }
+    } else if (typeof expectedType !== actualType) {
+      errors.push(`Type mismatch for property '${prop}' in request body for endpoint ${endpointName}. Expected type: ${typeof expectedType}, Actual type: ${actualType}`);
     }
   });
 }
+
+function getObjectTypeShape(obj: any): any {
+  if (typeof obj !== 'object' || obj === null) {
+    return typeof obj;
+  }
+
+  const typeShape: any = {};
+  for (const key in obj) {
+    const value = getObjectTypeShape(obj[key]);
+    typeShape[key] = value === 'string' ? 'string' : value;
+  }
+  return typeShape;
+}
+
+function formatObjectType(objectType: string): string {
+  const trimmedType = objectType.trim().slice(1, -1); // Remove the outer curly braces
+  const propertyPairs = trimmedType.split(';').map(pair => pair.trim());
+  const formattedPairs = propertyPairs
+    .filter(pair => pair !== '') // Filter out empty pairs
+    .map(pair => {
+      const [key, value] = pair.split(':').map(part => part.trim());
+      return `  "${key}": "${value}"`;
+    });
+  return `{\n${formattedPairs.join(',\n')}\n}`;
+}
+
 
 function lintMissingEndpoints(tsEndpoints: TSEndpoint[], endpointDefinitions: EndpointDefinition[], errors: string[]): void {
   tsEndpoints.forEach((e) => {

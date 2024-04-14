@@ -56,6 +56,8 @@ export const useAuth = () => {
       setIsLoading(false);
     }
   };
+
+  
 }
 
 export const signOut = async (): Promise<any> => {

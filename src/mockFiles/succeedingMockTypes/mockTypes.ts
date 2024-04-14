@@ -75,7 +75,7 @@ export interface SignInRequestBody {
   
   export interface NewSubcategoryRequestBody {
     name: {
-      EN: string;
+      en: string;
     };
   }
   
