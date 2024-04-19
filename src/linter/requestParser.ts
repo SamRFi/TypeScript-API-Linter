@@ -15,7 +15,7 @@ function findEndpointsInFile(sourceFile: SourceFile): TSEndpoint[] {
       const head = templateExpression.getHead().getText().replace(/`$/, '');
       const tail = templateSpans.map(span => span.getLiteral().getText()).join('');
       basePath = (head + tail).replace('${}/', '').replace(/`/g, '');
-      console.log(`Found base path: ${basePath}`);
+      //console.log(`Found base path: ${basePath}`);
     }
   });
 
@@ -34,10 +34,10 @@ function findEndpointsInFile(sourceFile: SourceFile): TSEndpoint[] {
             const head = templateExpression.getHead().getText().replace(/`$/, '');
             const tail = templateSpans.map(span => span.getLiteral().getText()).join('');
             path = (head + tail).replace('${}', '').replace(/`/g, '');
-            console.log(`Found path: ${path}`);
+            //console.log(`Found path: ${path}`);
           } else if (Node.isStringLiteral(arg)) {
             path = (arg as StringLiteral).getLiteralValue();
-            console.log(`Found path: ${path}`);
+            //console.log(`Found path: ${path}`);
           } else if (Node.isObjectLiteralExpression(arg)) {
             (arg as ObjectLiteralExpression).getProperties().forEach(prop => {
               if (prop.asKind(SyntaxKind.PropertyAssignment)) {
@@ -46,7 +46,7 @@ function findEndpointsInFile(sourceFile: SourceFile): TSEndpoint[] {
                   const initializer = propAssignment.getInitializer();
                   if (initializer && Node.isStringLiteral(initializer)) {
                     method = initializer.getLiteralValue().toUpperCase();
-                    console.log(`Found HTTP method: ${method}`);
+                    //console.log(`Found HTTP method: ${method}`);
                   }
                 } else if (propAssignment.getName() === 'body') {
                   const initializer = propAssignment.getInitializer();
@@ -56,7 +56,7 @@ function findEndpointsInFile(sourceFile: SourceFile): TSEndpoint[] {
                       const typeSymbol = (argument as Identifier).getType().getSymbol();
                       if (typeSymbol) {
                         requestBodyTypeName = typeSymbol.getName();
-                        console.log(`Found request body type: ${requestBodyTypeName}`);
+                        //console.log(`Found request body type: ${requestBodyTypeName}`);
                       }
                     }
                   }
@@ -76,10 +76,10 @@ function findEndpointsInFile(sourceFile: SourceFile): TSEndpoint[] {
             // If the path is a relative path, concatenate it with the base path
             fullPath = (basePath + path).replace(/\${}/g, '').replace(/^\//, ''); // Remove the leading slash
           }
-          console.log(`Constructed full path: ${fullPath}`);
+          //console.log(`Constructed full path: ${fullPath}`);
       
           endpoints.push({ method, path: fullPath, requestBodyType: requestBodyTypeName });
-          console.log('Endpoint found:', { method, path: fullPath, requestBodyType: requestBodyTypeName });
+          //console.log('Endpoint found:', { method, path: fullPath, requestBodyType: requestBodyTypeName });
         }
       }
     }

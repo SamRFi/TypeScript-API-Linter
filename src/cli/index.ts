@@ -28,7 +28,7 @@ async function runLinter() {
     const errors = await lintProject(tsFilesPath, typeDefsPath, postmanEndpoints);
 
     if (errors.length > 0) {
-      console.error('Linting errors found:');
+      //console.error('Linting errors found:');
       errors.forEach((error, index) => {
         console.error(`${index + 1}. ${error}`);
       });

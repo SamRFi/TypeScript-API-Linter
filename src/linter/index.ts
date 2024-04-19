@@ -20,10 +20,10 @@ async function lintProject(requestFilesDirectory: string, typesDirectory: string
     const errors = lintEndpointRules(postmanEndpoints, requestEndpoints, typeDefinitions);
 
     if (errors.length > 0) {
-        console.log('Linting errors found:');
-        errors.forEach(error => console.log(error));
+        //console.log('Linting errors found:');
+        //errors.forEach(error => console.log(error));
     } else {
-        console.log('No linting errors found.');
+        //console.log('No linting errors found.');
     }
 
     return errors;

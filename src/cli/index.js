@@ -67,7 +67,7 @@ function runLinter() {
                 case 1:
                     errors = _a.sent();
                     if (errors.length > 0) {
-                        console.error('Linting errors found:');
+                        //console.error('Linting errors found:');
                         errors.forEach(function (error, index) {
                             console.error("".concat(index + 1, ". ").concat(error));
                         });

@@ -30,15 +30,15 @@ function findMatchingTSEndpoint(tsEndpoints: TSEndpoint[], method: string, path:
 function lintRequestBody(def: EndpointDefinition, matchingTSEndpoint: TSEndpoint, typeDefinitions: TypeDefinition[], errors: string[]): void {
   if (def.requestBody) {
     const expectedProperties = Object.keys(def.requestBody);
-    console.log(`Endpoint: ${def.name}`);
-    console.log(`Request Body Type: ${matchingTSEndpoint.requestBodyType}`);
+    //console.log(`Endpoint: ${def.name}`);
+    //console.log(`Request Body Type: ${matchingTSEndpoint.requestBodyType}`);
     const matchingType = findMatchingType(typeDefinitions, matchingTSEndpoint.requestBodyType);
 
     if (!matchingType) {
-      console.log(`No matching type found for endpoint: ${def.name}`);
+      //console.log(`No matching type found for endpoint: ${def.name}`);
       errors.push(createNoMatchingTypeError(def.name));
     } else {
-      console.log(`Matching Type: ${matchingType.name}`);
+      //console.log(`Matching Type: ${matchingType.name}`);
       const actualProperties = Object.keys(matchingType.properties);
       lintMissingProperties(def.name, expectedProperties, actualProperties, errors);
       lintExtraProperties(def.name, expectedProperties, actualProperties, errors);
@@ -49,15 +49,15 @@ function lintRequestBody(def: EndpointDefinition, matchingTSEndpoint: TSEndpoint
 
 function findMatchingType(typeDefinitions: TypeDefinition[], requestBodyType: string | null | undefined): TypeDefinition | undefined {
   if (requestBodyType === null || requestBodyType === undefined) {
-    console.log(`Request Body Type is null or undefined`);
+    //console.log(`Request Body Type is null or undefined`);
     return undefined;
   }
-  console.log(`Searching for type: ${requestBodyType}`);
+  //console.log(`Searching for type: ${requestBodyType}`);
   const matchingType = typeDefinitions.find(type => type.name === requestBodyType);
   if (matchingType) {
-    console.log(`Found matching type: ${matchingType.name}`);
+    //console.log(`Found matching type: ${matchingType.name}`);
   } else {
-    console.log(`No matching type found for: ${requestBodyType}`);
+    //console.log(`No matching type found for: ${requestBodyType}`);
   }
   return matchingType;
 }
@@ -132,10 +132,10 @@ function formatObjectType(objectType: string | undefined): string {
 function lintMissingEndpoints(tsEndpoints: TSEndpoint[], endpointDefinitions: EndpointDefinition[], errors: string[]): void {
   tsEndpoints.forEach((e) => {
     const normalizedTSPath = normalizePath(e.path);
-    console.log(`Checking missing endpoint: ${e.method} ${normalizedTSPath}`);
+    //console.log(`Checking missing endpoint: ${e.method} ${normalizedTSPath}`);
     if (!endpointDefinitions.some(def => {
       const normalizedDefPath = normalizePath(def.path);
-      console.log(`Comparing with Postman endpoint: ${def.method} ${normalizedDefPath}`);
+      //console.log(`Comparing with Postman endpoint: ${def.method} ${normalizedDefPath}`);
       return def.method === e.method && normalizedTSPath === normalizedDefPath;
     })) {
       errors.push(`Endpoint found in code but not defined in Postman collection: ${e.method} ${e.path}`);
@@ -146,10 +146,10 @@ function lintMissingEndpoints(tsEndpoints: TSEndpoint[], endpointDefinitions: En
 function lintExtraEndpoints(tsEndpoints: TSEndpoint[], endpointDefinitions: EndpointDefinition[], errors: string[]): void {
   endpointDefinitions.forEach((def) => {
     const normalizedDefPath = normalizePath(def.path);
-    console.log(`Checking extra endpoint: ${def.method} ${normalizedDefPath}`);
+    //console.log(`Checking extra endpoint: ${def.method} ${normalizedDefPath}`);
     if (!tsEndpoints.some(e => {
       const normalizedTSPath = normalizePath(e.path);
-      console.log(`Comparing with code endpoint: ${e.method} ${normalizedTSPath}`);
+      //console.log(`Comparing with code endpoint: ${e.method} ${normalizedTSPath}`);
       return e.method === def.method && normalizedTSPath === normalizedDefPath;
     })) {
       errors.push(`Endpoint defined in Postman collection but not found in code: ${def.method} ${def.path}`);
