@@ -18,7 +18,7 @@ typescript-api-linter -r "C:\Users\samra\Documents\Sam\Howest\Sync\Modules\BAP\r
 npm test
 ```
 
-# Exampless of supported typescript requests and types
+# Examples of supported typescript requests and types
 
 **Supported Request Methods**
 
@@ -177,3 +177,47 @@ const createUser = async (): Promise<void> => {
 In this example, the linter will still find the `CreateUserRequestBody` type even though it is defined as the return type of a function.
 
 By using defined types for request bodies, you can ensure that your API requests are correctly formatted and reduce errors. The linter will check that the request body conforms to the defined type, including nested types, array types, and wrapped types.
+
+**Defining Base URLs**
+
+You can define base URLs for your API requests using a variable, and the linter will still be able to parse the requests correctly. For example:
+
+```typescript
+const BASE_URL = `${import.meta.env.VITE_API_BASE_URL}/auth`;
+
+// ...
+
+const signIn = async (signInData: SignInRequestBody): Promise<boolean> => {
+  // ...
+  const response = await fetch(`${BASE_URL}/signin`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(signInData),
+    credentials: 'include'
+  });
+  // ...
+}
+```
+The linter will extract the base URL and the path from the `fetch` call, and use it to construct the full URL of the request.
+
+**Multiple Files with Different Base URLs**
+
+You can have multiple files with different base URLs defined, and the linter will parse them correctly. For example, you can have one file with a base URL for authentication endpoints:
+
+```typescript
+// auth.ts
+const BASE_URL = `${import.meta.env.VITE_API_BASE_URL}/auth`;
+
+// ...
+```
+And another file with a base URL for category endpoints:
+
+```typescript
+// categories.ts
+const BASE_URL = `${import.meta.env.VITE_API_BASE_URL}/categories`;
+
+// ...
+```
+The linter will parse each file separately and extract the correct base URL and path for each request, even if they are defined in different files. This allows you to organize your code into separate files for different domains or features, while still benefiting from the linter's ability to check and validate your API requests.
