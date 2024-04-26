@@ -17,6 +17,10 @@ function findTypesInFile(fileContent, fileName) {
                 if (ts.isPropertySignature(member)) {
                     var propertyName = member.name.getText(sourceFile);
                     var propertyType = member.type ? member.type.getText(sourceFile) : 'any';
+                    // Check if the property type is an object literal
+                    if (member.type && ts.isTypeLiteralNode(member.type)) {
+                        propertyType = 'object';
+                    }
                     typeProperties_1[propertyName] = propertyType;
                 }
             });
@@ -25,9 +29,6 @@ function findTypesInFile(fileContent, fileName) {
                 properties: typeProperties_1,
                 usages: [],
             });
-            //console.log(`Found interface: ${typeName}`);
-            //console.log('Properties:');
-            //console.log(typeProperties);
         }
         else if (ts.isTypeAliasDeclaration(node)) {
             var typeName = node.name.getText(sourceFile);
@@ -37,29 +38,24 @@ function findTypesInFile(fileContent, fileName) {
                     if (ts.isPropertySignature(member)) {
                         var propertyName = member.name.getText(sourceFile);
                         var propertyType = member.type ? member.type.getText(sourceFile) : 'any';
+                        // Check if the property type is an object literal
+                        if (member.type && ts.isTypeLiteralNode(member.type)) {
+                            propertyType = 'object';
+                        }
                         typeProperties_2[propertyName] = propertyType;
                     }
                 });
+            }
+            else {
+                // Handle other types of type aliases
+                var aliasType = node.type.getText(sourceFile);
+                typeProperties_2['type'] = aliasType;
             }
             types.push({
                 name: typeName,
                 properties: typeProperties_2,
                 usages: [],
             });
-            //console.log(`Found type alias: ${typeName}`);
-            //console.log('Properties:');
-            //console.log(typeProperties);
-        }
-        else if (ts.isVariableDeclaration(node)) {
-            var variableName = node.name.getText(sourceFile);
-            var variableType_1 = node.type ? node.type.getText(sourceFile) : 'any';
-            // Check if the variable type matches any of the extracted type names
-            var matchingType = types.find(function (type) { return type.name === variableType_1; });
-            if (matchingType) {
-                // If a matching type is found, add the variable declaration as a usage of that type
-                matchingType.usages.push(variableName);
-                //console.log(`Found usage of type ${variableType} in variable ${variableName}`);
-            }
         }
         ts.forEachChild(node, visit);
     }
@@ -77,9 +73,7 @@ function parseTypes(directoryPath) {
             else if (dirent.isFile()) {
                 var fileContent = fs.readFileSync(resolvedPath, 'utf8');
                 var fileTypes = findTypesInFile(fileContent, dirent.name);
-                types = types.concat(fileTypes);
-                //console.log(`Parsed types from file: ${dirent.name}`);
-                //console.log(fileTypes);
+                types.push.apply(types, fileTypes);
             }
         });
     }

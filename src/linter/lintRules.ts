@@ -42,7 +42,7 @@ function lintRequestBody(def: EndpointDefinition, matchingTSEndpoint: TSEndpoint
       const actualProperties = Object.keys(matchingType.properties);
       lintMissingProperties(def.name, expectedProperties, actualProperties, errors);
       lintExtraProperties(def.name, expectedProperties, actualProperties, errors);
-      lintPropertyTypes(def.name, def.requestBody, matchingType, expectedProperties, errors);
+      lintPropertyTypes(def.name, def.requestBody, matchingType, expectedProperties, typeDefinitions, errors);
     }
   }
 }
@@ -80,23 +80,69 @@ function lintExtraProperties(endpointName: string, expectedProperties: string[],
   }
 }
 
-function lintPropertyTypes(endpointName: string, requestBody: any, matchingType: TypeDefinition, expectedProperties: string[], errors: string[]): void {
+function lintPropertyTypes(endpointName: string, requestBody: any, matchingType: TypeDefinition, expectedProperties: string[], typeDefinitions: TypeDefinition[], errors: string[]): void {
   expectedProperties.forEach(prop => {
     const expectedType = requestBody[prop];
     const actualType = matchingType.properties[prop];
 
-    if (typeof expectedType === 'object' && expectedType !== null) {
-      const expectedObjectType = JSON.stringify(getObjectTypeShape(expectedType), null, 2);
-      const actualObjectType = formatObjectType(actualType);
+    if (Array.isArray(expectedType)) {
+      if (actualType.endsWith('[]')) {
+        const referencedType = actualType.slice(0, -2);
+        const matchingReferencedType = findMatchingType(typeDefinitions, referencedType);
 
-      if (expectedObjectType !== actualObjectType) {
-        errors.push(`Type mismatch for property '${prop}' in request body for endpoint ${endpointName}. Expected type: ${expectedObjectType}, Actual type: ${actualObjectType}`);
+        if (!matchingReferencedType) {
+          errors.push(`Referenced type '${referencedType}' not found for property '${prop}' in request body for endpoint ${endpointName}`);
+        }
+      } else {
+        errors.push(`Type mismatch for property '${prop}' in request body for endpoint ${endpointName}. Expected an array, but got: ${actualType}`);
+      }
+    } else if (typeof expectedType === 'object' && expectedType !== null) {
+      if (actualType !== 'object') {
+        const matchingReferencedType = findMatchingType(typeDefinitions, actualType);
+        if (!matchingReferencedType) {
+          errors.push(`Type mismatch for property '${prop}' in request body for endpoint ${endpointName}. Expected an object, but got: ${actualType}`);
+        }
       }
     } else if (typeof expectedType !== actualType) {
       errors.push(`Type mismatch for property '${prop}' in request body for endpoint ${endpointName}. Expected type: ${typeof expectedType}, Actual type: ${actualType}`);
     }
   });
 }
+
+
+function lintObjectTypes(endpointName: string, propName: string, expectedObject: any, actualObject: { [key: string]: string }, typeDefinitions: TypeDefinition[], errors: string[]): void {
+  const expectedProperties = Object.keys(expectedObject);
+  const actualProperties = Object.keys(actualObject);
+
+  expectedProperties.forEach(prop => {
+    if (!actualProperties.includes(prop)) {
+      errors.push(`Missing property '${prop}' in object '${propName}' for endpoint ${endpointName}`);
+    } else {
+      const expectedPropType = expectedObject[prop];
+      const actualPropType = actualObject[prop];
+
+      if (typeof expectedPropType === 'object' && expectedPropType !== null) {
+        const matchingReferencedType = findMatchingType(typeDefinitions, actualPropType);
+        if (matchingReferencedType) {
+          lintObjectTypes(endpointName, `${propName}.${prop}`, expectedPropType, matchingReferencedType.properties, typeDefinitions, errors);
+        } else {
+          errors.push(`Type mismatch for property '${prop}' in object '${propName}' for endpoint ${endpointName}. Expected an object, but got: ${actualPropType}`);
+        }
+      } else if (typeof expectedPropType !== actualPropType) {
+        errors.push(`Type mismatch for property '${prop}' in object '${propName}' for endpoint ${endpointName}. Expected type: ${typeof expectedPropType}, Actual type: ${actualPropType}`);
+      }
+    }
+  });
+
+  actualProperties.forEach(prop => {
+    if (!expectedProperties.includes(prop)) {
+      errors.push(`Extra property '${prop}' in object '${propName}' for endpoint ${endpointName}`);
+    }
+  });
+}
+
+
+
 
 function getObjectTypeShape(obj: any): any {
   if (typeof obj !== 'object' || obj === null) {

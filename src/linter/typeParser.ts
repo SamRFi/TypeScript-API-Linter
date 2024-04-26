@@ -22,7 +22,13 @@ function findTypesInFile(fileContent: string, fileName: string): TypeDefinition[
       node.members.forEach(member => {
         if (ts.isPropertySignature(member)) {
           const propertyName = member.name.getText(sourceFile);
-          const propertyType = member.type ? member.type.getText(sourceFile) : 'any';
+          let propertyType = member.type ? member.type.getText(sourceFile) : 'any';
+
+          // Check if the property type is an object literal
+          if (member.type && ts.isTypeLiteralNode(member.type)) {
+            propertyType = 'object';
+          }
+
           typeProperties[propertyName] = propertyType;
         }
       });
@@ -32,10 +38,6 @@ function findTypesInFile(fileContent: string, fileName: string): TypeDefinition[
         properties: typeProperties,
         usages: [],
       });
-
-      //console.log(`Found interface: ${typeName}`);
-      //console.log('Properties:');
-      //console.log(typeProperties);
     } else if (ts.isTypeAliasDeclaration(node)) {
       const typeName = node.name.getText(sourceFile);
       const typeProperties: { [key: string]: string } = {};
@@ -44,10 +46,20 @@ function findTypesInFile(fileContent: string, fileName: string): TypeDefinition[
         node.type.members.forEach(member => {
           if (ts.isPropertySignature(member)) {
             const propertyName = member.name.getText(sourceFile);
-            const propertyType = member.type ? member.type.getText(sourceFile) : 'any';
+            let propertyType = member.type ? member.type.getText(sourceFile) : 'any';
+
+            // Check if the property type is an object literal
+            if (member.type && ts.isTypeLiteralNode(member.type)) {
+              propertyType = 'object';
+            }
+
             typeProperties[propertyName] = propertyType;
           }
         });
+      } else {
+        // Handle other types of type aliases
+        const aliasType = node.type.getText(sourceFile);
+        typeProperties['type'] = aliasType;
       }
 
       types.push({
@@ -55,22 +67,6 @@ function findTypesInFile(fileContent: string, fileName: string): TypeDefinition[
         properties: typeProperties,
         usages: [],
       });
-
-      //console.log(`Found type alias: ${typeName}`);
-      //console.log('Properties:');
-      //console.log(typeProperties);
-    } else if (ts.isVariableDeclaration(node)) {
-      const variableName = node.name.getText(sourceFile);
-      const variableType = node.type ? node.type.getText(sourceFile) : 'any';
-
-      // Check if the variable type matches any of the extracted type names
-      const matchingType = types.find(type => type.name === variableType);
-
-      if (matchingType) {
-        // If a matching type is found, add the variable declaration as a usage of that type
-        matchingType.usages.push(variableName);
-        //console.log(`Found usage of type ${variableType} in variable ${variableName}`);
-      }
     }
 
     ts.forEachChild(node, visit);
@@ -92,9 +88,7 @@ function parseTypes(directoryPath: string): TypeDefinition[] {
       } else if (dirent.isFile()) {
         const fileContent = fs.readFileSync(resolvedPath, 'utf8');
         const fileTypes = findTypesInFile(fileContent, dirent.name);
-        types = types.concat(fileTypes);
-        //console.log(`Parsed types from file: ${dirent.name}`);
-        //console.log(fileTypes);
+        types.push(...fileTypes);
       }
     });
   }
