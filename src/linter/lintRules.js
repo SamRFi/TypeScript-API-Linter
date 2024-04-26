@@ -75,7 +75,6 @@ function lintPropertyTypes(endpointName, requestBody, matchingType, expectedProp
         // Check if the actual type is an enum
         var enumType = typeDefinitions.find(function (type) { return type.name === actualType; });
         if (enumType) {
-            console.log("Enum type found: ".concat(enumType.name));
             var enumValues = Object.values(enumType.properties);
             if (typeof expectedType === 'string' && !enumValues.includes(expectedType)) {
                 errors.push("Invalid enum value for property '".concat(prop, "' in request body for endpoint ").concat(endpointName, ". Expected one of ").concat(enumValues.join(', '), ", but got: ").concat(expectedType));
@@ -106,61 +105,6 @@ function lintPropertyTypes(endpointName, requestBody, matchingType, expectedProp
         }
     });
 }
-function lintObjectTypes(endpointName, propName, expectedObject, actualObject, typeDefinitions, errors) {
-    var expectedProperties = Object.keys(expectedObject);
-    var actualProperties = Object.keys(actualObject);
-    expectedProperties.forEach(function (prop) {
-        if (!actualProperties.includes(prop)) {
-            errors.push("Missing property '".concat(prop, "' in object '").concat(propName, "' for endpoint ").concat(endpointName));
-        }
-        else {
-            var expectedPropType = expectedObject[prop];
-            var actualPropType = actualObject[prop];
-            if (typeof expectedPropType === 'object' && expectedPropType !== null) {
-                var matchingReferencedType = findMatchingType(typeDefinitions, actualPropType);
-                if (matchingReferencedType) {
-                    lintObjectTypes(endpointName, "".concat(propName, ".").concat(prop), expectedPropType, matchingReferencedType.properties, typeDefinitions, errors);
-                }
-                else {
-                    errors.push("Type mismatch for property '".concat(prop, "' in object '").concat(propName, "' for endpoint ").concat(endpointName, ". Expected an object, but got: ").concat(actualPropType));
-                }
-            }
-            else if (typeof expectedPropType !== actualPropType) {
-                errors.push("Type mismatch for property '".concat(prop, "' in object '").concat(propName, "' for endpoint ").concat(endpointName, ". Expected type: ").concat(typeof expectedPropType, ", Actual type: ").concat(actualPropType));
-            }
-        }
-    });
-    actualProperties.forEach(function (prop) {
-        if (!expectedProperties.includes(prop)) {
-            errors.push("Extra property '".concat(prop, "' in object '").concat(propName, "' for endpoint ").concat(endpointName));
-        }
-    });
-}
-function getObjectTypeShape(obj) {
-    if (typeof obj !== 'object' || obj === null) {
-        return typeof obj;
-    }
-    var typeShape = {};
-    for (var key in obj) {
-        var value = getObjectTypeShape(obj[key]);
-        typeShape[key] = value === 'string' ? 'string' : value;
-    }
-    return typeShape;
-}
-function formatObjectType(objectType) {
-    if (typeof objectType !== 'string') {
-        return 'undefined';
-    }
-    var trimmedType = objectType.trim().slice(1, -1); // Remove the outer curly braces
-    var propertyPairs = trimmedType.split(';').map(function (pair) { return pair.trim(); });
-    var formattedPairs = propertyPairs
-        .filter(function (pair) { return pair !== ''; }) // Filter out empty pairs
-        .map(function (pair) {
-        var _a = pair.split(':').map(function (part) { return part.trim(); }), key = _a[0], value = _a[1];
-        return "  \"".concat(key, "\": \"").concat(value, "\"");
-    });
-    return "{\n".concat(formattedPairs.join(',\n'), "\n}");
-}
 function lintMissingEndpoints(tsEndpoints, endpointDefinitions, errors) {
     tsEndpoints.forEach(function (e) {
         var normalizedTSPath = normalizePath(e.path);
@@ -177,13 +121,29 @@ function lintMissingEndpoints(tsEndpoints, endpointDefinitions, errors) {
 function lintExtraEndpoints(tsEndpoints, endpointDefinitions, errors) {
     endpointDefinitions.forEach(function (def) {
         var normalizedDefPath = normalizePath(def.path);
-        //console.log(`Checking extra endpoint: ${def.method} ${normalizedDefPath}`);
-        if (!tsEndpoints.some(function (e) {
-            var normalizedTSPath = normalizePath(e.path);
-            //console.log(`Comparing with code endpoint: ${e.method} ${normalizedTSPath}`);
-            return e.method === def.method && normalizedTSPath === normalizedDefPath;
-        })) {
-            errors.push("Endpoint defined in Postman collection but not found in code: ".concat(def.method, " ").concat(def.path));
+        if (!tsEndpoints.some(function (e) { return e.method === def.method && normalizePath(e.path) === normalizedDefPath; })) {
+            var requestBodyDetails = '';
+            if (def.requestBody) {
+                // Construct a string that lists each property name along with its inferred type
+                requestBodyDetails = Object.keys(def.requestBody).map(function (key) {
+                    var value = def.requestBody[key];
+                    var type;
+                    if (Array.isArray(value)) {
+                        type = 'array';
+                    }
+                    else if (typeof value === 'object' && value !== null) {
+                        type = 'object';
+                    }
+                    else {
+                        type = typeof value;
+                    }
+                    return "".concat(key, ": ").concat(type);
+                }).join(', ');
+                if (requestBodyDetails) {
+                    requestBodyDetails = " with expected request body: { ".concat(requestBodyDetails, " }");
+                }
+            }
+            errors.push("Endpoint defined in Postman collection but not found in code: ".concat(def.method, " ").concat(def.path).concat(requestBodyDetails));
         }
     });
 }
