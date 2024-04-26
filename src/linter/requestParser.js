@@ -54,11 +54,26 @@ function findEndpointsInFile(sourceFile) {
                                     if (ts_morph_1.Node.isCallExpression(initializer) && initializer.getExpression().getText() === 'JSON.stringify') {
                                         var argument = initializer.getArguments()[0];
                                         if (ts_morph_1.Node.isIdentifier(argument)) {
-                                            var typeSymbol = argument.getType().getSymbol();
-                                            if (typeSymbol) {
-                                                requestBodyTypeName_1 = typeSymbol.getName();
-                                                //console.log(`Found request body type: ${requestBodyTypeName}`);
+                                            var typeNode = argument.getType();
+                                            var requestBodyType = typeNode.getText();
+                                            // Recursively unwrap utility types
+                                            while (typeNode.isObject() && typeNode.getAliasSymbol()) {
+                                                var typeArguments = typeNode.getTypeArguments();
+                                                if (typeArguments.length > 0) {
+                                                    requestBodyType = typeArguments[0].getText();
+                                                    typeNode = typeArguments[0];
+                                                }
+                                                else {
+                                                    break;
+                                                }
                                             }
+                                            // Extract the type name from the import statement
+                                            var importMatch = requestBodyType.match(/import\(".*"\)\.(\w+)/);
+                                            if (importMatch) {
+                                                requestBodyType = importMatch[1];
+                                            }
+                                            requestBodyTypeName_1 = requestBodyType;
+                                            //console.log(`Found request body type: ${requestBodyTypeName}`);
                                         }
                                     }
                                 }
@@ -79,7 +94,7 @@ function findEndpointsInFile(sourceFile) {
                     }
                     //console.log(`Constructed full path: ${fullPath}`);
                     endpoints.push({ method: method_1, path: fullPath, requestBodyType: requestBodyTypeName_1 });
-                    //console.log('Endpoint found:', { method, path: fullPath, requestBodyType: requestBodyTypeName });
+                    console.log('Endpoint found:', { method: method_1, path: fullPath, requestBodyType: requestBodyTypeName_1 });
                 }
             }
         }

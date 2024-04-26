@@ -53,11 +53,28 @@ function findEndpointsInFile(sourceFile: SourceFile): TSEndpoint[] {
                   if (Node.isCallExpression(initializer) && initializer.getExpression().getText() === 'JSON.stringify') {
                     const argument = initializer.getArguments()[0];
                     if (Node.isIdentifier(argument)) {
-                      const typeSymbol = (argument as Identifier).getType().getSymbol();
-                      if (typeSymbol) {
-                        requestBodyTypeName = typeSymbol.getName();
-                        //console.log(`Found request body type: ${requestBodyTypeName}`);
+                      let typeNode = (argument as Identifier).getType();
+                      let requestBodyType = typeNode.getText();
+                
+                      // Recursively unwrap utility types
+                      while (typeNode.isObject() && typeNode.getAliasSymbol()) {
+                        const typeArguments = typeNode.getTypeArguments();
+                        if (typeArguments.length > 0) {
+                          requestBodyType = typeArguments[0].getText();
+                          typeNode = typeArguments[0];
+                        } else {
+                          break;
+                        }
                       }
+                
+                      // Extract the type name from the import statement
+                      const importMatch = requestBodyType.match(/import\(".*"\)\.(\w+)/);
+                      if (importMatch) {
+                        requestBodyType = importMatch[1];
+                      }
+                
+                      requestBodyTypeName = requestBodyType;
+                      //console.log(`Found request body type: ${requestBodyTypeName}`);
                     }
                   }
                 }
@@ -79,7 +96,7 @@ function findEndpointsInFile(sourceFile: SourceFile): TSEndpoint[] {
           //console.log(`Constructed full path: ${fullPath}`);
       
           endpoints.push({ method, path: fullPath, requestBodyType: requestBodyTypeName });
-          //console.log('Endpoint found:', { method, path: fullPath, requestBodyType: requestBodyTypeName });
+          console.log('Endpoint found:', { method, path: fullPath, requestBodyType: requestBodyTypeName });
         }
       }
     }
