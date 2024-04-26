@@ -2,21 +2,47 @@
 ## Issues
 Make sure the typescript files are compiled to javascript files.
 ```npx tsc src\cli\index.ts```  
+### Known Issue with parsing URLs enclosed in backticks
+
+Due to a specific behavior in our TypeScript setup, fetch calls with URLs defined as plain string literals (enclosed in backticks but without any embedded expressions) are not correctly parsed by our custom linter. This issue arises because our parsing logic explicitly looks for template expressions to process URLs between backticks, which leads to plain string literals being overlooked.
+
+#### Example:
+This will get parsed without problem:
+```typescript
+fetch(`https://example.com/api/data/${id}`, { method: 'GET' });
+```
+But this will **not** get parsed:
+```typescript
+fetch(`https://example.com/api/data`, { method: 'GET' });
+```
+#### Current Workaround
+You can simply modify it to use ``` " " ``` or ``` ' ' ``` instead of ``` ` ` ```:
+```typescript
+fetch("https://example.com/api/data", { method: 'GET' });
+```
+Since no template expressions are present in the URL, this change will not affect your functionality logic but will ensure that the fetch call is correctly parsed by our linter.
+
+
 
 ## Install dependencies
 ```
 npm install
 ```
-## Run the application
+## Running the Application
 
+To run the TypeScript API Linter, use the following command:
 ```
-npm install -g
-typescript-api-linter -r "C:\Users\samra\Documents\Sam\Howest\Sync\Modules\BAP\repos\typescript-api-linter\src\mockFiles\failingMockRequests" -t "C:\Users\samra\Documents\Sam\Howest\Sync\Modules\BAP\repos\typescript-api-linter\src\mockFiles\failingMockTypes" -c "C:\Users\samra\Documents\Sam\Howest\Sync\Modules\BAP\repos\typescript-api-linter\src\mockFiles\mockPostmanCollection.json"
+typescript-api-linter -r <request_files_directory> -t <type_files_directory> -c <postman_collection_file>
 ```
-## Run the tests
+Replace `<request_files_directory>` with the path to your TypeScript files containing API requests, `<type_files_directory>` with the path to your TypeScript files containing type definitions, and `<postman_collection_file>` with the path to your Postman collection file.
+
+### Running Tests
+
+To run the tests, execute:
 ```
 npm test
 ```
+Note: The TypeScript API Linter only works with the Fetch API.
 
 # Examples of supported typescript requests and types
 The examples provided below are not exhaustive, but they should give you a good idea of the types of requests and types that the linter can handle.
