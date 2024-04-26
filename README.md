@@ -1,4 +1,4 @@
-# How to use?
+# Typescript Fetch API Linter
 ## Issues
 Make sure the typescript files are compiled to javascript files.
 ```npx tsc src\cli\index.ts```  
