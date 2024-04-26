@@ -57,6 +57,30 @@ function findTypesInFile(fileContent, fileName) {
                 usages: [],
             });
         }
+        else if (ts.isEnumDeclaration(node)) {
+            var enumName = node.name.getText(sourceFile);
+            var enumProperties_1 = {};
+            node.members.forEach(function (member) {
+                if (ts.isEnumMember(member)) {
+                    var memberName = member.name.getText(sourceFile);
+                    var memberValue = '';
+                    if (member.initializer) {
+                        if (ts.isStringLiteral(member.initializer)) {
+                            memberValue = member.initializer.getText(sourceFile).replace(/'/g, '');
+                        }
+                        else if (ts.isNumericLiteral(member.initializer)) {
+                            memberValue = member.initializer.getText(sourceFile);
+                        }
+                    }
+                    enumProperties_1[memberName] = memberValue;
+                }
+            });
+            types.push({
+                name: enumName,
+                properties: enumProperties_1,
+                usages: [],
+            });
+        }
         ts.forEachChild(node, visit);
     }
     visit(sourceFile);

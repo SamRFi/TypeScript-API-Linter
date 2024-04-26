@@ -85,7 +85,15 @@ function lintPropertyTypes(endpointName: string, requestBody: any, matchingType:
     const expectedType = requestBody[prop];
     const actualType = matchingType.properties[prop];
 
-    if (Array.isArray(expectedType)) {
+    // Check if the actual type is an enum
+    const enumType = typeDefinitions.find(type => type.name === actualType);
+    if (enumType) {
+      console.log(`Enum type found: ${enumType.name}`);
+      const enumValues = Object.values(enumType.properties);
+      if (typeof expectedType === 'string' && !enumValues.includes(expectedType)) {
+        errors.push(`Invalid enum value for property '${prop}' in request body for endpoint ${endpointName}. Expected one of ${enumValues.join(', ')}, but got: ${expectedType}`);
+      }
+    } else if (Array.isArray(expectedType)) {
       if (actualType.endsWith('[]')) {
         const referencedType = actualType.slice(0, -2);
         const matchingReferencedType = findMatchingType(typeDefinitions, referencedType);
@@ -108,6 +116,7 @@ function lintPropertyTypes(endpointName: string, requestBody: any, matchingType:
     }
   });
 }
+
 
 
 function lintObjectTypes(endpointName: string, propName: string, expectedObject: any, actualObject: { [key: string]: string }, typeDefinitions: TypeDefinition[], errors: string[]): void {

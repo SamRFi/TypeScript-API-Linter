@@ -94,7 +94,7 @@ function findEndpointsInFile(sourceFile) {
                     }
                     //console.log(`Constructed full path: ${fullPath}`);
                     endpoints.push({ method: method_1, path: fullPath, requestBodyType: requestBodyTypeName_1 });
-                    console.log('Endpoint found:', { method: method_1, path: fullPath, requestBodyType: requestBodyTypeName_1 });
+                    //console.log('Endpoint found:', { method, path: fullPath, requestBodyType: requestBodyTypeName });
                 }
             }
         }

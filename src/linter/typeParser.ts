@@ -67,6 +67,32 @@ function findTypesInFile(fileContent: string, fileName: string): TypeDefinition[
         properties: typeProperties,
         usages: [],
       });
+    } else if (ts.isEnumDeclaration(node)) {
+      const enumName = node.name.getText(sourceFile);
+      const enumProperties: { [key: string]: string } = {};
+
+      node.members.forEach(member => {
+        if (ts.isEnumMember(member)) {
+          const memberName = member.name.getText(sourceFile);
+          let memberValue = '';
+
+          if (member.initializer) {
+            if (ts.isStringLiteral(member.initializer)) {
+              memberValue = member.initializer.getText(sourceFile).replace(/'/g, '');
+            } else if (ts.isNumericLiteral(member.initializer)) {
+              memberValue = member.initializer.getText(sourceFile);
+            }
+          }
+
+          enumProperties[memberName] = memberValue;
+        }
+      });
+
+      types.push({
+        name: enumName,
+        properties: enumProperties,
+        usages: [],
+      });
     }
 
     ts.forEachChild(node, visit);
@@ -76,6 +102,7 @@ function findTypesInFile(fileContent: string, fileName: string): TypeDefinition[
 
   return types;
 }
+
 
 function parseTypes(directoryPath: string): TypeDefinition[] {
   let types: TypeDefinition[] = [];

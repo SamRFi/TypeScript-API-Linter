@@ -96,7 +96,7 @@ function findEndpointsInFile(sourceFile: SourceFile): TSEndpoint[] {
           //console.log(`Constructed full path: ${fullPath}`);
       
           endpoints.push({ method, path: fullPath, requestBodyType: requestBodyTypeName });
-          console.log('Endpoint found:', { method, path: fullPath, requestBodyType: requestBodyTypeName });
+          //console.log('Endpoint found:', { method, path: fullPath, requestBodyType: requestBodyTypeName });
         }
       }
     }
