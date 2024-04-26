@@ -2,7 +2,7 @@
 ## Issues
 Make sure the typescript files are compiled to javascript files.
 ```npx tsc src\cli\index.ts```  
-make sure ```#!/usr/bin/env node``` is at the top of the src/cli/index.js file
+
 ## Install dependencies
 ```
 npm install
@@ -19,6 +19,7 @@ npm test
 ```
 
 # Examples of supported typescript requests and types
+The examples provided below are not exhaustive, but they should give you a good idea of the types of requests and types that the linter can handle.
 
 **Supported Request Methods**
 
