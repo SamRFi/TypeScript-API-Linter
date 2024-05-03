@@ -33,12 +33,17 @@ function parseCollection(collection: PostmanCollection): EndpointDefinition[] {
                 let requestBody;
                 if (body && body.mode === 'raw' && body.raw) {
                     try {
-                        requestBody = JSON.parse(body.raw);
+                        const parsedBody = JSON.parse(body.raw);
+                        if (Array.isArray(parsedBody)) {
+                            requestBody = parsedBody[1];
+                        } else {
+                            requestBody = parsedBody;
+                        }
                     } catch (error) {
                         console.warn(`Failed to parse request body for endpoint: ${item.name}`);
                     }
                 }
-
+                
                 let responseBody;
                 if (item.response && item.response.length > 0) {
                     const exampleResponse = item.response.find(res => res.code === 200 || res.code === 201);

@@ -1,5 +1,5 @@
 import { Update } from "vite";
-import { DeleteCategoryResponseBody, DeleteSubcategoryResponseBody, NewCategoryRequestBody, NewCategoryResponseBody, NewSubcategoryRequestBody, NewSubcategoryResponseBody, ProfileResponseBody, RegisterRequestBody, RegisterResponseBody, SignInRequestBody, UpdateCategoryRequestBody, UpdateCategoryResponseBody, UpdateSubcategoryRequestBody, UpdateSubcategoryResponseBody } from "../succeedingMockTypes/mockTypes";
+import { DeleteCategoryResponseBody, DeleteSubcategoryResponseBody, UserPreference, NewCategoryResponseBody, NewSubcategoryRequestBody, NewSubcategoryResponseBody, ProfileResponseBody, RegisterRequestBody, RegisterResponseBody, SignInRequestBody, UpdateCategoryRequestBody, UpdateCategoryResponseBody, UpdateSubcategoryRequestBody, UpdateSubcategoryResponseBody, UserPreferenceResponseBody } from "../succeedingMockTypes/mockTypes";
 
 const BASE_URL = `${import.meta.env.VITE_API_BASE_URL}/auth`;
 
@@ -97,6 +97,17 @@ export const register = async (data: RegisterRequestBody): Promise<RegisterRespo
 
 export const profile = async (): Promise<ProfileResponseBody> => {
   const response = await fetch('https://example.com/users/profile');
+  return response.json();
+};
+
+export const updateUserPreferences = async (preferences: UserPreference[]): Promise<UserPreferenceResponseBody[]> => {
+  const response = await fetch('https://example.com/users/preferences', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(preferences),
+  });
   return response.json();
 };
 

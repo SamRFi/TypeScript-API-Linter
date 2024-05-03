@@ -364,6 +364,7 @@
 						}
 					]
 				},
+				
 				{
 					"name": "Profile",
 					"request": {
@@ -446,7 +447,81 @@
 							"body": "{\n    \"id\": \"8473d191-be5c-47df-a40f-d8bdb801fda3\",\n    \"email\": \"user5@example.com\",\n    \"password\": \"\",\n    \"state\": \"active\",\n    \"name\": \"John Doe\",\n    \"phone_number\": \"+243252523\",\n    \"role\": \"shop_owner\",\n    \"preferences\": {\n        \"excludeAllergenFilter\": {\n            \"excludeAllergenFilter\": []\n        }\n    }\n}"
 						}
 					]
-				}
+				},
+				{
+					"name": "User Preferences",
+					"request": {
+					"auth": {
+					"type": "noauth"
+					},
+					"method": "POST",
+					"header": [
+					{
+					"key": "Content-Type",
+					"value": "application/json",
+					"type": "text"
+					}
+					],
+					"body": {
+						"mode": "raw",
+						"raw": "[\r\n  {\r\n    \"userId\": \"8473d191-be5c-47df-a40f-d8bdb801fda3\",\r\n    \"preferences\": {\r\n      \"theme\": \"dark\",\r\n      \"language\": \"en\",\r\n      \"notifications\": true\r\n    }\r\n  },\r\n  {\r\n    \"userId\": \"f32b2f8a-c8e5-4c2f-9d8a-9b3c2d1e0f7b\",\r\n    \"preferences\": {\r\n      \"theme\": \"light\",\r\n      \"language\": \"fr\",\r\n      \"notifications\": false\r\n    }\r\n  }\r\n]\r\n",
+						"options": {
+							"raw": {
+								"language": "json"
+							}
+						}
+					},
+					"url": {
+					"raw": "{{croissant-server}}/users/preferences",
+					"host": [
+					"{{croissant-server}}"
+					],
+					"path": [
+					"users",
+					"preferences"
+					]
+					}
+					},
+					"response": [
+					{
+					"name": "200",
+					"originalRequest": {
+					"method": "POST",
+					"header": [
+					{
+					"key": "Content-Type",
+					"value": "application/json"
+					}
+					],
+					"body": {
+					"mode": "raw",
+					"raw": "[\n  {\n    \"userId\": \"8473d191-be5c-47df-a40f-d8bdb801fda3\",\n    \"preferences\": {\n      \"theme\": \"dark\",\n      \"language\": \"en\",\n      \"notifications\": true\n    }\n  },\n  {\n    \"userId\": \"f32b2f8a-c8e5-4c2f-9d8a-9b3c2d1e0f7b\",\n    \"preferences\": {\n      \"theme\": \"light\",\n      \"language\": \"fr\",\n      \"notifications\": false\n    }\n  }\n]"
+					},
+					"url": {
+					"raw": "{{croissant-server}}/users/preferences",
+					"host": [
+					"{{croissant-server}}"
+					],
+					"path": [
+					"users",
+					"preferences"
+					]
+					}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+					{
+					"key": "Content-Type",
+					"value": "application/json"
+					}
+					],
+					"cookie": [],
+					"body": "[\n  {\n    \"userId\": \"8473d191-be5c-47df-a40f-d8bdb801fda3\",\n    \"preferences\": {\n      \"theme\": \"dark\",\n      \"language\": \"en\",\n      \"notifications\": true\n    }\n  },\n  {\n    \"userId\": \"f32b2f8a-c8e5-4c2f-9d8a-9b3c2d1e0f7b\",\n    \"preferences\": {\n      \"theme\": \"light\",\n      \"language\": \"fr\",\n      \"notifications\": false\n    }\n  }\n]"
+					}
+					]
+					}
 			]
 		},
 		{

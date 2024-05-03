@@ -22,33 +22,39 @@ function findMatchingTSEndpoint(tsEndpoints, method, path) {
 }
 function lintRequestBody(def, matchingTSEndpoint, typeDefinitions, errors) {
     if (def.requestBody) {
-        var expectedProperties = Object.keys(def.requestBody);
-        var matchingType_1 = findMatchingType(typeDefinitions, matchingTSEndpoint.isRequestBodyArray ? "".concat(matchingTSEndpoint.requestBodyType, "[]") : matchingTSEndpoint.requestBodyType);
-        if (!matchingType_1) {
-            errors.push(createNoMatchingTypeError(def.name));
+        // Check if the requestBody is expected to be an array and handle accordingly
+        if (matchingTSEndpoint.isRequestBodyArray) {
+            var requestBody = Array.isArray(def.requestBody) ? def.requestBody : JSON.parse(def.requestBody);
+            if (!Array.isArray(requestBody)) {
+                errors.push("Expected request body to be an array for endpoint: ".concat(def.name));
+                return;
+            }
+            // Validate each object in the array
+            requestBody.forEach(function (item, index) {
+                var matchingType = findMatchingType(typeDefinitions, matchingTSEndpoint.requestBodyType);
+                if (!matchingType) {
+                    errors.push("No matching type found for items in request body array at endpoint: ".concat(def.name));
+                    return;
+                }
+                var actualProperties = Object.keys(item);
+                var expectedProperties = Object.keys(matchingType.properties);
+                lintMissingProperties("".concat(def.name, " at index ").concat(index), expectedProperties, actualProperties, errors, 'request');
+                lintExtraProperties("".concat(def.name, " at index ").concat(index), expectedProperties, actualProperties, errors, 'request');
+                lintPropertyTypes("".concat(def.name, " at index ").concat(index), item, matchingType, expectedProperties, typeDefinitions, errors);
+            });
         }
         else {
-            if (matchingTSEndpoint.isRequestBodyArray) {
-                if (Array.isArray(def.requestBody) && def.requestBody.length > 0) {
-                    var arrayItemType = def.requestBody[0];
-                    var expectedItemProperties_1 = Object.keys(arrayItemType);
-                    var actualProperties_1 = Object.keys(matchingType_1.properties);
-                    def.requestBody.forEach(function (item) {
-                        lintMissingProperties(def.name, expectedItemProperties_1, actualProperties_1, errors, 'request');
-                        lintExtraProperties(def.name, expectedItemProperties_1, actualProperties_1, errors, 'request');
-                        lintPropertyTypes(def.name, item, matchingType_1, expectedItemProperties_1, typeDefinitions, errors);
-                    });
-                }
-                else {
-                    errors.push("Expected request body to be an array for endpoint: ".concat(def.name));
-                }
+            // Handle non-array request bodies
+            var matchingType = findMatchingType(typeDefinitions, matchingTSEndpoint.requestBodyType);
+            if (!matchingType) {
+                errors.push(createNoMatchingTypeError(def.name));
+                return;
             }
-            else {
-                var actualProperties = Object.keys(matchingType_1.properties);
-                lintMissingProperties(def.name, expectedProperties, actualProperties, errors, 'request');
-                lintExtraProperties(def.name, expectedProperties, actualProperties, errors, 'request');
-                lintPropertyTypes(def.name, def.requestBody, matchingType_1, expectedProperties, typeDefinitions, errors);
-            }
+            var expectedProperties = Object.keys(matchingType.properties);
+            var actualProperties = Object.keys(def.requestBody);
+            lintMissingProperties(def.name, expectedProperties, actualProperties, errors, 'request');
+            lintExtraProperties(def.name, expectedProperties, actualProperties, errors, 'request');
+            lintPropertyTypes(def.name, def.requestBody, matchingType, expectedProperties, typeDefinitions, errors);
         }
     }
 }

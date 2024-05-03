@@ -42,6 +42,24 @@ export interface SignInRequestBody {
     preferences?: Preference; // Object with any properties
   }
 
+  export interface UserPreference {
+    userId: string;
+    preferences: {
+      theme: string;
+      language: string;
+      notifications: boolean;
+    };
+  }
+
+  export interface UserPreferenceResponseBody {
+    userId: number;
+    preferences: {
+      theme: string;
+      language: string;
+      notifications: boolean;
+    };
+  }
+
   export interface Preference {
     theme: string;
     language: string;

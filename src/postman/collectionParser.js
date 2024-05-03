@@ -31,7 +31,13 @@ function parseCollection(collection) {
                 var requestBody = void 0;
                 if (body && body.mode === 'raw' && body.raw) {
                     try {
-                        requestBody = JSON.parse(body.raw);
+                        var parsedBody = JSON.parse(body.raw);
+                        if (Array.isArray(parsedBody)) {
+                            requestBody = parsedBody[1];
+                        }
+                        else {
+                            requestBody = parsedBody;
+                        }
                     }
                     catch (error) {
                         console.warn("Failed to parse request body for endpoint: ".concat(item.name));
