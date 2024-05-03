@@ -3,28 +3,50 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.tsParser = void 0;
 // src/linter/requestParser.ts
 var ts_morph_1 = require("ts-morph");
+/**
+ * Finds all endpoints in a given source file
+ * @param sourceFile The source file to search for endpoints
+ * @returns An array of TSEndpoint objects
+ */
 function findEndpointsInFile(sourceFile) {
+    // Initialize an empty array to store the found endpoints
     var endpoints = [];
+    // Initialize an empty string to store the base path
     var basePath = '';
-    // Find the base path variable declaration
+    // Find the base path variable declaration in the source file
     sourceFile.getVariableDeclarations().forEach(function (variableDeclaration) {
+        // Get the initializer of the variable declaration to extract the base path value
         var initializer = variableDeclaration.getInitializer();
+        // Check if the initializer is a template expression
         if (initializer && ts_morph_1.Node.isTemplateExpression(initializer)) {
+            // Cast the initializer to a TemplateExpression type to access its methods and properties
             var templateExpression = initializer;
+            // Get the template spans of the template expression to extract the head and tail parts
+            // Temple spans are the parts of the template expression that are not placeholders
             var templateSpans = templateExpression.getTemplateSpans();
+            // Get the head of the template expression (the part before the first template span) and remove the trailing backtick
             var head = templateExpression.getHead().getText().replace(/`$/, '');
+            // Get the tail of the template expression (the part after the last template span) and join all spans together
             var tail = templateSpans.map(function (span) { return span.getLiteral().getText(); }).join('');
+            // Construct the base path by concatenating the head and tail parts, removing the placeholder syntax `${}`
             basePath = (head + tail).replace('${}/', '').replace(/`/g, '');
             //console.log(`Found base path: ${basePath}`);
         }
     });
+    /**
+     * A recursive function to visit each node in the source file
+     * @param node The current node to visit
+     */
     function visit(node) {
+        // Check if the node is a call expression
         if (ts_morph_1.Node.isCallExpression(node)) {
+            // Cast the node to a CallExpression
             var callExpression = node;
             if (callExpression.getExpression().getText().includes('fetch')) {
                 var method_1 = 'GET';
                 var path_1 = '';
                 var requestBodyTypeName_1 = null;
+                var responseBodyTypeName = null;
                 callExpression.getArguments().forEach(function (arg) {
                     if (ts_morph_1.Node.isTemplateExpression(arg)) {
                         var templateExpression = arg;
@@ -81,6 +103,61 @@ function findEndpointsInFile(sourceFile) {
                         });
                     }
                 });
+                var parentNode = node.getParent();
+                if (ts_morph_1.Node.isVariableDeclaration(parentNode)) {
+                    var variableDeclaration = parentNode;
+                    var typeNode = variableDeclaration.getTypeNode();
+                    if (typeNode) {
+                        responseBodyTypeName = typeNode.getText();
+                    }
+                }
+                else if (ts_morph_1.Node.isReturnStatement(parentNode)) {
+                    // Navigate up to find the parent function (could be several levels up if nested in blocks or other structures)
+                    var current = parentNode;
+                    while (current && !ts_morph_1.Node.isFunctionDeclaration(current) && !ts_morph_1.Node.isArrowFunction(current)) {
+                        current = current.getParent();
+                    }
+                    if (current && (ts_morph_1.Node.isFunctionDeclaration(current) || ts_morph_1.Node.isArrowFunction(current))) {
+                        var returnTypeNode = current.getReturnTypeNode();
+                        if (returnTypeNode) {
+                            responseBodyTypeName = returnTypeNode.getText();
+                            // If the return type is a Promise, extract the generic type parameter
+                            var match = responseBodyTypeName.match(/Promise<(.+)>/);
+                            if (match) {
+                                responseBodyTypeName = match[1];
+                            }
+                        }
+                        else {
+                            console.log("No return type node found.");
+                        }
+                    }
+                    else {
+                        console.log("Parent is not a function declaration or arrow function.");
+                    }
+                }
+                else {
+                    console.log("Parent node is not a variable declaration or return statement.");
+                }
+                if (ts_morph_1.Node.isCallExpression(node) && node.getExpression().getText().includes('fetch')) {
+                    // Find the enclosing function of the fetch call
+                    var current = node;
+                    while (current && !ts_morph_1.Node.isFunctionDeclaration(current) && !ts_morph_1.Node.isArrowFunction(current)) {
+                        current = current.getParent();
+                    }
+                    if (current) {
+                        var functionNode = current;
+                        var returnTypeNode = functionNode.getReturnTypeNode();
+                        if (returnTypeNode) {
+                            responseBodyTypeName = returnTypeNode.getText();
+                            // Extract the generic type if the return type is a Promise
+                            var match = responseBodyTypeName.match(/Promise<(.+)>/);
+                            if (match) {
+                                responseBodyTypeName = match[1];
+                            }
+                            console.log("Detected return type: ".concat(responseBodyTypeName));
+                        }
+                    }
+                }
                 if (path_1) {
                     var fullPath = '';
                     if (path_1.startsWith('http://') || path_1.startsWith('https://')) {
@@ -93,8 +170,8 @@ function findEndpointsInFile(sourceFile) {
                         fullPath = (basePath + path_1).replace(/\${}/g, '').replace(/^\//, ''); // Remove the leading slash
                     }
                     //console.log(`Constructed full path: ${fullPath}`);
-                    endpoints.push({ method: method_1, path: fullPath, requestBodyType: requestBodyTypeName_1 });
-                    //console.log('Endpoint found:', { method, path: fullPath, requestBodyType: requestBodyTypeName });
+                    endpoints.push({ method: method_1, path: fullPath, requestBodyType: requestBodyTypeName_1, responseBodyType: responseBodyTypeName });
+                    console.log('Endpoint found:', { method: method_1, path: fullPath, requestBodyType: requestBodyTypeName_1, responseBodyType: responseBodyTypeName });
                 }
             }
         }

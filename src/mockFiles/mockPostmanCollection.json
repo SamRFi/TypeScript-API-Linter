@@ -442,7 +442,62 @@
 							]
 						}
 					},
-					"response": []
+					"response": [
+						{
+							"name": "200",
+							"originalRequest": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "token",
+										"value": "",
+										"disabled": true
+									}
+								],
+								"url": {
+									"raw": "{{croissant-server}}/users/profile",
+									"host": [
+										"{{croissant-server}}"
+									],
+									"path": [
+										"users",
+										"profile"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Access-Control-Allow-Credentials",
+									"value": "true"
+								},
+								{
+									"key": "Access-Control-Allow-Headers",
+									"value": "Accept, Content-Type, Content-Length, Accept-Encoding, X-CSRF-Token, Authorization"
+								},
+								{
+									"key": "Access-Control-Allow-Methods",
+									"value": "POST, GET, OPTIONS, PUT, PATCH, DELETE"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Date",
+									"value": "Fri, 03 May 2024 07:22:00 GMT"
+								},
+								{
+									"key": "Content-Length",
+									"value": "240"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"id\": \"8473d191-be5c-47df-a40f-d8bdb801fda3\",\n    \"email\": \"user5@example.com\",\n    \"password\": \"\",\n    \"state\": \"active\",\n    \"name\": \"John Doe\",\n    \"phone_number\": \"+243252523\",\n    \"role\": \"shop_owner\",\n    \"preferences\": {\n        \"excludeAllergenFilter\": {\n            \"excludeAllergenFilter\": []\n        }\n    }\n}"
+						}
+					]
 				}
 			]
 		},

@@ -153,7 +153,7 @@ In this example, the linter will check that the `products` property of the `Crea
 
 The linter supports type definitions for request bodies, including interfaces, types, and enums. For example:
 
-```typescript
+```typescriptù
 export enum UserRole {
   ADMIN,
   USER,

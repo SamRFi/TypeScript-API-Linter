@@ -1,3 +1,4 @@
+import { Update } from "vite";
 import { DeleteCategoryResponseBody, DeleteSubcategoryResponseBody, NewCategoryRequestBody, NewCategoryResponseBody, NewSubcategoryRequestBody, NewSubcategoryResponseBody, ProfileResponseBody, RegisterRequestBody, RegisterResponseBody, SignInRequestBody, UpdateCategoryRequestBody, UpdateCategoryResponseBody, UpdateSubcategoryRequestBody, UpdateSubcategoryResponseBody } from "../succeedingMockTypes/mockTypes";
 
 const BASE_URL = `${import.meta.env.VITE_API_BASE_URL}/auth`;

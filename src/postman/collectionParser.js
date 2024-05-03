@@ -37,11 +37,26 @@ function parseCollection(collection) {
                         console.warn("Failed to parse request body for endpoint: ".concat(item.name));
                     }
                 }
+                var responseBody = void 0;
+                if (item.request.method === 'GET') {
+                    if (item.response && item.response.length > 0) {
+                        var exampleResponse = item.response[0];
+                        if (exampleResponse.body) {
+                            try {
+                                responseBody = JSON.parse(exampleResponse.body);
+                            }
+                            catch (error) {
+                                console.warn("Failed to parse response body for endpoint: ".concat(item.name));
+                            }
+                        }
+                    }
+                }
                 endpoints.push({
                     method: method,
                     path: fullPath.replace(/^\//, ''),
                     name: item.name,
-                    requestBody: requestBody
+                    requestBody: requestBody,
+                    responseBody: responseBody // Add the response body to the endpoint definition
                 });
             }
         });

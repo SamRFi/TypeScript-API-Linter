@@ -11,6 +11,7 @@ export interface CollectionItem {
     request: any;
     name: string;
     item?: RequestItem[]; // Collections can have nested items
+    response?: any[];
 }
 
 export interface RequestItem {
@@ -41,4 +42,5 @@ export interface EndpointDefinition {
     path: string;
     name: string;
     requestBody?: any;
+    responseBody?: any; 
 }

@@ -9,6 +9,7 @@ function lintEndpointRules(endpointDefinitions, tsEndpoints, typeDefinitions) {
         var matchingTSEndpoint = findMatchingTSEndpoint(tsEndpoints, def.method, normalizedDefPath);
         if (matchingTSEndpoint) {
             lintRequestBody(def, matchingTSEndpoint, typeDefinitions, errors);
+            lintResponseBody(def, matchingTSEndpoint, typeDefinitions, errors);
         }
     });
     lintMissingEndpoints(tsEndpoints, endpointDefinitions, errors);
@@ -38,6 +39,21 @@ function lintRequestBody(def, matchingTSEndpoint, typeDefinitions, errors) {
         }
     }
 }
+function lintResponseBody(def, matchingTSEndpoint, typeDefinitions, errors) {
+    if (def.responseBody) {
+        var expectedProperties = Object.keys(def.responseBody);
+        var matchingType = findMatchingType(typeDefinitions, matchingTSEndpoint.responseBodyType);
+        if (!matchingType) {
+            errors.push(createNoMatchingResponseError(def.name));
+        }
+        else {
+            var actualProperties = Object.keys(matchingType.properties);
+            lintMissingProperties(def.name, expectedProperties, actualProperties, errors);
+            lintExtraProperties(def.name, expectedProperties, actualProperties, errors);
+            lintPropertyTypes(def.name, def.responseBody, matchingType, expectedProperties, typeDefinitions, errors);
+        }
+    }
+}
 function findMatchingType(typeDefinitions, requestBodyType) {
     if (requestBodyType === null || requestBodyType === undefined) {
         //console.log(`Request Body Type is null or undefined`);
@@ -55,6 +71,9 @@ function findMatchingType(typeDefinitions, requestBodyType) {
 }
 function createNoMatchingTypeError(endpointName) {
     return "No matching type definition found for endpoint: ".concat(endpointName);
+}
+function createNoMatchingResponseError(endpointName) {
+    return "No matching response type definition found for endpoint: ".concat(endpointName);
 }
 function lintMissingProperties(endpointName, expectedProperties, actualProperties, errors) {
     var missingProperties = expectedProperties.filter(function (prop) { return !actualProperties.includes(prop); });

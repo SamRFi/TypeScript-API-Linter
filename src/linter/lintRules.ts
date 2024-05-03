@@ -14,6 +14,7 @@ function lintEndpointRules(endpointDefinitions: EndpointDefinition[], tsEndpoint
 
     if (matchingTSEndpoint) {
       lintRequestBody(def, matchingTSEndpoint, typeDefinitions, errors);
+      lintResponseBody(def, matchingTSEndpoint, typeDefinitions, errors);
     }
   });
 
@@ -47,6 +48,23 @@ function lintRequestBody(def: EndpointDefinition, matchingTSEndpoint: TSEndpoint
   }
 }
 
+function lintResponseBody(def: EndpointDefinition, matchingTSEndpoint: TSEndpoint, typeDefinitions: TypeDefinition[], errors: string[]): void {
+  if (def.responseBody) {
+      const expectedProperties = Object.keys(def.responseBody);
+      const matchingType = findMatchingType(typeDefinitions, matchingTSEndpoint.responseBodyType);
+
+      if (!matchingType) {
+          errors.push(createNoMatchingResponseError(def.name));
+      } else {
+          const actualProperties = Object.keys(matchingType.properties);
+          lintMissingProperties(def.name, expectedProperties, actualProperties, errors);
+          lintExtraProperties(def.name, expectedProperties, actualProperties, errors);
+          lintPropertyTypes(def.name, def.responseBody, matchingType, expectedProperties, typeDefinitions, errors);
+      }
+  }
+}
+
+
 function findMatchingType(typeDefinitions: TypeDefinition[], requestBodyType: string | null | undefined): TypeDefinition | undefined {
   if (requestBodyType === null || requestBodyType === undefined) {
     //console.log(`Request Body Type is null or undefined`);
@@ -64,6 +82,10 @@ function findMatchingType(typeDefinitions: TypeDefinition[], requestBodyType: st
 
 function createNoMatchingTypeError(endpointName: string): string {
   return `No matching type definition found for endpoint: ${endpointName}`;
+}
+
+function createNoMatchingResponseError(endpointName: string): string {
+  return `No matching response type definition found for endpoint: ${endpointName}`;
 }
 
 function lintMissingProperties(endpointName: string, expectedProperties: string[], actualProperties: string[], errors: string[]): void {

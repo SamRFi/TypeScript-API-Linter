@@ -39,11 +39,26 @@ function parseCollection(collection: PostmanCollection): EndpointDefinition[] {
                     }
                 }
 
+                let responseBody;
+                if (item.request.method === 'GET') {
+                    if (item.response && item.response.length > 0) {
+                        const exampleResponse = item.response[0];
+                        if (exampleResponse.body) {
+                            try {
+                                responseBody = JSON.parse(exampleResponse.body);
+                            } catch (error) {
+                                console.warn(`Failed to parse response body for endpoint: ${item.name}`);
+                            }
+                        }
+                    }
+                }
+        
                 endpoints.push({
                     method,
                     path: fullPath.replace(/^\//, ''),
                     name: item.name,
-                    requestBody
+                    requestBody,
+                    responseBody // Add the response body to the endpoint definition
                 });
             }
         });
