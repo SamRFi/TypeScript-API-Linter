@@ -42,11 +42,14 @@ function findEndpointsInFile(sourceFile) {
         if (ts_morph_1.Node.isCallExpression(node)) {
             // Cast the node to a CallExpression
             var callExpression = node;
+            // Check if the call expression is a fetch call
             if (callExpression.getExpression().getText().includes('fetch')) {
+                // Initialize the method, path, and request body type name
                 var method_1 = 'GET';
                 var path_1 = '';
                 var requestBodyTypeName_1 = null;
                 var responseBodyTypeName = null;
+                // Iterate over the arguments of the call expression
                 callExpression.getArguments().forEach(function (arg) {
                     if (ts_morph_1.Node.isTemplateExpression(arg)) {
                         var templateExpression = arg;
@@ -131,15 +134,15 @@ function findEndpointsInFile(sourceFile) {
                             }
                         }
                         else {
-                            console.log("No return type node found.");
+                            //console.log("No return type node found.");
                         }
                     }
                     else {
-                        console.log("Parent is not a function declaration or arrow function.");
+                        //console.log("Parent is not a function declaration or arrow function.");
                     }
                 }
                 else {
-                    console.log("Parent node is not a variable declaration or return statement.");
+                    //console.log("Parent node is not a variable declaration or return statement.");
                 }
                 if (ts_morph_1.Node.isCallExpression(node) && node.getExpression().getText().includes('fetch')) {
                     // Find the enclosing function of the fetch call
@@ -151,29 +154,35 @@ function findEndpointsInFile(sourceFile) {
                         var functionNode = current;
                         var returnTypeNode = functionNode.getReturnTypeNode();
                         if (returnTypeNode) {
-                            var returnTypeText = returnTypeNode.getText();
-                            // Extract the type within Promise<>
-                            var promiseMatch = returnTypeText.match(/Promise<(.+)>/);
-                            if (promiseMatch) {
-                                // Work with the inner type of the Promise
-                                var innerType = promiseMatch[1];
-                                // Check if the inner type is an array type
-                                if (innerType.endsWith('[]')) {
-                                    // Remove the array notation to get the base type
-                                    var baseType = innerType.slice(0, -2);
-                                    responseBodyTypeName = baseType;
-                                    // Indicate that the expected type is an array of baseType
+                            var type = returnTypeNode.getType();
+                            var responseBodyType = type.getText();
+                            // Recursively unwrap utility types
+                            while (type.isObject() && type.getAliasSymbol()) {
+                                var typeArguments = type.getAliasTypeArguments();
+                                if (typeArguments.length > 0) {
+                                    responseBodyType = typeArguments[0].getText();
+                                    type = typeArguments[0];
                                 }
                                 else {
-                                    // If not an array type, use the inner type directly
-                                    responseBodyTypeName = innerType;
+                                    break;
                                 }
                             }
-                            else {
-                                // If not a Promise type, proceed as before
-                                responseBodyTypeName = returnTypeText;
+                            // Check if the unwrapped type is a union type
+                            var unionMatch = responseBodyType.match(/^(.+?)\s*\|/);
+                            if (unionMatch) {
+                                // Extract the first type before the "|"
+                                responseBodyType = unionMatch[1];
                             }
-                            //console.log(`Selected return type: ${responseBodyTypeName}`);
+                            // Extract the type name from the import statement
+                            var importMatch = responseBodyType.match(/import\(".*"\)\.(\w+)/);
+                            if (importMatch) {
+                                responseBodyType = importMatch[1];
+                            }
+                            if (responseBodyType.endsWith('[]')) {
+                                responseBodyType = responseBodyType.slice(0, -2);
+                            }
+                            responseBodyTypeName = responseBodyType;
+                            //console.log(`Found response body type: ${responseBodyTypeName}`);
                         }
                     }
                 }
@@ -195,7 +204,7 @@ function findEndpointsInFile(sourceFile) {
                         requestBodyType: requestBodyTypeName_1,
                         responseBodyType: responseBodyTypeName,
                     });
-                    //console.log('Endpoint found:', { method, path: fullPath, requestBodyType: requestBodyTypeName, responseBodyType: responseBodyTypeName });
+                    console.log('Endpoint found:', { method: method_1, path: fullPath, requestBodyType: requestBodyTypeName_1, responseBodyType: responseBodyTypeName });
                 }
             }
         }

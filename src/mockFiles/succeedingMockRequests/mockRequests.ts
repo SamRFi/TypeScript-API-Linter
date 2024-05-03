@@ -95,7 +95,7 @@ export const register = async (data: RegisterRequestBody): Promise<RegisterRespo
   return response.json();
 };
 
-export const profile = async (): Promise<ProfileResponseBody> => {
+export const profile = async (): Promise<Readonly<ProfileResponseBody | UserPreferenceResponseBody>> => {
   const response = await fetch('https://example.com/users/profile');
   return response.json();
 };

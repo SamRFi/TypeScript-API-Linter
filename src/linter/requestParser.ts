@@ -44,12 +44,15 @@ function findEndpointsInFile(sourceFile: SourceFile): TSEndpoint[] {
     if (Node.isCallExpression(node)) {
       // Cast the node to a CallExpression
       const callExpression = node as CallExpression;
+      // Check if the call expression is a fetch call
       if (callExpression.getExpression().getText().includes('fetch')) {
+        // Initialize the method, path, and request body type name
         let method = 'GET';
         let path = '';
         let requestBodyTypeName: string | null = null;
         let responseBodyTypeName: string | null = null;
 
+        // Iterate over the arguments of the call expression
         callExpression.getArguments().forEach(arg => {
           
           if (Node.isTemplateExpression(arg)) {
@@ -136,13 +139,13 @@ function findEndpointsInFile(sourceFile: SourceFile): TSEndpoint[] {
                 responseBodyTypeName = match[1];
               }
             } else {
-              console.log("No return type node found.");
+              //console.log("No return type node found.");
             }
           } else {
-            console.log("Parent is not a function declaration or arrow function.");
+            //console.log("Parent is not a function declaration or arrow function.");
           }
         } else {
-          console.log("Parent node is not a variable declaration or return statement.");
+          //console.log("Parent node is not a variable declaration or return statement.");
         }
 
         if (Node.isCallExpression(node) && node.getExpression().getText().includes('fetch')) {
@@ -151,35 +154,49 @@ function findEndpointsInFile(sourceFile: SourceFile): TSEndpoint[] {
           while (current && !Node.isFunctionDeclaration(current) && !Node.isArrowFunction(current)) {
             current = current.getParent();
           }
-      
+        
           if (current) {
             const functionNode = current as FunctionDeclaration | ArrowFunction;
             const returnTypeNode = functionNode.getReturnTypeNode();
             if (returnTypeNode) {
-              let returnTypeText = returnTypeNode.getText();
-              // Extract the type within Promise<>
-              const promiseMatch = returnTypeText.match(/Promise<(.+)>/);
-              if (promiseMatch) {
-                // Work with the inner type of the Promise
-                let innerType = promiseMatch[1];
-                // Check if the inner type is an array type
-                if (innerType.endsWith('[]')) {
-                  // Remove the array notation to get the base type
-                  let baseType = innerType.slice(0, -2);
-                  responseBodyTypeName = baseType;
-                  // Indicate that the expected type is an array of baseType
+              let type = returnTypeNode.getType();
+              let responseBodyType = type.getText();
+        
+              // Recursively unwrap utility types
+              while (type.isObject() && type.getAliasSymbol()) {
+                const typeArguments = type.getAliasTypeArguments();
+                if (typeArguments.length > 0) {
+                  responseBodyType = typeArguments[0].getText();
+                  type = typeArguments[0];
                 } else {
-                  // If not an array type, use the inner type directly
-                  responseBodyTypeName = innerType;
+                  break;
                 }
-              } else {
-                // If not a Promise type, proceed as before
-                responseBodyTypeName = returnTypeText;
               }
-              //console.log(`Selected return type: ${responseBodyTypeName}`);
+        
+              // Check if the unwrapped type is a union type
+              const unionMatch = responseBodyType.match(/^(.+?)\s*\|/);
+              if (unionMatch) {
+                // Extract the first type before the "|"
+                responseBodyType = unionMatch[1];
+              }
+        
+              // Extract the type name from the import statement
+              const importMatch = responseBodyType.match(/import\(".*"\)\.(\w+)/);
+              if (importMatch) {
+                responseBodyType = importMatch[1];
+              }
+        
+              if (responseBodyType.endsWith('[]')) {
+                responseBodyType = responseBodyType.slice(0, -2);
+              }
+        
+              responseBodyTypeName = responseBodyType;
+              //console.log(`Found response body type: ${responseBodyTypeName}`);
             }
-          }  
+          }
         }
+        
+        
         
         if (path) {
           let fullPath = '';
