@@ -36,8 +36,16 @@ export interface SignInRequestBody {
     email: string;
     name: string;
     phone_number: string;
+    password?: string; // Optional properties
+    state?: string;
+    role?: string;
+    preferences?: Preference; // Object with any properties
   }
-  
+
+  export interface Preference {
+    theme: string;
+    language: string;
+  }
   
   export interface CreateCategoryRequestBody {
     name: {

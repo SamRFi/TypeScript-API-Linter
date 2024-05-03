@@ -33,8 +33,8 @@ function lintRequestBody(def, matchingTSEndpoint, typeDefinitions, errors) {
         else {
             //console.log(`Matching Type: ${matchingType.name}`);
             var actualProperties = Object.keys(matchingType.properties);
-            lintMissingProperties(def.name, expectedProperties, actualProperties, errors);
-            lintExtraProperties(def.name, expectedProperties, actualProperties, errors);
+            lintMissingProperties(def.name, expectedProperties, actualProperties, errors, 'request');
+            lintExtraProperties(def.name, expectedProperties, actualProperties, errors, 'request');
             lintPropertyTypes(def.name, def.requestBody, matchingType, expectedProperties, typeDefinitions, errors);
         }
     }
@@ -48,8 +48,8 @@ function lintResponseBody(def, matchingTSEndpoint, typeDefinitions, errors) {
         }
         else {
             var actualProperties = Object.keys(matchingType.properties);
-            lintMissingProperties(def.name, expectedProperties, actualProperties, errors);
-            lintExtraProperties(def.name, expectedProperties, actualProperties, errors);
+            lintMissingProperties(def.name, expectedProperties, actualProperties, errors, 'response');
+            lintExtraProperties(def.name, expectedProperties, actualProperties, errors, 'response');
             lintPropertyTypes(def.name, def.responseBody, matchingType, expectedProperties, typeDefinitions, errors);
         }
     }
@@ -70,21 +70,21 @@ function findMatchingType(typeDefinitions, requestBodyType) {
     return matchingType;
 }
 function createNoMatchingTypeError(endpointName) {
-    return "No matching type definition found for endpoint: ".concat(endpointName);
+    return "No matching request type definition found for endpoint: ".concat(endpointName);
 }
 function createNoMatchingResponseError(endpointName) {
     return "No matching response type definition found for endpoint: ".concat(endpointName);
 }
-function lintMissingProperties(endpointName, expectedProperties, actualProperties, errors) {
+function lintMissingProperties(endpointName, expectedProperties, actualProperties, errors, bodyType) {
     var missingProperties = expectedProperties.filter(function (prop) { return !actualProperties.includes(prop); });
     if (missingProperties.length > 0) {
-        errors.push("Missing properties in request body for endpoint ".concat(endpointName, ": ").concat(missingProperties.join(', '), ". Expected properties: ").concat(expectedProperties.join(', ')));
+        errors.push("Missing properties in ".concat(bodyType, " body for endpoint ").concat(endpointName, ": ").concat(missingProperties.join(', '), ". Expected properties: ").concat(expectedProperties.join(', ')));
     }
 }
-function lintExtraProperties(endpointName, expectedProperties, actualProperties, errors) {
+function lintExtraProperties(endpointName, expectedProperties, actualProperties, errors, bodyType) {
     var extraProperties = actualProperties.filter(function (prop) { return !expectedProperties.includes(prop); });
     if (extraProperties.length > 0) {
-        errors.push("Extra properties in request body for endpoint ".concat(endpointName, ": ").concat(extraProperties.join(', '), ". Expected properties: ").concat(expectedProperties.join(', ')));
+        errors.push("Extra properties in ".concat(bodyType, " body for endpoint ").concat(endpointName, ": ").concat(extraProperties.join(', '), ". Expected properties: ").concat(expectedProperties.join(', ')));
     }
 }
 function lintPropertyTypes(endpointName, requestBody, matchingType, expectedProperties, typeDefinitions, errors) {

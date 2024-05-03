@@ -41,8 +41,8 @@ function lintRequestBody(def: EndpointDefinition, matchingTSEndpoint: TSEndpoint
     } else {
       //console.log(`Matching Type: ${matchingType.name}`);
       const actualProperties = Object.keys(matchingType.properties);
-      lintMissingProperties(def.name, expectedProperties, actualProperties, errors);
-      lintExtraProperties(def.name, expectedProperties, actualProperties, errors);
+      lintMissingProperties(def.name, expectedProperties, actualProperties, errors, 'request');
+      lintExtraProperties(def.name, expectedProperties, actualProperties, errors, 'request');      
       lintPropertyTypes(def.name, def.requestBody, matchingType, expectedProperties, typeDefinitions, errors);
     }
   }
@@ -57,8 +57,8 @@ function lintResponseBody(def: EndpointDefinition, matchingTSEndpoint: TSEndpoin
           errors.push(createNoMatchingResponseError(def.name));
       } else {
           const actualProperties = Object.keys(matchingType.properties);
-          lintMissingProperties(def.name, expectedProperties, actualProperties, errors);
-          lintExtraProperties(def.name, expectedProperties, actualProperties, errors);
+          lintMissingProperties(def.name, expectedProperties, actualProperties, errors, 'response');
+          lintExtraProperties(def.name, expectedProperties, actualProperties, errors, 'response');          
           lintPropertyTypes(def.name, def.responseBody, matchingType, expectedProperties, typeDefinitions, errors);
       }
   }
@@ -81,26 +81,27 @@ function findMatchingType(typeDefinitions: TypeDefinition[], requestBodyType: st
 }
 
 function createNoMatchingTypeError(endpointName: string): string {
-  return `No matching type definition found for endpoint: ${endpointName}`;
+  return `No matching request type definition found for endpoint: ${endpointName}`;
 }
 
 function createNoMatchingResponseError(endpointName: string): string {
   return `No matching response type definition found for endpoint: ${endpointName}`;
 }
 
-function lintMissingProperties(endpointName: string, expectedProperties: string[], actualProperties: string[], errors: string[]): void {
+function lintMissingProperties(endpointName: string, expectedProperties: string[], actualProperties: string[], errors: string[], bodyType: 'request' | 'response'): void {
   const missingProperties = expectedProperties.filter(prop => !actualProperties.includes(prop));
   if (missingProperties.length > 0) {
-    errors.push(`Missing properties in request body for endpoint ${endpointName}: ${missingProperties.join(', ')}. Expected properties: ${expectedProperties.join(', ')}`);
+    errors.push(`Missing properties in ${bodyType} body for endpoint ${endpointName}: ${missingProperties.join(', ')}. Expected properties: ${expectedProperties.join(', ')}`);
   }
 }
 
-function lintExtraProperties(endpointName: string, expectedProperties: string[], actualProperties: string[], errors: string[]): void {
+function lintExtraProperties(endpointName: string, expectedProperties: string[], actualProperties: string[], errors: string[], bodyType: 'request' | 'response'): void {
   const extraProperties = actualProperties.filter(prop => !expectedProperties.includes(prop));
   if (extraProperties.length > 0) {
-    errors.push(`Extra properties in request body for endpoint ${endpointName}: ${extraProperties.join(', ')}. Expected properties: ${expectedProperties.join(', ')}`);
+    errors.push(`Extra properties in ${bodyType} body for endpoint ${endpointName}: ${extraProperties.join(', ')}. Expected properties: ${expectedProperties.join(', ')}`);
   }
 }
+
 
 function lintPropertyTypes(endpointName: string, requestBody: any, matchingType: TypeDefinition, expectedProperties: string[], typeDefinitions: TypeDefinition[], errors: string[]): void {
   expectedProperties.forEach(prop => {
