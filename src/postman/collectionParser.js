@@ -48,7 +48,13 @@ function parseCollection(collection) {
                     var exampleResponse = item.response.find(function (res) { return res.code === 200 || res.code === 201; });
                     if (exampleResponse && exampleResponse.body) {
                         try {
-                            responseBody = JSON.parse(exampleResponse.body);
+                            var parsedResponseBody = JSON.parse(exampleResponse.body);
+                            if (Array.isArray(parsedResponseBody)) {
+                                responseBody = parsedResponseBody[1];
+                            }
+                            else {
+                                responseBody = parsedResponseBody;
+                            }
                         }
                         catch (error) {
                             console.warn("Failed to parse response body for endpoint: ".concat(item.name));

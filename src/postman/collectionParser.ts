@@ -49,7 +49,12 @@ function parseCollection(collection: PostmanCollection): EndpointDefinition[] {
                     const exampleResponse = item.response.find(res => res.code === 200 || res.code === 201);
                     if (exampleResponse && exampleResponse.body) {
                         try {
-                            responseBody = JSON.parse(exampleResponse.body);
+                            const parsedResponseBody = JSON.parse(exampleResponse.body);
+                            if (Array.isArray(parsedResponseBody)) {
+                                responseBody = parsedResponseBody[1];
+                            } else {
+                                responseBody = parsedResponseBody;
+                            }
                         } catch (error) {
                             console.warn(`Failed to parse response body for endpoint: ${item.name}`);
                         }

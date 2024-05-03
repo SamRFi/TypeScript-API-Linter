@@ -30,42 +30,20 @@ function findMatchingTSEndpoint(tsEndpoints: TSEndpoint[], method: string, path:
 
 function lintRequestBody(def: EndpointDefinition, matchingTSEndpoint: TSEndpoint, typeDefinitions: TypeDefinition[], errors: string[]): void {
   if (def.requestBody) {
-    // Check if the requestBody is expected to be an array and handle accordingly
-    if (matchingTSEndpoint.isRequestBodyArray) {
-      const requestBody = Array.isArray(def.requestBody) ? def.requestBody : JSON.parse(def.requestBody);
-      if (!Array.isArray(requestBody)) {
-        errors.push(`Expected request body to be an array for endpoint: ${def.name}`);
-        return;
-      }
-
-      // Validate each object in the array
-      requestBody.forEach((item, index) => {
-        const matchingType = findMatchingType(typeDefinitions, matchingTSEndpoint.requestBodyType);
-        if (!matchingType) {
-          errors.push(`No matching type found for items in request body array at endpoint: ${def.name}`);
-          return;
-        }
-
-        const actualProperties = Object.keys(item);
-        const expectedProperties = Object.keys(matchingType.properties);
-        lintMissingProperties(`${def.name} at index ${index}`, expectedProperties, actualProperties, errors, 'request');
-        lintExtraProperties(`${def.name} at index ${index}`, expectedProperties, actualProperties, errors, 'request');
-        lintPropertyTypes(`${def.name} at index ${index}`, item, matchingType, expectedProperties, typeDefinitions, errors, 'request');
-      });
-    } else {
-      // Handle non-array request bodies
-      const matchingType = findMatchingType(typeDefinitions, matchingTSEndpoint.requestBodyType);
-      if (!matchingType) {
-        errors.push(createNoMatchingTypeError(def.name));
-        return;
-      }
-
-      const expectedProperties = Object.keys(matchingType.properties);
-      const actualProperties = Object.keys(def.requestBody);
-      lintMissingProperties(def.name, expectedProperties, actualProperties, errors, 'request');
-      lintExtraProperties(def.name, expectedProperties, actualProperties, errors, 'request');
-      lintPropertyTypes(def.name, def.requestBody, matchingType, expectedProperties, typeDefinitions, errors, 'request');
+    
+    // Handle non-array request bodies
+    const matchingType = findMatchingType(typeDefinitions, matchingTSEndpoint.requestBodyType);
+    if (!matchingType) {
+      errors.push(createNoMatchingTypeError(def.name));
+      return;
     }
+
+    const expectedProperties = Object.keys(matchingType.properties);
+    const actualProperties = Object.keys(def.requestBody);
+    lintMissingProperties(def.name, expectedProperties, actualProperties, errors, 'request');
+    lintExtraProperties(def.name, expectedProperties, actualProperties, errors, 'request');
+    lintPropertyTypes(def.name, def.requestBody, matchingType, expectedProperties, typeDefinitions, errors, 'request');
+  
   }
 }
 
@@ -79,24 +57,12 @@ function lintResponseBody(def: EndpointDefinition, matchingTSEndpoint: TSEndpoin
     if (!matchingType) {
       errors.push(createNoMatchingResponseError(def.name));
     } else {
-      if (matchingTSEndpoint.isResponseBodyArray) {
-        if (Array.isArray(def.responseBody) && def.responseBody.length > 0) {
-          const arrayItemType = def.responseBody[0];
-          const expectedItemProperties = Object.keys(arrayItemType);
-          const actualProperties = Object.keys(matchingType.properties);
 
-          lintMissingProperties(def.name, expectedItemProperties, actualProperties, errors, 'response');
-          lintExtraProperties(def.name, expectedItemProperties, actualProperties, errors, 'response');
-          lintPropertyTypes(def.name, arrayItemType, matchingType, expectedItemProperties, typeDefinitions, errors, 'response');
-        } else {
-          errors.push(`Expected response body to be an array for endpoint: ${def.name}`);
-        }
-      } else {
         const actualProperties = Object.keys(matchingType.properties);
         lintMissingProperties(def.name, expectedProperties, actualProperties, errors, 'response');
         lintExtraProperties(def.name, expectedProperties, actualProperties, errors, 'response');
         lintPropertyTypes(def.name, def.responseBody, matchingType, expectedProperties, typeDefinitions, errors, 'response');
-      }
+      
     }
   }
 }
@@ -149,6 +115,11 @@ function lintPropertyTypes(endpointName: string, requestBody: any, matchingType:
     if (!actualType) {
       errors.push(`Property '${prop}' is missing in the type definition for endpoint ${endpointName}`);
       return; // Skip further checks for this property
+    }
+
+    // If the expected type is undefined, skip the mismatch error
+    if (typeof expectedType === 'undefined') {
+      return; // Do not report an error if the expected type is undefined
     }
 
     // Check if the actual type is an enum

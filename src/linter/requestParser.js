@@ -47,8 +47,6 @@ function findEndpointsInFile(sourceFile) {
                 var path_1 = '';
                 var requestBodyTypeName_1 = null;
                 var responseBodyTypeName = null;
-                var isRequestBodyArray_1 = false; // Flag to indicate if the request body is an array
-                var isResponseBodyArray = false;
                 callExpression.getArguments().forEach(function (arg) {
                     if (ts_morph_1.Node.isTemplateExpression(arg)) {
                         var templateExpression = arg;
@@ -98,7 +96,6 @@ function findEndpointsInFile(sourceFile) {
                                             }
                                             if (requestBodyType.endsWith('[]')) {
                                                 requestBodyType = requestBodyType.slice(0, -2);
-                                                isRequestBodyArray_1 = true;
                                             }
                                             requestBodyTypeName_1 = requestBodyType;
                                             //console.log(`Found request body type: ${requestBodyTypeName}`);
@@ -166,20 +163,17 @@ function findEndpointsInFile(sourceFile) {
                                     var baseType = innerType.slice(0, -2);
                                     responseBodyTypeName = baseType;
                                     // Indicate that the expected type is an array of baseType
-                                    isResponseBodyArray = true;
                                 }
                                 else {
                                     // If not an array type, use the inner type directly
                                     responseBodyTypeName = innerType;
-                                    isResponseBodyArray = false;
                                 }
                             }
                             else {
                                 // If not a Promise type, proceed as before
                                 responseBodyTypeName = returnTypeText;
-                                isResponseBodyArray = false;
                             }
-                            //console.log(`Selected return type: ${responseBodyTypeName}, Is Array: ${isResponseBodyArray}`);
+                            //console.log(`Selected return type: ${responseBodyTypeName}`);
                         }
                     }
                 }
@@ -200,8 +194,6 @@ function findEndpointsInFile(sourceFile) {
                         path: fullPath,
                         requestBodyType: requestBodyTypeName_1,
                         responseBodyType: responseBodyTypeName,
-                        isRequestBodyArray: isRequestBodyArray_1, // Include array flag for request body
-                        isResponseBodyArray: isResponseBodyArray // Include array flag for response body
                     });
                     //console.log('Endpoint found:', { method, path: fullPath, requestBodyType: requestBodyTypeName, responseBodyType: responseBodyTypeName });
                 }

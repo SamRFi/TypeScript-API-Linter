@@ -49,9 +49,6 @@ function findEndpointsInFile(sourceFile: SourceFile): TSEndpoint[] {
         let path = '';
         let requestBodyTypeName: string | null = null;
         let responseBodyTypeName: string | null = null;
-        let isRequestBodyArray = false;  // Flag to indicate if the request body is an array
-        let isResponseBodyArray = false;
-
 
         callExpression.getArguments().forEach(arg => {
           
@@ -102,7 +99,6 @@ function findEndpointsInFile(sourceFile: SourceFile): TSEndpoint[] {
 
                       if (requestBodyType.endsWith('[]')) {
                         requestBodyType = requestBodyType.slice(0, -2);
-                        isRequestBodyArray = true;
                       }
                 
                       requestBodyTypeName = requestBodyType;
@@ -172,24 +168,18 @@ function findEndpointsInFile(sourceFile: SourceFile): TSEndpoint[] {
                   let baseType = innerType.slice(0, -2);
                   responseBodyTypeName = baseType;
                   // Indicate that the expected type is an array of baseType
-                  isResponseBodyArray = true;
                 } else {
                   // If not an array type, use the inner type directly
                   responseBodyTypeName = innerType;
-                  isResponseBodyArray = false;
                 }
               } else {
                 // If not a Promise type, proceed as before
                 responseBodyTypeName = returnTypeText;
-                isResponseBodyArray = false;
               }
-              //console.log(`Selected return type: ${responseBodyTypeName}, Is Array: ${isResponseBodyArray}`);
+              //console.log(`Selected return type: ${responseBodyTypeName}`);
             }
-          }
-          
-          
+          }  
         }
-        
         
         if (path) {
           let fullPath = '';
@@ -208,8 +198,6 @@ function findEndpointsInFile(sourceFile: SourceFile): TSEndpoint[] {
             path: fullPath,
             requestBodyType: requestBodyTypeName,
             responseBodyType: responseBodyTypeName,
-            isRequestBodyArray: isRequestBodyArray,  // Include array flag for request body
-            isResponseBodyArray: isResponseBodyArray // Include array flag for response body
           });
           //console.log('Endpoint found:', { method, path: fullPath, requestBodyType: requestBodyTypeName, responseBodyType: responseBodyTypeName });
         }
