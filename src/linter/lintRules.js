@@ -23,19 +23,32 @@ function findMatchingTSEndpoint(tsEndpoints, method, path) {
 function lintRequestBody(def, matchingTSEndpoint, typeDefinitions, errors) {
     if (def.requestBody) {
         var expectedProperties = Object.keys(def.requestBody);
-        //console.log(`Endpoint: ${def.name}`);
-        //console.log(`Request Body Type: ${matchingTSEndpoint.requestBodyType}`);
-        var matchingType = findMatchingType(typeDefinitions, matchingTSEndpoint.requestBodyType);
-        if (!matchingType) {
-            //console.log(`No matching type found for endpoint: ${def.name}`);
+        var matchingType_1 = findMatchingType(typeDefinitions, matchingTSEndpoint.isRequestBodyArray ? "".concat(matchingTSEndpoint.requestBodyType, "[]") : matchingTSEndpoint.requestBodyType);
+        if (!matchingType_1) {
             errors.push(createNoMatchingTypeError(def.name));
         }
         else {
-            //console.log(`Matching Type: ${matchingType.name}`);
-            var actualProperties = Object.keys(matchingType.properties);
-            lintMissingProperties(def.name, expectedProperties, actualProperties, errors, 'request');
-            lintExtraProperties(def.name, expectedProperties, actualProperties, errors, 'request');
-            lintPropertyTypes(def.name, def.requestBody, matchingType, expectedProperties, typeDefinitions, errors);
+            if (matchingTSEndpoint.isRequestBodyArray) {
+                if (Array.isArray(def.requestBody) && def.requestBody.length > 0) {
+                    var arrayItemType = def.requestBody[0];
+                    var expectedItemProperties_1 = Object.keys(arrayItemType);
+                    var actualProperties_1 = Object.keys(matchingType_1.properties);
+                    def.requestBody.forEach(function (item) {
+                        lintMissingProperties(def.name, expectedItemProperties_1, actualProperties_1, errors, 'request');
+                        lintExtraProperties(def.name, expectedItemProperties_1, actualProperties_1, errors, 'request');
+                        lintPropertyTypes(def.name, item, matchingType_1, expectedItemProperties_1, typeDefinitions, errors);
+                    });
+                }
+                else {
+                    errors.push("Expected request body to be an array for endpoint: ".concat(def.name));
+                }
+            }
+            else {
+                var actualProperties = Object.keys(matchingType_1.properties);
+                lintMissingProperties(def.name, expectedProperties, actualProperties, errors, 'request');
+                lintExtraProperties(def.name, expectedProperties, actualProperties, errors, 'request');
+                lintPropertyTypes(def.name, def.requestBody, matchingType_1, expectedProperties, typeDefinitions, errors);
+            }
         }
     }
 }
@@ -47,26 +60,36 @@ function lintResponseBody(def, matchingTSEndpoint, typeDefinitions, errors) {
             errors.push(createNoMatchingResponseError(def.name));
         }
         else {
-            var actualProperties = Object.keys(matchingType.properties);
-            lintMissingProperties(def.name, expectedProperties, actualProperties, errors, 'response');
-            lintExtraProperties(def.name, expectedProperties, actualProperties, errors, 'response');
-            lintPropertyTypes(def.name, def.responseBody, matchingType, expectedProperties, typeDefinitions, errors);
+            if (matchingTSEndpoint.isResponseBodyArray) {
+                if (Array.isArray(def.responseBody) && def.responseBody.length > 0) {
+                    var arrayItemType = def.responseBody[0];
+                    var expectedItemProperties = Object.keys(arrayItemType);
+                    var actualProperties = Object.keys(matchingType.properties);
+                    lintMissingProperties(def.name, expectedItemProperties, actualProperties, errors, 'response');
+                    lintExtraProperties(def.name, expectedItemProperties, actualProperties, errors, 'response');
+                    lintPropertyTypes(def.name, arrayItemType, matchingType, expectedItemProperties, typeDefinitions, errors);
+                }
+                else {
+                    errors.push("Expected response body to be an array for endpoint: ".concat(def.name));
+                }
+            }
+            else {
+                var actualProperties = Object.keys(matchingType.properties);
+                lintMissingProperties(def.name, expectedProperties, actualProperties, errors, 'response');
+                lintExtraProperties(def.name, expectedProperties, actualProperties, errors, 'response');
+                lintPropertyTypes(def.name, def.responseBody, matchingType, expectedProperties, typeDefinitions, errors);
+            }
         }
     }
 }
-function findMatchingType(typeDefinitions, requestBodyType) {
-    if (requestBodyType === null || requestBodyType === undefined) {
-        //console.log(`Request Body Type is null or undefined`);
+function findMatchingType(typeDefinitions, typeName) {
+    if (typeName === null || typeName === undefined) {
         return undefined;
     }
-    //console.log(`Searching for type: ${requestBodyType}`);
-    var matchingType = typeDefinitions.find(function (type) { return type.name === requestBodyType; });
-    if (matchingType) {
-        //console.log(`Found matching type: ${matchingType.name}`);
-    }
-    else {
-        //console.log(`No matching type found for: ${requestBodyType}`);
-    }
+    // Check if the type name ends with "[]"
+    var isArrayType = typeName.endsWith('[]');
+    var baseTypeName = isArrayType ? typeName.slice(0, -2) : typeName;
+    var matchingType = typeDefinitions.find(function (type) { return type.name === baseTypeName; });
     return matchingType;
 }
 function createNoMatchingTypeError(endpointName) {
@@ -91,6 +114,11 @@ function lintPropertyTypes(endpointName, requestBody, matchingType, expectedProp
     expectedProperties.forEach(function (prop) {
         var expectedType = requestBody[prop];
         var actualType = matchingType.properties[prop];
+        // Check if actualType is defined
+        if (!actualType) {
+            errors.push("Property '".concat(prop, "' is missing in the type definition for endpoint ").concat(endpointName));
+            return; // Skip further checks for this property
+        }
         // Check if the actual type is an enum
         var enumType = typeDefinitions.find(function (type) { return type.name === actualType; });
         if (enumType) {

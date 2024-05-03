@@ -49,6 +49,8 @@ function findEndpointsInFile(sourceFile: SourceFile): TSEndpoint[] {
         let path = '';
         let requestBodyTypeName: string | null = null;
         let responseBodyTypeName: string | null = null;
+        let isRequestBodyArray = false;  // Flag to indicate if the request body is an array
+        let isResponseBodyArray = false;
 
 
         callExpression.getArguments().forEach(arg => {
@@ -96,6 +98,11 @@ function findEndpointsInFile(sourceFile: SourceFile): TSEndpoint[] {
                       const importMatch = requestBodyType.match(/import\(".*"\)\.(\w+)/);
                       if (importMatch) {
                         requestBodyType = importMatch[1];
+                      }
+
+                      if (requestBodyType.endsWith('[]')) {
+                        requestBodyType = requestBodyType.slice(0, -2);
+                        isRequestBodyArray = true;
                       }
                 
                       requestBodyTypeName = requestBodyType;
@@ -159,22 +166,27 @@ function findEndpointsInFile(sourceFile: SourceFile): TSEndpoint[] {
               if (promiseMatch) {
                 // Work with the inner type of the Promise
                 let innerType = promiseMatch[1];
-                // Check if the inner type is a union type
-                if (innerType.includes('|')) {
-                  // Split the inner type by the union operator and select the first type
-                  const types = innerType.split('|').map(type => type.trim());
-                  responseBodyTypeName = types[0];
+                // Check if the inner type is an array type
+                if (innerType.endsWith('[]')) {
+                  // Remove the array notation to get the base type
+                  let baseType = innerType.slice(0, -2);
+                  responseBodyTypeName = baseType;
+                  // Indicate that the expected type is an array of baseType
+                  isResponseBodyArray = true;
                 } else {
-                  // If not a union type, use the inner type directly
+                  // If not an array type, use the inner type directly
                   responseBodyTypeName = innerType;
+                  isResponseBodyArray = false;
                 }
               } else {
                 // If not a Promise type, proceed as before
                 responseBodyTypeName = returnTypeText;
+                isResponseBodyArray = false;
               }
-              console.log(`Selected return type: ${responseBodyTypeName}`);
+              //console.log(`Selected return type: ${responseBodyTypeName}, Is Array: ${isResponseBodyArray}`);
             }
           }
+          
           
         }
         
@@ -191,8 +203,15 @@ function findEndpointsInFile(sourceFile: SourceFile): TSEndpoint[] {
           }
           //console.log(`Constructed full path: ${fullPath}`);
           
-          endpoints.push({ method, path: fullPath, requestBodyType: requestBodyTypeName, responseBodyType: responseBodyTypeName });
-          console.log('Endpoint found:', { method, path: fullPath, requestBodyType: requestBodyTypeName, responseBodyType: responseBodyTypeName });
+          endpoints.push({
+            method,
+            path: fullPath,
+            requestBodyType: requestBodyTypeName,
+            responseBodyType: responseBodyTypeName,
+            isRequestBodyArray: isRequestBodyArray,  // Include array flag for request body
+            isResponseBodyArray: isResponseBodyArray // Include array flag for response body
+          });
+          //console.log('Endpoint found:', { method, path: fullPath, requestBodyType: requestBodyTypeName, responseBodyType: responseBodyTypeName });
         }
       }
     }
