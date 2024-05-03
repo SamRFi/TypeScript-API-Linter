@@ -172,32 +172,39 @@ function lintExtraEndpoints(tsEndpoints: TSEndpoint[], endpointDefinitions: Endp
   endpointDefinitions.forEach((def) => {
     const normalizedDefPath = normalizePath(def.path);
     if (!tsEndpoints.some(e => e.method === def.method && normalizePath(e.path) === normalizedDefPath)) {
-      let requestBodyDetails = '';
+      let details = '';
 
       if (def.requestBody) {
-        // Construct a string that lists each property name along with its inferred type
-        requestBodyDetails = Object.keys(def.requestBody).map((key) => {
+        // Construct a string that lists each property name along with its inferred type for request body
+        const requestBodyDetails = Object.keys(def.requestBody).map((key) => {
           const value = def.requestBody[key];
-          let type: string;
-          if (Array.isArray(value)) {
-            type = 'array';
-          } else if (typeof value === 'object' && value !== null) {
-            type = 'object';
-          } else {
-            type = typeof value;
-          }
+          const type = Array.isArray(value) ? 'array' : typeof value === 'object' && value !== null ? 'object' : typeof value;
           return `${key}: ${type}`;
         }).join(', ');
 
         if (requestBodyDetails) {
-          requestBodyDetails = ` with expected request body: { ${requestBodyDetails} }`;
+          details += ` with expected request body: { ${requestBodyDetails} }`;
         }
       }
 
-      errors.push(`Endpoint defined in Postman collection but not found in code: ${def.method} ${def.path}${requestBodyDetails}`);
+      if (def.responseBody) {
+        // Construct a string that lists each property name along with its inferred type for response body
+        const responseBodyDetails = Object.keys(def.responseBody).map((key) => {
+          const value = def.responseBody[key];
+          const type = Array.isArray(value) ? 'array' : typeof value === 'object' && value !== null ? 'object' : typeof value;
+          return `${key}: ${type}`;
+        }).join(', ');
+
+        if (responseBodyDetails) {
+          details += ` and expected response body: { ${responseBodyDetails} }`;
+        }
+      }
+
+      errors.push(`Endpoint defined in Postman collection but not found in code: ${def.method} ${def.path}${details}`);
     }
   });
 }
+
   
 
 
