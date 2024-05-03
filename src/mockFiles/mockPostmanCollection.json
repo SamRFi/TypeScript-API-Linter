@@ -264,58 +264,6 @@
 						}
 					},
 					"response": [
-						{
-							"name": "200",
-							"originalRequest": {
-								"method": "GET",
-								"header": [],
-								"url": {
-									"raw": "{{croissant-server}}/auth/status",
-									"host": [
-										"{{croissant-server}}"
-									],
-									"path": [
-										"auth",
-										"status"
-									]
-								}
-							},
-							"status": "OK",
-							"code": 200,
-							"_postman_previewlanguage": "json",
-							"header": [
-								{
-									"key": "Access-Control-Allow-Credentials",
-									"value": "true"
-								},
-								{
-									"key": "Access-Control-Allow-Headers",
-									"value": "Accept, Content-Type, Content-Length, Accept-Encoding, X-CSRF-Token, Authorization"
-								},
-								{
-									"key": "Access-Control-Allow-Methods",
-									"value": "POST, GET, OPTIONS, PUT, PATCH, DELETE"
-								},
-								{
-									"key": "Access-Control-Allow-Origin",
-									"value": "http://localhost:5173"
-								},
-								{
-									"key": "Content-Type",
-									"value": "application/json"
-								},
-								{
-									"key": "Date",
-									"value": "Mon, 11 Mar 2024 13:12:37 GMT"
-								},
-								{
-									"key": "Content-Length",
-									"value": "22"
-								}
-							],
-							"cookie": [],
-							"body": "{\n    \"role\": \"shop_owner\"\n}"
-						}
 					]
 				}
 			]

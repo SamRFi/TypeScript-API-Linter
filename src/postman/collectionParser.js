@@ -38,16 +38,14 @@ function parseCollection(collection) {
                     }
                 }
                 var responseBody = void 0;
-                if (item.request.method === 'GET') {
-                    if (item.response && item.response.length > 0) {
-                        var exampleResponse = item.response[0];
-                        if (exampleResponse.body) {
-                            try {
-                                responseBody = JSON.parse(exampleResponse.body);
-                            }
-                            catch (error) {
-                                console.warn("Failed to parse response body for endpoint: ".concat(item.name));
-                            }
+                if (item.response && item.response.length > 0) {
+                    var exampleResponse = item.response.find(function (res) { return res.code === 200 || res.code === 201; });
+                    if (exampleResponse && exampleResponse.body) {
+                        try {
+                            responseBody = JSON.parse(exampleResponse.body);
+                        }
+                        catch (error) {
+                            console.warn("Failed to parse response body for endpoint: ".concat(item.name));
                         }
                     }
                 }

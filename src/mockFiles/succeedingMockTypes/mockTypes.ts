@@ -89,11 +89,12 @@ export interface SignInRequestBody {
   
   export interface NewSubcategoryResponseBody {
     id: string;
+    category_id: string; // Include missing property
     name: {
       EN: string;
     };
+    display_order: number; // Include missing property
   }
-  
   export interface UpdateSubcategoryRequestBody {
     name?: {
       EN: string;
@@ -103,6 +104,7 @@ export interface SignInRequestBody {
   
   export interface UpdateSubcategoryResponseBody {
     id: string;
+    category_id: string; // Include missing property
     name: {
       EN: string;
     };

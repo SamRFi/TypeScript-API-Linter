@@ -40,18 +40,17 @@ function parseCollection(collection: PostmanCollection): EndpointDefinition[] {
                 }
 
                 let responseBody;
-                if (item.request.method === 'GET') {
-                    if (item.response && item.response.length > 0) {
-                        const exampleResponse = item.response[0];
-                        if (exampleResponse.body) {
-                            try {
-                                responseBody = JSON.parse(exampleResponse.body);
-                            } catch (error) {
-                                console.warn(`Failed to parse response body for endpoint: ${item.name}`);
-                            }
+                if (item.response && item.response.length > 0) {
+                    const exampleResponse = item.response.find(res => res.code === 200 || res.code === 201);
+                    if (exampleResponse && exampleResponse.body) {
+                        try {
+                            responseBody = JSON.parse(exampleResponse.body);
+                        } catch (error) {
+                            console.warn(`Failed to parse response body for endpoint: ${item.name}`);
                         }
                     }
                 }
+                
         
                 endpoints.push({
                     method,
