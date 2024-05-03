@@ -148,13 +148,28 @@ function findEndpointsInFile(sourceFile) {
                         var functionNode = current;
                         var returnTypeNode = functionNode.getReturnTypeNode();
                         if (returnTypeNode) {
-                            responseBodyTypeName = returnTypeNode.getText();
-                            // Extract the generic type if the return type is a Promise
-                            var match = responseBodyTypeName.match(/Promise<(.+)>/);
-                            if (match) {
-                                responseBodyTypeName = match[1];
+                            var returnTypeText = returnTypeNode.getText();
+                            // Extract the type within Promise<>
+                            var promiseMatch = returnTypeText.match(/Promise<(.+)>/);
+                            if (promiseMatch) {
+                                // Work with the inner type of the Promise
+                                var innerType = promiseMatch[1];
+                                // Check if the inner type is a union type
+                                if (innerType.includes('|')) {
+                                    // Split the inner type by the union operator and select the first type
+                                    var types = innerType.split('|').map(function (type) { return type.trim(); });
+                                    responseBodyTypeName = types[0];
+                                }
+                                else {
+                                    // If not a union type, use the inner type directly
+                                    responseBodyTypeName = innerType;
+                                }
                             }
-                            console.log("Detected return type: ".concat(responseBodyTypeName));
+                            else {
+                                // If not a Promise type, proceed as before
+                                responseBodyTypeName = returnTypeText;
+                            }
+                            console.log("Selected return type: ".concat(responseBodyTypeName));
                         }
                     }
                 }

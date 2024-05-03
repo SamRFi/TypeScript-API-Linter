@@ -153,15 +153,29 @@ function findEndpointsInFile(sourceFile: SourceFile): TSEndpoint[] {
             const functionNode = current as FunctionDeclaration | ArrowFunction;
             const returnTypeNode = functionNode.getReturnTypeNode();
             if (returnTypeNode) {
-              responseBodyTypeName = returnTypeNode.getText();
-              // Extract the generic type if the return type is a Promise
-              const match = responseBodyTypeName.match(/Promise<(.+)>/);
-              if (match) {
-                responseBodyTypeName = match[1];
+              let returnTypeText = returnTypeNode.getText();
+              // Extract the type within Promise<>
+              const promiseMatch = returnTypeText.match(/Promise<(.+)>/);
+              if (promiseMatch) {
+                // Work with the inner type of the Promise
+                let innerType = promiseMatch[1];
+                // Check if the inner type is a union type
+                if (innerType.includes('|')) {
+                  // Split the inner type by the union operator and select the first type
+                  const types = innerType.split('|').map(type => type.trim());
+                  responseBodyTypeName = types[0];
+                } else {
+                  // If not a union type, use the inner type directly
+                  responseBodyTypeName = innerType;
+                }
+              } else {
+                // If not a Promise type, proceed as before
+                responseBodyTypeName = returnTypeText;
               }
-              console.log(`Detected return type: ${responseBodyTypeName}`);
+              console.log(`Selected return type: ${responseBodyTypeName}`);
             }
           }
+          
         }
         
         
