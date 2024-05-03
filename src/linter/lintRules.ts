@@ -50,7 +50,7 @@ function lintRequestBody(def: EndpointDefinition, matchingTSEndpoint: TSEndpoint
         const expectedProperties = Object.keys(matchingType.properties);
         lintMissingProperties(`${def.name} at index ${index}`, expectedProperties, actualProperties, errors, 'request');
         lintExtraProperties(`${def.name} at index ${index}`, expectedProperties, actualProperties, errors, 'request');
-        lintPropertyTypes(`${def.name} at index ${index}`, item, matchingType, expectedProperties, typeDefinitions, errors);
+        lintPropertyTypes(`${def.name} at index ${index}`, item, matchingType, expectedProperties, typeDefinitions, errors, 'request');
       });
     } else {
       // Handle non-array request bodies
@@ -64,7 +64,7 @@ function lintRequestBody(def: EndpointDefinition, matchingTSEndpoint: TSEndpoint
       const actualProperties = Object.keys(def.requestBody);
       lintMissingProperties(def.name, expectedProperties, actualProperties, errors, 'request');
       lintExtraProperties(def.name, expectedProperties, actualProperties, errors, 'request');
-      lintPropertyTypes(def.name, def.requestBody, matchingType, expectedProperties, typeDefinitions, errors);
+      lintPropertyTypes(def.name, def.requestBody, matchingType, expectedProperties, typeDefinitions, errors, 'request');
     }
   }
 }
@@ -87,7 +87,7 @@ function lintResponseBody(def: EndpointDefinition, matchingTSEndpoint: TSEndpoin
 
           lintMissingProperties(def.name, expectedItemProperties, actualProperties, errors, 'response');
           lintExtraProperties(def.name, expectedItemProperties, actualProperties, errors, 'response');
-          lintPropertyTypes(def.name, arrayItemType, matchingType, expectedItemProperties, typeDefinitions, errors);
+          lintPropertyTypes(def.name, arrayItemType, matchingType, expectedItemProperties, typeDefinitions, errors, 'response');
         } else {
           errors.push(`Expected response body to be an array for endpoint: ${def.name}`);
         }
@@ -95,7 +95,7 @@ function lintResponseBody(def: EndpointDefinition, matchingTSEndpoint: TSEndpoin
         const actualProperties = Object.keys(matchingType.properties);
         lintMissingProperties(def.name, expectedProperties, actualProperties, errors, 'response');
         lintExtraProperties(def.name, expectedProperties, actualProperties, errors, 'response');
-        lintPropertyTypes(def.name, def.responseBody, matchingType, expectedProperties, typeDefinitions, errors);
+        lintPropertyTypes(def.name, def.responseBody, matchingType, expectedProperties, typeDefinitions, errors, 'response');
       }
     }
   }
@@ -140,7 +140,7 @@ function lintExtraProperties(endpointName: string, expectedProperties: string[],
 }
 
 
-function lintPropertyTypes(endpointName: string, requestBody: any, matchingType: TypeDefinition, expectedProperties: string[], typeDefinitions: TypeDefinition[], errors: string[]): void {
+function lintPropertyTypes(endpointName: string, requestBody: any, matchingType: TypeDefinition, expectedProperties: string[], typeDefinitions: TypeDefinition[], errors: string[], bodyType: 'request' | 'response'): void {
   expectedProperties.forEach(prop => {
     const expectedType = requestBody[prop];
     const actualType = matchingType.properties[prop];
@@ -156,7 +156,7 @@ function lintPropertyTypes(endpointName: string, requestBody: any, matchingType:
     if (enumType) {
       const enumValues = Object.values(enumType.properties);
       if (typeof expectedType === 'string' && !enumValues.includes(expectedType)) {
-        errors.push(`Invalid enum value for property '${prop}' in request body for endpoint ${endpointName}. Expected one of ${enumValues.join(', ')}, but got: ${expectedType}`);
+        errors.push(`Invalid enum value for property '${prop}' in ${bodyType} body for endpoint ${endpointName}. Expected one of ${enumValues.join(', ')}, but got: ${expectedType}`);
       }
     } else if (Array.isArray(expectedType)) {
       if (actualType.endsWith('[]')) {
@@ -164,20 +164,20 @@ function lintPropertyTypes(endpointName: string, requestBody: any, matchingType:
         const matchingReferencedType = findMatchingType(typeDefinitions, referencedType);
 
         if (!matchingReferencedType) {
-          errors.push(`Referenced type '${referencedType}' not found for property '${prop}' in request body for endpoint ${endpointName}`);
+          errors.push(`Referenced type '${referencedType}' not found for property '${prop}' in ${bodyType} body for endpoint ${endpointName}`);
         }
       } else {
-        errors.push(`Type mismatch for property '${prop}' in request body for endpoint ${endpointName}. Expected an array, but got: ${actualType}`);
+        errors.push(`Type mismatch for property '${prop}' in ${bodyType} body for endpoint ${endpointName}. Expected an array, but got: ${actualType}`);
       }
     } else if (typeof expectedType === 'object' && expectedType !== null) {
       if (actualType !== 'object') {
         const matchingReferencedType = findMatchingType(typeDefinitions, actualType);
         if (!matchingReferencedType) {
-          errors.push(`Type mismatch for property '${prop}' in request body for endpoint ${endpointName}. Expected an object, but got: ${actualType}`);
+          errors.push(`Type mismatch for property '${prop}' in ${bodyType} body for endpoint ${endpointName}. Expected an object, but got: ${actualType}`);
         }
       }
     } else if (typeof expectedType !== actualType) {
-      errors.push(`Type mismatch for property '${prop}' in request body for endpoint ${endpointName}. Expected type: ${typeof expectedType}, Actual type: ${actualType}`);
+      errors.push(`Type mismatch for property '${prop}' in ${bodyType} body for endpoint ${endpointName}. Expected type: ${typeof expectedType}, Actual type: ${actualType}`);
     }
   });
 }

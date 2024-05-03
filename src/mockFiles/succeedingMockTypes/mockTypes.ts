@@ -52,7 +52,7 @@ export interface SignInRequestBody {
   }
 
   export interface UserPreferenceResponseBody {
-    userId: number;
+    userId: string;
     preferences: {
       theme: string;
       language: string;
