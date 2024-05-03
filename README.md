@@ -153,7 +153,7 @@ In this example, the linter will check that the `products` property of the `Crea
 
 The linter supports type definitions for request bodies, including interfaces, types, and enums. For example:
 
-```typescriptù
+```typescript
 export enum UserRole {
   ADMIN,
   USER,
@@ -204,6 +204,92 @@ const createUser = async (): Promise<void> => {
 In this example, the linter will still find the `CreateUserRequestBody` type even though it is defined as the return type of a function.
 
 By using defined types for request bodies, you can ensure that your API requests are correctly formatted and reduce errors. The linter will check that the request body conforms to the defined type, including nested types, array types, and wrapped types.
+
+
+**Handling Arrays of JSON Objects in Request Bodies**
+
+The linter is equipped to handle request bodies that are arrays of JSON objects, ensuring that each object in the array adheres to the specified type. This feature is crucial for endpoints that accept bulk operations or multiple records in a single request.
+
+```typescript
+export const updateMultipleUsers = async (users: UserUpdate[]): Promise<void> => {
+  const response = await fetch('https://example.com/users/bulk-update', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(users),
+  });
+};
+
+export interface UserUpdate {
+  userId: string;
+  updates: {
+    name?: string;
+    email?: string;
+  };
+}
+```
+
+In this example, the linter will check that the `users` property of the `updateMultipleUsers` function is an array of `UserUpdate` objects, ensuring that the data structure sent to the server is correctly formatted.
+
+**Handling Response Types for HTTP Status 200 and 201**
+
+The linter can also validate that the response types for HTTP status codes 200 (OK) and 201 (Created) match the expected types declared in the Promise of the response. This ensures that the API responses are correctly handled based on their success status codes.
+
+```typescript
+export const createUser = async (userData: CreateUserRequestBody): Promise<UserDetails> => {
+  const response = await fetch('https://example.com/users', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(userData),
+  });
+  if (response.status === 201) {
+    return response.json();
+  } else {
+    throw new Error('Failed to create user');
+  }
+};
+
+export interface UserDetails {
+  userId: string;
+  name: string;
+  email: string;
+}
+```
+
+In this example, the linter ensures that the response for a 201 status code correctly matches the `UserDetails` type expected in the Promise.
+
+**Handling Complex Response Types with Limitations**
+
+The linter supports complex response types, including cases where the response is a union of different types or when the response type is wrapped in TypeScript utility types such as `Readonly`. However, it's crucial to note a significant limitation in how the linter processes these types. When dealing with a union of types, the linter will only consider the first type in the union for linting purposes. This behavior means that developers should carefully order their types in a union, keeping in mind that only the first one will be validated by the linter.
+
+### Disclaimer
+
+When a response type is defined as a union of multiple types, the linter will unwrap the response and only lint against the first type specified in the union. This limitation should be taken into account when designing your API interactions and response handling logic.
+
+```typescript
+export const fetchUserData = async (): Promise<Readonly<UserDataResponseBody | ErrorResponse>> => {
+  const response = await fetch('https://example.com/users/data');
+  if (!response.ok) {
+    return { error: 'Failed to fetch user data', statusCode: response.status };
+  }
+  return response.json();
+};
+
+export interface UserDataResponseBody {
+  userId: string;
+  name: string;
+  email: string;
+  avatarUrl: string;
+}
+
+export interface ErrorResponse {
+  error: string;
+  statusCode: number;
+}
+```
 
 **Defining Base URLs**
 

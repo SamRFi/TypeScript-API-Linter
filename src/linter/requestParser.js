@@ -204,7 +204,7 @@ function findEndpointsInFile(sourceFile) {
                         requestBodyType: requestBodyTypeName_1,
                         responseBodyType: responseBodyTypeName,
                     });
-                    console.log('Endpoint found:', { method: method_1, path: fullPath, requestBodyType: requestBodyTypeName_1, responseBodyType: responseBodyTypeName });
+                    //console.log('Endpoint found:', { method, path: fullPath, requestBodyType: requestBodyTypeName, responseBodyType: responseBodyTypeName });
                 }
             }
         }
