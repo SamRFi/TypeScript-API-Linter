@@ -113,7 +113,7 @@ function lintPropertyTypes(endpointName: string, requestBody: any, matchingType:
 
     // Check if actualType is defined
     if (!actualType) {
-      errors.push(`Property '${prop}' is missing in the type definition for endpoint ${endpointName}`);
+      //errors.push(`Property '${prop}' is missing in the type definition for endpoint ${endpointName}`);
       return; // Skip further checks for this property
     }
 

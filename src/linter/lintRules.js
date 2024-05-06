@@ -84,7 +84,7 @@ function lintPropertyTypes(endpointName, requestBody, matchingType, expectedProp
         var actualType = matchingType.properties[prop];
         // Check if actualType is defined
         if (!actualType) {
-            errors.push("Property '".concat(prop, "' is missing in the type definition for endpoint ").concat(endpointName));
+            //errors.push(`Property '${prop}' is missing in the type definition for endpoint ${endpointName}`);
             return; // Skip further checks for this property
         }
         // If the expected type is undefined, skip the mismatch error
@@ -141,28 +141,30 @@ function lintExtraEndpoints(tsEndpoints, endpointDefinitions, errors) {
     endpointDefinitions.forEach(function (def) {
         var normalizedDefPath = normalizePath(def.path);
         if (!tsEndpoints.some(function (e) { return e.method === def.method && normalizePath(e.path) === normalizedDefPath; })) {
-            var requestBodyDetails = '';
+            var details = '';
             if (def.requestBody) {
-                // Construct a string that lists each property name along with its inferred type
-                requestBodyDetails = Object.keys(def.requestBody).map(function (key) {
+                // Construct a string that lists each property name along with its inferred type for request body
+                var requestBodyDetails = Object.keys(def.requestBody).map(function (key) {
                     var value = def.requestBody[key];
-                    var type;
-                    if (Array.isArray(value)) {
-                        type = 'array';
-                    }
-                    else if (typeof value === 'object' && value !== null) {
-                        type = 'object';
-                    }
-                    else {
-                        type = typeof value;
-                    }
+                    var type = Array.isArray(value) ? 'array' : typeof value === 'object' && value !== null ? 'object' : typeof value;
                     return "".concat(key, ": ").concat(type);
                 }).join(', ');
                 if (requestBodyDetails) {
-                    requestBodyDetails = " with expected request body: { ".concat(requestBodyDetails, " }");
+                    details += " with expected request body: { ".concat(requestBodyDetails, " }");
                 }
             }
-            errors.push("Endpoint defined in Postman collection but not found in code: ".concat(def.method, " ").concat(def.path).concat(requestBodyDetails));
+            if (def.responseBody) {
+                // Construct a string that lists each property name along with its inferred type for response body
+                var responseBodyDetails = Object.keys(def.responseBody).map(function (key) {
+                    var value = def.responseBody[key];
+                    var type = Array.isArray(value) ? 'array' : typeof value === 'object' && value !== null ? 'object' : typeof value;
+                    return "".concat(key, ": ").concat(type);
+                }).join(', ');
+                if (responseBodyDetails) {
+                    details += " and expected response body: { ".concat(responseBodyDetails, " }");
+                }
+            }
+            errors.push("Endpoint defined in Postman collection but not found in code: ".concat(def.method, " ").concat(def.path).concat(details));
         }
     });
 }
