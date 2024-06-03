@@ -1,7 +1,37 @@
 # Typescript Fetch API Linter
+Welcome to the TypeScript API Linter! This tool is designed to enhance API synchronization between frontend and backend components in TypeScript projects. By leveraging static analysis, the linter checks for routes (URIs), request methods, request body objects and their properties, and response objects and their properties. It ensures that your TypeScript code adheres to the defined API specifications by comparing it against the Postman collection JSON export. If there are discrepancies, the linter provides feedback to help you maintain consistency, prevent bugs, and streamline API integration. Whether you're working on a small project or a complex microservice architecture, this linter is here to ensure your APIs are correctly implemented and aligned.
+
+## Setup
+
+### Prerequisites
+- Ensure you have Node.js and npm installed. You can download and install them from [Node.js official website](https://nodejs.org/).
+
+### Install dependencies
+Run the following command to install all necessary dependencies:
+```sh
+npm install
+```
+
+## Running the Application
+
+To run the TypeScript API Linter, use the following command:
+```
+typescript-api-linter -r <request_files_directory> -t <type_files_directory> -c <postman_collection_file>
+```
+Replace `<request_files_directory>` with the path to your TypeScript files containing API requests, `<type_files_directory>` with the path to your TypeScript files containing type definitions, and `<postman_collection_file>` with the path to your Postman collection file.
+
+### Running Tests
+
+To run the tests, execute:
+```
+npm test
+```
+Note: The TypeScript API Linter only works with the Fetch API.
+
 ## Issues
 Make sure the typescript files are compiled to javascript files.
 ```npx tsc src\cli\index.ts```  
+(or just run ```npm test``` and the files will be compiled automatically)
 ### Known Issue with parsing URLs enclosed in backticks
 
 Due to a specific behavior in our TypeScript setup, fetch calls with URLs defined as plain string literals (enclosed in backticks but without any embedded expressions) are not correctly parsed by our custom linter. This issue arises because our parsing logic explicitly looks for template expressions to process URLs between backticks, which leads to plain string literals being overlooked.
@@ -21,28 +51,6 @@ You can simply modify it to use ``` " " ``` or ``` ' ' ``` instead of ``` ` ` ``
 fetch("https://example.com/api/data", { method: 'GET' });
 ```
 Since no template expressions are present in the URL, this change will not affect your functionality logic but will ensure that the fetch call is correctly parsed by our linter.
-
-
-
-## Install dependencies
-```
-npm install
-```
-## Running the Application
-
-To run the TypeScript API Linter, use the following command:
-```
-typescript-api-linter -r <request_files_directory> -t <type_files_directory> -c <postman_collection_file>
-```
-Replace `<request_files_directory>` with the path to your TypeScript files containing API requests, `<type_files_directory>` with the path to your TypeScript files containing type definitions, and `<postman_collection_file>` with the path to your Postman collection file.
-
-### Running Tests
-
-To run the tests, execute:
-```
-npm test
-```
-Note: The TypeScript API Linter only works with the Fetch API.
 
 # Examples of supported typescript requests and types
 The examples provided below are not exhaustive, but they should give you a good idea of the types of requests and types that the linter can handle.
