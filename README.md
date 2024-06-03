@@ -342,3 +342,6 @@ const BASE_URL = `${import.meta.env.VITE_API_BASE_URL}/categories`;
 // ...
 ```
 The linter will parse each file separately and extract the correct base URL and path for each request, even if they are defined in different files. This allows you to organize your code into separate files for different domains or features, while still benefiting from the linter's ability to check and validate your API requests.
+
+# Contributions
+If you are interested in contributing to the TypeScript API Linter, please post a thread in the discussion section to notify the maintainers. We will then take steps to set up the contribution system on GitHub.
