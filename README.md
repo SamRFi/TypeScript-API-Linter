@@ -12,6 +12,27 @@ Run the following command to install all necessary dependencies:
 npm install
 ```
 
+### Retrieving a Postman Collection JSON Export (v2.1)
+
+To use the TypeScript API Linter, you'll need to provide a [Postman](https://www.postman.com/) collection JSON export in version 2.1. Follow these steps to retrieve your Postman collection:
+
+1. **Open Postman**: Launch the Postman application on your computer.
+
+2. **Select the Collection**:
+   - Navigate to the **Collections** tab in the left sidebar.
+   - Find the collection you want to export and click on the **three dots** (`...`) next to the collection name.
+
+3. **Export the Collection**:
+   - In the dropdown menu, select **Export**.
+   - In the **Export Collection** dialog, choose **Collection v2.1** (this is crucial for compatibility).
+   - Click **Export**.
+
+4. **Save the Exported File**:
+   - Choose a location on your computer to save the exported JSON file.
+   - Click **Save**.
+
+   Your Postman collection is now exported as a JSON file. This file will be used with the TypeScript API Linter.
+
 ## Running the Application
 
 To run the TypeScript API Linter, use the following command:
