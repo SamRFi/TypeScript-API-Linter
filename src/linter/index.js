@@ -41,6 +41,13 @@ var lintRules_1 = require("./lintRules");
 var requestParser_1 = require("./requestParser");
 var typeParser_1 = require("./typeParser");
 var ts_morph_1 = require("ts-morph");
+/**
+ * Main function to lint a project by comparing TypeScript API definitions with Postman API definitions.
+ * @param requestFilesDirectory The directory containing the TypeScript files that define API endpoints
+ * @param typesDirectory The directory containing TypeScript files that define types
+ * @param postmanEndpoints An array of endpoint definitions extracted from a Postman collection
+ * @returns An array of linting error messages if discrepancies are found
+ */
 function lintProject(requestFilesDirectory, typesDirectory, postmanEndpoints) {
     return __awaiter(this, void 0, void 0, function () {
         var project, requestEndpoints, typeDefinitions, errors;
@@ -48,7 +55,9 @@ function lintProject(requestFilesDirectory, typesDirectory, postmanEndpoints) {
             switch (_a.label) {
                 case 0:
                     project = new ts_morph_1.Project();
+                    // Add all source files in the request files directory to the project
                     project.addSourceFilesAtPaths("".concat(requestFilesDirectory, "/**/*"));
+                    // Add all source files in the types directory to the project
                     project.addSourceFilesAtPaths("".concat(typesDirectory, "/**/*"));
                     return [4 /*yield*/, (0, requestParser_1.tsParser)(project)];
                 case 1:
@@ -56,13 +65,15 @@ function lintProject(requestFilesDirectory, typesDirectory, postmanEndpoints) {
                     typeDefinitions = (0, typeParser_1.parseTypes)(typesDirectory);
                     errors = (0, lintRules_1.lintEndpointRules)(postmanEndpoints, requestEndpoints, typeDefinitions);
                     if (errors.length > 0) {
+                        // Uncomment the following lines to log errors to the console
                         //console.log('Linting errors found:');
                         //errors.forEach(error => console.log(error));
                     }
                     else {
+                        // Uncomment the following line to log success message to the console
                         //console.log('No linting errors found.');
                     }
-                    return [2 /*return*/, errors];
+                    return [2 /*return*/, errors]; // Return the array of linting error messages
             }
         });
     });

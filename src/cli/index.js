@@ -40,20 +40,27 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var commander_1 = require("commander");
 var index_1 = require("../linter/index");
 var collectionParser_1 = require("../postman/collectionParser");
+// Set up the CLI application using 'commander'
 commander_1.program
-    .version('1.0.0')
+    .version('1.0.0') // Define the version of the CLI application
     .description('TypeScript API Linter')
     .option('-r, --requests <path>', 'Path to the directory containing request files')
     .option('-t, --types <path>', 'Path to the directory containing type definition files')
     .option('-c, --collection <path>', 'Path to the Postman collection JSON file')
-    .parse(process.argv);
+    .parse(process.argv); // Parse the command-line arguments
+// Extract the options provided by the user from the command-line arguments
 var tsFilesPath = commander_1.program.opts().requests;
 var typeDefsPath = commander_1.program.opts().types;
 var collectionPath = commander_1.program.opts().collection;
+// Validate that all required paths have been provided
 if (!tsFilesPath || !typeDefsPath || !collectionPath) {
-    console.error('Please provide the required paths using the -r, -t, and -c options.');
-    process.exit(1);
+    console.error('Please provide the required paths using the -r, -t, and -c options.'); // Log an error message if any required path is missing
+    process.exit(1); // Exit the application with an error code
 }
+/**
+ * Main function to run the linter process.
+ * This function orchestrates reading the Postman collection, parsing the endpoints, and linting the TypeScript project.
+ */
 function runLinter() {
     return __awaiter(this, void 0, void 0, function () {
         var postmanCollection, postmanEndpoints, errors, error_1;
@@ -66,25 +73,26 @@ function runLinter() {
                     return [4 /*yield*/, (0, index_1.lintProject)(tsFilesPath, typeDefsPath, postmanEndpoints)];
                 case 1:
                     errors = _a.sent();
-                    if (errors.length > 0) {
+                    if (errors.length > 0) { // Check if there are any linting errors
                         //console.error('Linting errors found:');
                         errors.forEach(function (error, index) {
-                            console.error("".concat(index + 1, ". ").concat(error));
+                            console.error("".concat(index + 1, ". ").concat(error)); // Log the error with its index
                         });
-                        process.exit(1);
+                        process.exit(1); // Exit the application with an error code indicating failure
                     }
                     else {
-                        console.log('No linting errors found.');
+                        console.log('No linting errors found.'); // Log a message indicating that no linting errors were found
                     }
                     return [3 /*break*/, 3];
                 case 2:
                     error_1 = _a.sent();
-                    console.error('An error occurred while running the linter:', error_1);
-                    process.exit(1);
+                    console.error('An error occurred while running the linter:', error_1); // Log the error message to the console
+                    process.exit(1); // Exit the application with an error code indicating failure
                     return [3 /*break*/, 3];
                 case 3: return [2 /*return*/];
             }
         });
     });
 }
+// Run the linter process by calling the main function
 runLinter();
