@@ -60,7 +60,6 @@ function findMatchingTSEndpoint(tsEndpoints: TSEndpoint[], method: string, path:
 function lintRequestBody(def: EndpointDefinition, matchingTSEndpoint: TSEndpoint, typeDefinitions: TypeDefinition[], errors: string[]): void {
   if (def.requestBody) { // Check if the Postman definition has a request body
     // Find the matching type definition for the request body in the TypeScript endpoint
-    // Handle non-array request bodies
     const matchingType = findMatchingType(typeDefinitions, matchingTSEndpoint.requestBodyType);
     if (!matchingType) { // If no matching type is found, log an error
       errors.push(createNoMatchingTypeError(def.name));
@@ -68,12 +67,15 @@ function lintRequestBody(def: EndpointDefinition, matchingTSEndpoint: TSEndpoint
     }
 
     // Compare the properties of the request body in Postman and TypeScript
-    const expectedProperties = Object.keys(matchingType.properties);
-    const actualProperties = Object.keys(def.requestBody);
+    const expectedProperties = Object.keys(def.requestBody); // Should come from Postman
+    const actualProperties = Object.keys(matchingType.properties); // Should come from TypeScript
+
+    // Check for missing and extra properties
     lintMissingProperties(def.name, expectedProperties, actualProperties, errors, 'request');
     lintExtraProperties(def.name, expectedProperties, actualProperties, errors, 'request');
+
+    // Check for type mismatches
     lintPropertyTypes(def.name, def.requestBody, matchingType, expectedProperties, typeDefinitions, errors, 'request');
-  
   }
 }
 

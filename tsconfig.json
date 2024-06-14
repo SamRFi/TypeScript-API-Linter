@@ -6,6 +6,6 @@
     "strict": true,
     "esModuleInterop": true
   },
-  "include": ["src/*", "cli.ts"],
+  "include": ["src/**/*"],
   "exclude": ["node_modules", "lib", "src/tests"]
 }
