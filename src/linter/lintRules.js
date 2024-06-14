@@ -185,10 +185,26 @@ function lintPropertyTypes(endpointName, requestBody, matchingType, expectedProp
         else if (Array.isArray(expectedType)) {
             // Validate array types
             if (actualType.endsWith('[]')) {
-                var referencedType = actualType.slice(0, -2); // Get the base type for the array
-                var matchingReferencedType = findMatchingType(typeDefinitions, referencedType);
-                if (!matchingReferencedType) {
-                    errors.push("Referenced type '".concat(referencedType, "' not found for property '").concat(prop, "' in ").concat(bodyType, " body for endpoint ").concat(endpointName));
+                var baseType = actualType.slice(0, -2); // Get the base type for the array
+                // Define a set of primitive types
+                var primitiveTypes = ['string', 'number', 'boolean', 'any'];
+                if (primitiveTypes.includes(baseType)) {
+                    // Determine the type of items in the expected array
+                    var itemType_1 = expectedType.length > 0 ? typeof expectedType[0] : 'unknown';
+                    if (expectedType.some(function (item) { return typeof item !== itemType_1; })) {
+                        errors.push("Type mismatch for array property '".concat(prop, "' in ").concat(bodyType, " body for endpoint ").concat(endpointName, ". Expected an array of ").concat(itemType_1, ", but got: ").concat(actualType));
+                    }
+                    else if (itemType_1 !== baseType) {
+                        // If the array item type doesn't match the base type, report the mismatch
+                        errors.push("Type mismatch for array property '".concat(prop, "' in ").concat(bodyType, " body for endpoint ").concat(endpointName, ". Expected: an array of ").concat(itemType_1, ", but got: an array of ").concat(baseType));
+                    }
+                }
+                else {
+                    // The array is of a custom type, check the referenced type
+                    var matchingReferencedType = findMatchingType(typeDefinitions, baseType);
+                    if (!matchingReferencedType) {
+                        errors.push("Referenced type '".concat(baseType, "' not found for property '").concat(prop, "' in ").concat(bodyType, " body for endpoint ").concat(endpointName, "."));
+                    }
                 }
             }
             else {

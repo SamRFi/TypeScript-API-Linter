@@ -208,11 +208,33 @@ function lintPropertyTypes(endpointName: string, requestBody: any, matchingType:
     } else if (Array.isArray(expectedType)) {
       // Validate array types
       if (actualType.endsWith('[]')) {
-        const referencedType = actualType.slice(0, -2); // Get the base type for the array
-        const matchingReferencedType = findMatchingType(typeDefinitions, referencedType);
+        const baseType = actualType.slice(0, -2); // Get the base type for the array
 
-        if (!matchingReferencedType) {
-          errors.push(`Referenced type '${referencedType}' not found for property '${prop}' in ${bodyType} body for endpoint ${endpointName}`);
+        // Define a set of primitive types
+        const primitiveTypes = ['string', 'number', 'boolean', 'any'];
+
+        if (primitiveTypes.includes(baseType)) {
+          // Determine the type of items in the expected array
+          const itemType = expectedType.length > 0 ? typeof expectedType[0] : 'unknown';
+          if (expectedType.some((item) => typeof item !== itemType)) {
+            errors.push(
+              `Type mismatch for array property '${prop}' in ${bodyType} body for endpoint ${endpointName}. Expected an array of ${itemType}, but got: ${actualType}`
+            );
+          } else if (itemType !== baseType) {
+            // If the array item type doesn't match the base type, report the mismatch
+            errors.push(
+              `Type mismatch for array property '${prop}' in ${bodyType} body for endpoint ${endpointName}. Expected: an array of ${itemType}, but got: an array of ${baseType}`
+            );
+          }
+        } else {
+          // The array is of a custom type, check the referenced type
+          const matchingReferencedType = findMatchingType(typeDefinitions, baseType);
+
+          if (!matchingReferencedType) {
+            errors.push(
+              `Referenced type '${baseType}' not found for property '${prop}' in ${bodyType} body for endpoint ${endpointName}.`
+            );
+          }
         }
       } else {
         errors.push(`Type mismatch for property '${prop}' in ${bodyType} body for endpoint ${endpointName}. Expected an array, but got: ${actualType}`);
